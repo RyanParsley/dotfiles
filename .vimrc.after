@@ -1,0 +1,16 @@
+let g:solarized_termcolors=256
+set background=dark
+color solarized
+set t_Co=16
+nnoremap ,x :s/<[^>]*>/\r&\r/g<CR>
+nnoremap <leader><space> :noh<cr>
+
+syntax on
+filetype indent on
+set smartindent
+
+autocmd BufRead,BufWritePre *.html normal gg=G
+
+autocmd Filetype html nnoremap <leader>c I<!--<esc>A--><esc>
+autocmd Filetype javascript nnoremap <leader>c I//<esc>
+
