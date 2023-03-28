@@ -35,6 +35,24 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  -- Format all the things
+  'sbdchd/neoformat',
+
+  -- make it a little nicer to work with notes
+  {
+    'vimwiki/vimwiki',
+    config = function()
+      vim.g.vimwiki_list = {
+        {
+          name = "notes",
+          path = '~/Projects/notes',
+          syntax = 'markdown',
+          ext  = '.md',
+        }
+      }
+    end
+  },
+
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   { -- LSP Configuration & Plugins
@@ -62,6 +80,8 @@ require('lazy').setup({
       }
     end
   },
+
+  { "nvim-telescope/telescope-file-browser.nvim" },
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -226,6 +246,22 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+-- format on save
+local format_on_save_group = vim.api.nvim_create_augroup('fmt', { clear = true })
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*",
+  command = "undojoin | Neoformat",
+  group = format_on_save_group
+})
+
+-- telescope Keybinding for file browser
+vim.api.nvim_set_keymap(
+  "n",
+  "<space>fb",
+  ":Telescope file_browser",
+  { noremap = true }
+)
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
