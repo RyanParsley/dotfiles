@@ -37,6 +37,7 @@ require('lazy').setup({
 
   -- Format all the things
   'sbdchd/neoformat',
+  'nvim-tree/nvim-web-devicons',
 
   -- make it a little nicer to work with notes
   {
@@ -77,11 +78,16 @@ require('lazy').setup({
     },
     config = function()
         require("nx").setup {
+        nx_cmd_root = 'npx nx',
+        read_init = true,
       }
     end
   },
 
-  { "nvim-telescope/telescope-file-browser.nvim" },
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
+  },
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -255,10 +261,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   group = format_on_save_group
 })
 
--- telescope Keybinding for file browser
 vim.api.nvim_set_keymap(
   "n",
-  "<space>fb",
+  "<leader>fb",
   ":Telescope file_browser",
   { noremap = true }
 )
@@ -274,7 +279,14 @@ require('telescope').setup {
       },
     },
   },
+  pickers = {
+    find_files = {
+      hidden = true
+    }
+  },
 }
+
+require("telescope").load_extension "file_browser"
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
