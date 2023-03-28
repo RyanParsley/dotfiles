@@ -5,3 +5,6 @@ eval "$(/opt/homebrew/bin/rtx activate zsh)"
 eval "$(starship init zsh)"
 
 export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
+# Local config
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
