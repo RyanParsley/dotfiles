@@ -52,6 +52,16 @@ require('lazy').setup({
       'folke/neodev.nvim',
     },
   },
+  {
+    'Equilibris/nx.nvim',
+    requires = {
+        'nvim-telescope/telescope.nvim',
+    },
+    config = function()
+        require("nx").setup {
+      }
+    end
+  },
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
@@ -133,6 +143,9 @@ require('lazy').setup({
       pcall(require('nvim-treesitter.install').update { with_sync = true })
     end,
   },
+
+  -- fork of https://github.com/nvim-treesitter/nvim-treesitter-angular with bug patch
+  { "elgiano/nvim-treesitter-angular", branch = "topic/jsx-fix" },
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -250,7 +263,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'help', 'vim' },
+  ensure_installed = { 'c', 'cpp', 'css', 'go', 'html', 'lua', 'python', 'rust', 'scss', 'tsx', 'typescript', 'help', 'vim' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
