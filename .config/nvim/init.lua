@@ -32,6 +32,10 @@ require('lazy').setup({
     'tpope/vim-sleuth', -- Format all the things
     'sbdchd/neoformat', 'nvim-tree/nvim-web-devicons',
 
+    -- adds more lsp support, specifically I'm solving for nu today
+    -- I need to confirm it works with baked in and not against 
+    'jose-elias-alvarez/null-ls.nvim',
+
     -- make it a little nicer to work with notes
     {
         'vimwiki/vimwiki',
@@ -78,6 +82,7 @@ require('lazy').setup({
             'saadparwaiz1/cmp_luasnip'
         }
     }, -- Useful plugin to show you pending keybinds.
+    'LhKipp/nvim-nu',
     {'folke/which-key.nvim', opts = {}},
     { -- Adds git releated signs to the gutter, as well as utilities for managing changes
         'lewis6991/gitsigns.nvim',
@@ -228,6 +233,17 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope file_browser",
                         {noremap = true})
+
+
+require('nu').setup {
+    use_lsp_features = true, -- requires https://github.com/jose-elias-alvarez/null-ls.nvim
+    -- lsp_feature: all_cmd_names is the source for the cmd name completion.
+    -- It can be
+    --  * a string, which is interpreted as a shell command and the returned list is the source for completions (requires plenary.nvim)
+    --  * a list, which is the direct source for completions (e.G. all_cmd_names = {"echo", "to csv", ...})
+    --  * a function, returning a list of strings and the return value is used as the source for completions
+    all_cmd_names = [[nu -c 'help commands | get name | str join "\n"']]
+}
 
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
