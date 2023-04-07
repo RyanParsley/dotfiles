@@ -74,6 +74,7 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 plugins=(git zoxide rust pm2 ng kubectl golang gcloud fzf)
 
 # Custom Plugins
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 plugins+=(nx-completion zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
