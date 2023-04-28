@@ -34,7 +34,7 @@ require('lazy').setup({
 
     -- adds more lsp support, specifically I'm solving for nu today
     -- I need to confirm it works with baked in and not against 
-    'jose-elias-alvarez/null-ls.nvim',
+    -- 'jose-elias-alvarez/null-ls.nvim',
 
     -- make it a little nicer to work with notes
     {
@@ -68,7 +68,12 @@ require('lazy').setup({
         'Equilibris/nx.nvim',
         requires = {'nvim-telescope/telescope.nvim'},
         config = function()
-            require("nx").setup {nx_cmd_root = 'npx nx', read_init = true}
+            require("nx").setup {
+              nx_cmd_root = 'npx nx',
+              command_runner = require('nx.command-runners').terminal_cmd(),
+              form_renderer = require('nx.form-renderers').telescope(),
+              read_init = true
+            }
         end
     }, {
         "nvim-telescope/telescope-file-browser.nvim",
@@ -287,7 +292,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics,
 require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {
-        'c', 'cpp', 'css', 'go', 'html', 'lua', 'python', 'rust', 'scss', 'tsx',
+        'angular', 'astro', 'c', 'cpp', 'css', 'go', 'html', 'lua', 'python', 'rust', 'scss', 'tsx',
         'typescript', 'help', 'vim'
     },
 
@@ -422,7 +427,8 @@ local servers = {
     lua_ls = {
         Lua = {
             workspace = {checkThirdParty = false},
-            telemetry = {enable = false}
+            telemetry = {enable = false},
+            diagnostics = { globals = {'vim'}}
         }
     }
 }
