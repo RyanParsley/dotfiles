@@ -31,10 +31,21 @@ require('lazy').setup({
     -- Detect tabstop and shiftwidth automatically
     'tpope/vim-sleuth', -- Format all the things
     'sbdchd/neoformat', 'nvim-tree/nvim-web-devicons',
+    'LhKipp/nvim-nu',
 
     -- adds more lsp support, specifically I'm solving for nu today
     -- I need to confirm it works with baked in and not against 
-    -- 'jose-elias-alvarez/null-ls.nvim',
+    {
+      "jay-babu/mason-null-ls.nvim",
+      event = { "BufReadPre", "BufNewFile" },
+      dependencies = {
+        "williamboman/mason.nvim",
+        "jose-elias-alvarez/null-ls.nvim",
+      },
+      config = function()
+        -- require("your.null-ls.config") -- require your null-ls config here (example below)
+      end,
+    },
 
     -- make it a little nicer to work with notes
     {
@@ -76,10 +87,13 @@ require('lazy').setup({
             }
         end
     }, {
-        "nvim-telescope/telescope-file-browser.nvim",
-        dependencies = {
-            "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim"
-        }
+      "nvim-neo-tree/neo-tree.nvim",
+      branch = "v2.x",
+      dependencies = { 
+        "nvim-lua/plenary.nvim",
+        "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+        "MunifTanjim/nui.nvim",
+      }
     }, { -- Autocompletion
         'hrsh7th/nvim-cmp',
         dependencies = {
@@ -87,7 +101,6 @@ require('lazy').setup({
             'saadparwaiz1/cmp_luasnip'
         }
     }, -- Useful plugin to show you pending keybinds.
-    'LhKipp/nvim-nu',
     {'folke/which-key.nvim', opts = {}},
     { -- Adds git releated signs to the gutter, as well as utilities for managing changes
         'lewis6991/gitsigns.nvim',
@@ -236,10 +249,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     group = format_on_save_group
 })
 
-vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope file_browser",
-                        {noremap = true})
-
-
 require('nu').setup {
     use_lsp_features = true, -- requires https://github.com/jose-elias-alvarez/null-ls.nvim
     -- lsp_feature: all_cmd_names is the source for the cmd name completion.
@@ -256,8 +265,6 @@ require('telescope').setup {
     defaults = {mappings = {i = {['<C-u>'] = false, ['<C-d>'] = false}}},
     pickers = {find_files = {hidden = true}}
 }
-
-require("telescope").load_extension "file_browser"
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
