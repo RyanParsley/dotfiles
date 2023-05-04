@@ -274,7 +274,9 @@ require('nu').setup {
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
     defaults = {mappings = {i = {['<C-u>'] = false, ['<C-d>'] = false}}},
-    pickers = {find_files = {hidden = true}}
+    pickers = {find_files = {
+    file_ignore_patterns = {".git/", ".cache" },
+    hidden = true}}
 }
 
 -- Enable telescope fzf native, if installed
