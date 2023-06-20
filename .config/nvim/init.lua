@@ -32,7 +32,36 @@ require('lazy').setup({
     'tpope/vim-sleuth', -- Format all the things
     'sbdchd/neoformat', 'nvim-tree/nvim-web-devicons',
     'LhKipp/nvim-nu',
+    {
+      'simrat39/rust-tools.nvim',
+      config = function ()
+        local rt = require("rust-tools")
 
+        rt.setup({
+          server = {
+            on_attach = function(_, bufnr)
+              -- Hover actions
+              vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+              -- Code action groups
+              vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+            end,
+          },
+          tools = {
+            hover_actions = {
+              auto_focus = true
+            }
+          }
+        })
+      end
+    },
+
+    'mfussenegger/nvim-dap',
+    {
+      'rcarriga/nvim-dap-ui',
+      config = function()
+
+      end
+    },
     -- adds more lsp support, specifically I'm solving for nu today
     -- I need to confirm it works with baked in and not against 
     {
@@ -186,6 +215,8 @@ require('lazy').setup({
             pcall(require('nvim-treesitter.install').update {with_sync = true})
         end
     },
+
+    'nvim-treesitter/nvim-treesitter-refactor',
 
     -- fork of https://github.com/nvim-treesitter/nvim-treesitter-angular with bug patch
     {"elgiano/nvim-treesitter-angular", branch = "topic/jsx-fix"}
@@ -387,6 +418,31 @@ require('nvim-treesitter.configs').setup {
             swap_next = {['<leader>a'] = '@parameter.inner'},
             swap_previous = {['<leader>A'] = '@parameter.inner'}
         }
+    },
+    refactor = {
+      highlight_definitions = {
+        enable = true,
+        clear_on_cursor_move = true
+      },
+      highlight_current_scope = { enable = true },
+      smart_rename = {
+        enable = true,
+        -- Assign keymaps to false to disable them, e.g. `smart_rename = false`.
+        keymaps = {
+          smart_rename = "grr",
+        },
+      },
+      navigation = {
+        enable = true,
+        -- Assign keymaps to false to disable them, e.g. `goto_definition = false`.
+        keymaps = {
+          goto_definition = "gnd",
+          list_definitions = "gnD",
+          list_definitions_toc = "gO",
+          goto_next_usage = "<a-*>",
+          goto_previous_usage = "<a-#>",
+        },
+      }
     }
 }
 
