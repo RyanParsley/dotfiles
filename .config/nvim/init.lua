@@ -309,6 +309,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
     group = format_on_save_group
 })
 
+vim.api.nvim_set_keymap("n", "<leader>fb", ":Telescope file_browser",
+                        {noremap = true})
+
 require('nu').setup {
     use_lsp_features = true, -- requires https://github.com/jose-elias-alvarez/null-ls.nvim
     -- lsp_feature: all_cmd_names is the source for the cmd name completion.
