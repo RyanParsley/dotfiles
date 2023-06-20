@@ -78,10 +78,6 @@ plugins+=(nx-completion zsh-autosuggestions)
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -96,7 +92,6 @@ function nx() {
   npx nx "$@"
 }
 
-eval "$(rtx activate zsh)"
 eval "$(starship init zsh)"
 source ~/.bin/smug.zsh
 
