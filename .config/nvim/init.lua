@@ -26,24 +26,40 @@ require('lazy').setup({
     -- NOTE: First, some plugins that don't require any configuration
 
     -- Git related plugins
-    'tpope/vim-fugitive', 'tpope/vim-rhubarb', 'evanleck/vim-svelte',
+    'tpope/vim-fugitive',
+    {
+      'kdheepak/lazygit.nvim',
+        -- optional for floating window border decoration
+        dependencies = {
+          'nvim-telescope/telescope.nvim',
+          'nvim-lua/plenary.nvim',
+        },
+        config = function()
+          require("telescope").load_extension("lazygit")
+        end,
+    },
+    'tpope/vim-rhubarb',
+    'evanleck/vim-svelte',
 
     -- Detect tabstop and shiftwidth automatically
     'tpope/vim-sleuth', -- Format all the things
     'sbdchd/neoformat', 'nvim-tree/nvim-web-devicons',
     'LhKipp/nvim-nu',
+    'Canop/nvim-bacon',
+    'mattn/webapi-vim',
     {
       'simrat39/rust-tools.nvim',
       config = function ()
         local rt = require("rust-tools")
+        vim.g.rust_clip_command = "pbcopy"
 
         rt.setup({
           server = {
             on_attach = function(_, bufnr)
               -- Hover actions
-              vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
+              vim.keymap.set("n", "<Leader>ch", rt.hover_actions.hover_actions, { buffer = bufnr })
               -- Code action groups
-              vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
+              vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, { buffer = bufnr })
             end,
           },
           tools = {
@@ -99,7 +115,7 @@ require('lazy').setup({
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            {'j-hui/fidget.nvim', opts = {}},
+            { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
 
             -- Additional lua configuration, makes nvim stuff amazing!
             'folke/neodev.nvim'
@@ -291,6 +307,8 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'",
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'",
                {expr = true, silent = true})
 
+vim.keymap.set('n', '<leader>b', require 'dap'.toggle_breakpoint)
+
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight',
@@ -364,7 +382,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics,
 require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {
-        'angular', 'astro', 'c', 'cpp', 'css', 'go', 'html', 'lua', 'python', 'rust', 'scss', 'tsx',
+        'angular', 'astro', 'c', 'cpp', 'css', 'go', 'html', 'lua', 'python', 'rust', 'scss', 'toml', 'tsx',
         'typescript', 'help', 'vim'
     },
 
