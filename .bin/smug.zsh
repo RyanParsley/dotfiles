@@ -1,15 +1,15 @@
 _smug() {
   local commands projects
   commands=(${(f)"$(smug commands zsh)"})
-  projects=(${(f)"$(smug completions start)"})
+  list=(${(f)"$(smug completions start)"})
 
   if (( CURRENT == 2 )); then
     _alternative \
       'commands:: _describe -t commands "smug subcommands" commands' \
-      'projects:: _describe -t projects "smug projects" projects'
+      'list:: _describe -t list "smug list" projects'
   elif (( CURRENT == 3)); then
     case $words[2] in
-      copy|debug|delete|open|start)
+      list|edit|new|start|stop|print)
         _arguments '*:projects:($projects)'
       ;;
     esac
