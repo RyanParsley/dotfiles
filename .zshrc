@@ -92,6 +92,10 @@ function nx() {
   npx nx "$@"
 }
 
+function ng() {
+  npx ng "$@"
+}
+
 eval "$(starship init zsh)"
 source ~/.bin/smug.zsh
 
@@ -99,3 +103,10 @@ source ~/.bin/smug.zsh
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# bun completions
+[ -s "/Users/ryan/.bun/_bun" ] && source "/Users/ryan/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
