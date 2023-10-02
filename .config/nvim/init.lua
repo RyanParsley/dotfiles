@@ -27,108 +27,98 @@ require('lazy').setup({
     -- NOTE: First, some plugins that don't require any configuration
 
     -- Git related plugins
-    'tpope/vim-fugitive',
-    {
-      'kdheepak/lazygit.nvim',
+    'tpope/vim-fugitive', {
+        'kdheepak/lazygit.nvim',
         -- optional for floating window border decoration
         dependencies = {
-          'nvim-telescope/telescope.nvim',
-          'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim'
         },
         config = function()
-          require("telescope").load_extension("lazygit")
-        end,
-    },
-    'tpope/vim-rhubarb',
-    'evanleck/vim-svelte',
+            require('telescope').load_extension('lazygit')
+        end
+    }, 'tpope/vim-rhubarb', 'evanleck/vim-svelte',
     {
-      "aserowy/tmux.nvim",
-      config = function() return require("tmux").setup() end
-    },
-
-    -- Detect tabstop and shiftwidth automatically
+        'aserowy/tmux.nvim',
+        config = function() return require("tmux").setup() end
+    }, {
+        'folke/noice.nvim',
+        event = 'VeryLazy',
+        opts = {
+            -- add any options here
+        },
+        dependencies = {
+            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+            'MunifTanjim/nui.nvim', -- OPTIONAL:
+            --   `nvim-notify` is only needed, if you want to use the notification view.
+            --   If not available, we use `mini` as the fallback
+            'rcarriga/nvim-notify'
+        }
+    }, -- Detect tabstop and shiftwidth automatically
     'tpope/vim-sleuth', -- Format all the things
-    'sbdchd/neoformat',
-    'nvim-tree/nvim-web-devicons',
-    'LhKipp/nvim-nu',
-    'Canop/nvim-bacon',
-    'mattn/webapi-vim',
-    {
-      'simrat39/rust-tools.nvim',
-      config = function ()
-        local rt = require("rust-tools")
-        vim.g.rust_clip_command = "pbcopy"
+    'sbdchd/neoformat', 'nvim-tree/nvim-web-devicons', 'LhKipp/nvim-nu',
+    'Canop/nvim-bacon', 'mattn/webapi-vim', {
+        'simrat39/rust-tools.nvim',
+        config = function()
+            local rt = require("rust-tools")
+            vim.g.rust_clip_command = "pbcopy"
 
-        rt.setup({
-          server = {
-            on_attach = function(_, bufnr)
-              -- Hover actions
-              vim.keymap.set("n", "<Leader>ch", rt.hover_actions.hover_actions, { buffer = bufnr })
-              -- Code action groups
-              vim.keymap.set("n", "<Leader>ca", rt.code_action_group.code_action_group, { buffer = bufnr })
-            end,
-          },
-          tools = {
-            hover_actions = {
-              auto_focus = true
-            }
-          }
-        })
-      end
-    },
-
-    'mfussenegger/nvim-dap',
-    {
-      'rcarriga/nvim-dap-ui',
-      config = function()
-
-      end
-    },
+            rt.setup({
+                server = {
+                    on_attach = function(_, bufnr)
+                        -- Hover actions
+                        vim.keymap.set("n", "<Leader>ch",
+                                       rt.hover_actions.hover_actions,
+                                       {buffer = bufnr})
+                        -- Code action groups
+                        vim.keymap.set("n", "<Leader>ca",
+                                       rt.code_action_group.code_action_group,
+                                       {buffer = bufnr})
+                    end
+                },
+                tools = {hover_actions = {auto_focus = true}}
+            })
+        end
+    }, 'mfussenegger/nvim-dap',
+    {'rcarriga/nvim-dap-ui', config = function() end},
     -- adds more lsp support, specifically I'm solving for nu today
     -- I need to confirm it works with baked in and not against 
     {
-      "jay-babu/mason-null-ls.nvim",
-      event = { "BufReadPre", "BufNewFile" },
-      dependencies = {
-        "williamboman/mason.nvim",
-        "jose-elias-alvarez/null-ls.nvim",
-      },
-      config = function()
-        -- require("your.null-ls.config") -- require your null-ls config here (example below)
-      end,
-    },
-    -- Obisidan support in neovim
+        "jay-babu/mason-null-ls.nvim",
+        event = {"BufReadPre", "BufNewFile"},
+        dependencies = {
+            "williamboman/mason.nvim", "jose-elias-alvarez/null-ls.nvim"
+        },
+        config = function()
+            -- require("your.null-ls.config") -- require your null-ls config here (example below)
+        end
+    }, -- Obisidan support in neovim
     {
-      "epwalsh/obsidian.nvim",
-      -- lazy = true,
-      -- event = { "BufReadPre Users/ryan/Notes/**.md" },
-      -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand':
-      -- event = { "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md" },
-      dependencies = {
-        -- Required.
-        "nvim-lua/plenary.nvim",
-      },
-      opts = {
-        dir = "~/Notes",  -- no need to call 'vim.fn.expand' here
-        daily_notes = {
-          -- Optional, if you keep daily notes in a separate directory.
-          folder = "journal/daily",
+        "epwalsh/obsidian.nvim",
+        -- lazy = true,
+        -- event = { "BufReadPre Users/ryan/Notes/**.md" },
+        -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand':
+        -- event = { "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/**.md" },
+        dependencies = {
+            -- Required.
+            "nvim-lua/plenary.nvim"
         },
-        templates = {
-         subdir = "templates"
-        },
-        use_advanced_uri = true,
-        -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
-        -- URL it will be ignored but you can customize this behavior here.
-        follow_url_func = function(url)
-          -- Open the URL in the default web browser.
-          vim.fn.jobstart({"open", url})  -- Mac OS
-          -- vim.fn.jobstart({"xdg-open", url})  -- linux
-        end,
-      },
-    },
-
-    -- make it a little nicer to work with notes
+        opts = {
+            dir = "~/Notes", -- no need to call 'vim.fn.expand' here
+            daily_notes = {
+                -- Optional, if you keep daily notes in a separate directory.
+                folder = "journal/daily"
+            },
+            templates = {subdir = "templates"},
+            use_advanced_uri = true,
+            -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
+            -- URL it will be ignored but you can customize this behavior here.
+            follow_url_func = function(url)
+                -- Open the URL in the default web browser.
+                vim.fn.jobstart({"open", url}) -- Mac OS
+                -- vim.fn.jobstart({"xdg-open", url})  -- linux
+            end
+        }
+    }, -- make it a little nicer to work with notes
     {
         'vimwiki/vimwiki',
         config = function()
@@ -141,8 +131,7 @@ require('lazy').setup({
                 }
             }
         end
-    },
-    -- NOTE: This is where your plugins related to LSP can be installed.
+    }, -- NOTE: This is where your plugins related to LSP can be installed.
     --  The configuration is done below. Search for lspconfig to find it below.
     { -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
@@ -152,68 +141,71 @@ require('lazy').setup({
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+            {'j-hui/fidget.nvim', tag = 'legacy', opts = {}},
 
             -- Additional lua configuration, makes nvim stuff amazing!
             'folke/neodev.nvim'
         }
-    }, 
-  {
-      "nvim-neo-tree/neo-tree.nvim",
-      branch = "v2.x",
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-        "MunifTanjim/nui.nvim",
-      },
-      opts = {
-        filesystem = {
-          filtered_items = {
-            visible = false,
-            show_hidden_count = false,
-            hide_dotfiles = false,
-            hide_gitignored = false,
-            hide_by_name = {
-             '.git',
-             '.DS_Store',
-             'thumbs.db',
-            },
-            never_show = {
-             '.DS_Store',
-            },
-          }
+    }, {
+        "nvim-neo-tree/neo-tree.nvim",
+        branch = "v2.x",
+        dependencies = {
+            "nvim-lua/plenary.nvim", "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+            "MunifTanjim/nui.nvim"
+        },
+        opts = {
+            filesystem = {
+                filtered_items = {
+                    visible = false,
+                    show_hidden_count = false,
+                    hide_dotfiles = false,
+                    hide_gitignored = false,
+                    hide_by_name = {'.git', '.DS_Store', 'thumbs.db'},
+                    never_show = {'.DS_Store'}
+                }
+            }
         }
-      }
     }, { -- Autocompletion
         'hrsh7th/nvim-cmp',
         dependencies = {
             'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip',
             'saadparwaiz1/cmp_luasnip'
         }
-    },
+    }, {
+        'Equilibris/nx.nvim',
+        dependencies = {'nvim-telescope/telescope.nvim'},
+        config = function()
+            require("nx").setup {
+                -- Base command to run all other nx commands, some other values may be:
+                -- - `npm nx`
+                -- - `yarn nx`
+                -- - `pnpm nx`
+                nx_cmd_root = 'npx nx',
+
+                -- Command running capabilities,
+                -- see nx.m.command-runners for more details
+                command_runner = require('nx.command-runners').terminal_cmd(),
+                -- Form rendering capabilities,
+                -- see nx.m.form-renderers for more detials
+                form_renderer = require('nx.form-renderers').telescope(),
+
+                -- Whether or not to load nx configuration,
+                -- see nx.loading-and-reloading for more details
+                read_init = true
+            }
+        end
+    }, -- Useful plugin to show you pending keybinds.
     {
-      'Equilibris/nx.nvim',
-      dependencies = {
-        'nvim-telescope/telescope.nvim',
-      },
-      config = function()
-        require("nx").setup {
-          read_init = true,
-        }
-      end
-    },
-  -- Useful plugin to show you pending keybinds.
-    {
-      "folke/which-key.nvim",
-      config = function()
-        vim.o.timeout = true
-        vim.o.timeoutlen = 300
-        require("which-key").setup({
-          -- your configuration comes here
-          -- or leave it empty to use the default settings
-          -- refer to the configuration section below
-        })
-      end,
+        "folke/which-key.nvim",
+        config = function()
+            vim.o.timeout = true
+            vim.o.timeoutlen = 300
+            require("which-key").setup({
+                -- your configuration comes here
+                -- or leave it empty to use the default settings
+                -- refer to the configuration section below
+            })
+        end
     },
     { -- Adds git releated signs to the gutter, as well as utilities for managing changes
         'lewis6991/gitsigns.nvim',
@@ -269,9 +261,7 @@ require('lazy').setup({
         config = function()
             pcall(require('nvim-treesitter.install').update {with_sync = true})
         end
-    },
-
-    'MDeiml/tree-sitter-markdown',
+    }, 'MDeiml/tree-sitter-markdown',
     'nvim-treesitter/nvim-treesitter-refactor',
 
     -- fork of https://github.com/nvim-treesitter/nvim-treesitter-angular with bug patch
@@ -347,7 +337,7 @@ vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'",
 vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'",
                {expr = true, silent = true})
 
-vim.keymap.set('n', '<leader>b', require 'dap'.toggle_breakpoint)
+vim.keymap.set('n', '<leader>b', require'dap'.toggle_breakpoint)
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -384,9 +374,9 @@ require('nu').setup {
 -- See `:help telescope` and `:help telescope.setup()`
 require('telescope').setup {
     defaults = {mappings = {i = {['<C-u>'] = false, ['<C-d>'] = false}}},
-    pickers = {find_files = {
-    file_ignore_patterns = {".git/", ".cache" },
-    hidden = true}}
+    pickers = {
+        find_files = {file_ignore_patterns = {".git/", ".cache"}, hidden = true}
+    }
 }
 
 -- Enable telescope fzf native, if installed
@@ -422,7 +412,8 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics,
 require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {
-        'angular', 'astro', 'c', 'cpp', 'css', 'go', 'html', 'lua', 'nu', 'markdown', 'markdown_inline', 'python', 'rust', 'scss', 'toml', 'tsx',
+        'angular', 'astro', 'c', 'cpp', 'css', 'go', 'html', 'lua', 'nu',
+        'markdown', 'markdown_inline', 'python', 'rust', 'scss', 'toml', 'tsx',
         'typescript', 'vimdoc', 'vim'
     },
 
@@ -430,8 +421,8 @@ require('nvim-treesitter.configs').setup {
     auto_install = false,
 
     highlight = {
-      enable = true,
-      additional_vim_regex_highlighting = { "markdown"},
+        enable = true,
+        additional_vim_regex_highlighting = {"markdown"}
     },
     indent = {enable = true, disable = {'python'}},
     incremental_selection = {
@@ -484,29 +475,24 @@ require('nvim-treesitter.configs').setup {
         }
     },
     refactor = {
-      highlight_definitions = {
-        enable = true,
-        clear_on_cursor_move = true
-      },
-      highlight_current_scope = { enable = true },
-      smart_rename = {
-        enable = true,
-        -- Assign keymaps to false to disable them, e.g. `smart_rename = false`.
-        keymaps = {
-          smart_rename = "grr",
+        highlight_definitions = {enable = true, clear_on_cursor_move = true},
+        highlight_current_scope = {enable = true},
+        smart_rename = {
+            enable = true,
+            -- Assign keymaps to false to disable them, e.g. `smart_rename = false`.
+            keymaps = {smart_rename = "grr"}
         },
-      },
-      navigation = {
-        enable = true,
-        -- Assign keymaps to false to disable them, e.g. `goto_definition = false`.
-        keymaps = {
-          goto_definition = "gnd",
-          list_definitions = "gnD",
-          list_definitions_toc = "gO",
-          goto_next_usage = "<a-*>",
-          goto_previous_usage = "<a-#>",
-        },
-      }
+        navigation = {
+            enable = true,
+            -- Assign keymaps to false to disable them, e.g. `goto_definition = false`.
+            keymaps = {
+                goto_definition = "gnd",
+                list_definitions = "gnD",
+                list_definitions_toc = "gO",
+                goto_next_usage = "<a-*>",
+                goto_previous_usage = "<a-#>"
+            }
+        }
     }
 }
 
@@ -586,7 +572,7 @@ local servers = {
         Lua = {
             workspace = {checkThirdParty = false},
             telemetry = {enable = false},
-            diagnostics = { globals = {'vim'}}
+            diagnostics = {globals = {'vim'}}
         }
     }
 }
@@ -618,25 +604,15 @@ mason_lspconfig.setup_handlers {
 -- lsp borders and hover
 local _border = "single"
 
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-  vim.lsp.handlers.hover, {
-    border = _border
-  }
-)
+vim.lsp.handlers["textDocument/hover"] =
+    vim.lsp.with(vim.lsp.handlers.hover, {border = _border})
 
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-  vim.lsp.handlers.signature_help, {
-    border = _border
-  }
-)
+vim.lsp.handlers["textDocument/signatureHelp"] =
+    vim.lsp.with(vim.lsp.handlers.signature_help, {border = _border})
 
-vim.diagnostic.config{
-  float={border=_border}
-}
+vim.diagnostic.config {float = {border = _border}}
 
-require('lspconfig.ui.windows').default_options = {
-  border = _border
-}
+require('lspconfig.ui.windows').default_options = {border = _border}
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
