@@ -31,18 +31,20 @@ config.window_frame = {
 
     -- The overall background color of the tab bar when
     -- the window is focused
-    active_titlebar_bg = '#3b4252',
+    active_titlebar_bg = '#2e3440',
 
     -- The overall background color of the tab bar when
     -- the window is not focused
-    inactive_titlebar_bg = '#2e3440'
+    inactive_titlebar_bg = '#4c566a'
 }
 
 config.colors = {
+    background = '#2e3440',
     tab_bar = {
         -- The color of the inactive tab bar edge/divider
-        inactive_tab_edge = '#4c566a',
-        active_tab = {bg_color = '#2e3440', fg_color = '#8fbcbb'}
+        inactive_tab_edge = '#A3BE8C',
+        active_tab = {bg_color = '#3b4252', fg_color = '#8fbcbb'},
+        inactive_tab = {bg_color = '#2e3440', fg_color = '#8fbcbb'}
     }
 }
 
