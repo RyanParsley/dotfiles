@@ -3,6 +3,10 @@
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.g.markdown_fenced_languages = {
+    "scss", "css", "javascript", "typescript", "bash", "lua", "go", "rust", "c",
+    "cpp"
+}
 
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
@@ -41,6 +45,27 @@ require('lazy').setup({
         'aserowy/tmux.nvim',
         config = function() return require("tmux").setup() end
     }, {
+        "michaelb/sniprun",
+        branch = "master",
+
+        build = "sh install.sh",
+        -- do 'sh install.sh 1' if you want to force compile locally
+        -- (instead of fetching a binary from the github release). Requires Rust >= 1.65
+
+        config = function()
+            require("sniprun").setup({
+                interpreter_options = {
+                    GFM_original = {
+                        use_on_filetypes = {
+                            "markdown.pandoc", "markdown", "vimwiki",
+                            "markdown_fenced_languages", "markdown_inline"
+                        },
+                        default_filetype = 'typescript' -- default filetype (not github flavored markdown name)
+                    }
+                }
+            })
+        end
+    }, {
         'folke/noice.nvim',
         event = 'VeryLazy',
         opts = {
@@ -64,6 +89,7 @@ require('lazy').setup({
 
             rt.setup({
                 server = {
+                    standalone = true,
                     on_attach = function(_, bufnr)
                         -- Hover actions
                         vim.keymap.set("n", "<Leader>ch",
