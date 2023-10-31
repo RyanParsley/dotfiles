@@ -10,7 +10,7 @@ layout {
         }
     }
     tab name="Edit" split_direction="vertical" focus=true {
-        pane command="nvim" focus=true size=130
+        pane command="nvim" focus=true
         pane split_direction="horizontal" {
             pane command="npm" {
                 args "run" "test" "--" "--watch"
@@ -21,6 +21,21 @@ layout {
     tab name="Server" {
         pane command="npm" {
             args "run" "start"
+        }
+    }
+    tab name="Cypress" {
+        pane command="npm" {
+            args "run" "cypress-open"
+        }
+    }
+    tab name="Storybook" {
+        pane command="npm" {
+            args "run" "storybook"
+        }
+    }
+    tab name="Documentation" {
+        pane command="npm" {
+            args "run" "docs:view"
         }
     }
 }
