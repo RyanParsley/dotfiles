@@ -53,6 +53,12 @@ require('lazy').setup({
                 }
             })
         end
+    }, {
+        "L3MON4D3/LuaSnip",
+        -- follow latest release.
+        version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+        -- install jsregexp (optional!).
+        build = "make install_jsregexp"
     }, -- Git related plugins
     'tpope/vim-fugitive', {
         'kdheepak/lazygit.nvim',
@@ -88,6 +94,19 @@ require('lazy').setup({
                 }
             })
         end
+    }, {
+        'folke/noice.nvim',
+        event = 'VeryLazy',
+        opts = {
+            -- add any options here
+        },
+        dependencies = {
+            -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+            'MunifTanjim/nui.nvim', -- OPTIONAL:
+            --   `nvim-notify` is only needed, if you want to use the notification view.
+            --   If not available, we use `mini` as the fallback
+            'rcarriga/nvim-notify'
+        }
     }, -- Detect tabstop and shiftwidth automatically
     'tpope/vim-sleuth', -- Format all the things
     'sbdchd/neoformat', 'nvim-tree/nvim-web-devicons', 'LhKipp/nvim-nu',
@@ -118,6 +137,16 @@ require('lazy').setup({
     {'rcarriga/nvim-dap-ui', config = function() end},
     -- adds more lsp support, specifically I'm solving for nu today
     -- I need to confirm it works with baked in and not against 
+    {
+        "jay-babu/mason-null-ls.nvim",
+        event = {"BufReadPre", "BufNewFile"},
+        dependencies = {
+            "williamboman/mason.nvim", "jose-elias-alvarez/null-ls.nvim"
+        },
+        config = function()
+            -- require("your.null-ls.config") -- require your null-ls config here (example below)
+        end
+    }, -- Obisidan support in neovim
     {
         "epwalsh/obsidian.nvim",
         -- lazy = true,
