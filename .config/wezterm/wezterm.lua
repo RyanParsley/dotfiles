@@ -48,6 +48,13 @@ config.colors = {
         inactive_tab = {bg_color = '#2e3440', fg_color = '#8fbcbb'}
     }
 }
+config.mouse_bindings = {
+    {
+        event = {Up = {streak = 1, button = 'Left'}},
+        mods = 'CMD',
+        action = wezterm.action.OpenLinkAtMouseCursor
+    }
+}
 
 -- and finally, return the configuration to wezterm
 return config

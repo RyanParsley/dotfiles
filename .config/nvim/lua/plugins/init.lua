@@ -2,7 +2,8 @@ return {
     'tpope/vim-fugitive', 'tpope/vim-rhubarb', 'evanleck/vim-svelte',
     'aserowy/tmux.nvim', 'tpope/vim-sleuth', 'sbdchd/neoformat',
     'nvim-tree/nvim-web-devicons', 'LhKipp/nvim-nu', 'Canop/nvim-bacon',
-    'mattn/webapi-vim', 'numToStr/Comment.nvim', {
+    'mattn/webapi-vim', 'numToStr/Comment.nvim',
+    {
         'mfussenegger/nvim-dap',
         dependencies = {'rcarriga/nvim-dap-ui'},
         config = function()
@@ -23,9 +24,14 @@ return {
             vim.keymap.set('n', '<Leader>dt', dap.toggle_breakpoint, {})
             vim.keymap.set('n', '<Leader>dc', dap.continue, {})
         end
-    }, -- adds more lsp support, specifically I'm solving for nu today
-    -- I need to confirm it works with baked in and not against 
+    },
     {
+        'numToStr/Comment.nvim',
+        opts = {
+            -- add any options here
+        },
+        lazy = false
+    }, {
         "jay-babu/mason-null-ls.nvim",
         event = {"BufReadPre", "BufNewFile"},
         dependencies = {
@@ -58,8 +64,6 @@ return {
     }, {
         "folke/which-key.nvim",
         config = function()
-            vim.o.timeout = true
-            vim.o.timeoutlen = 300
             require("which-key").setup({
                 -- your configuration comes here
                 -- or leave it empty to use the default settings
