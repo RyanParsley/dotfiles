@@ -2,7 +2,7 @@ return {
     'Equilibris/nx.nvim',
     dependencies = {'nvim-telescope/telescope.nvim'},
     config = function()
-        require("nx").setup {
+        require('nx').setup {
             -- Base command to run all other nx commands, some other values may be:
             -- - `npm nx`
             -- - `yarn nx`

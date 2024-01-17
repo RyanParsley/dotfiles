@@ -3,7 +3,7 @@ return {
     config = function()
         vim.g.vimwiki_list = {
             {
-                name = "notes",
+                name = 'notes',
                 path = '~/Projects/notes',
                 syntax = 'markdown',
                 ext = '.md'

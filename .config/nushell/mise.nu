@@ -29,11 +29,11 @@ def --wrapped mise [command?: string, --help, ...rest: string] {
   } else if ($command == "activate") {
     $env.MISE_SHELL = "nu"
   } else if ($command in $commands) {
-    ^"/opt/homebrew/bin/mise" $command $rest
+    ^"/opt/homebrew/bin/mise" $command ...$rest
     | parse vars
     | update-env
   } else {
-    ^"/opt/homebrew/bin/mise" $command $rest
+    ^"/opt/homebrew/bin/mise" $command ...$rest
   }
 }
   
