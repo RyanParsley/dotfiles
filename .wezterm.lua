@@ -1,4 +1,3 @@
-/Users/ryan/.zshenv:9: command not found: rtx
 -- Pull in the wezterm API
 local wezterm = require 'wezterm'
 
