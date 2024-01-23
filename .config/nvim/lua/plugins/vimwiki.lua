@@ -1,9 +1,10 @@
 local note_dir = '~/Notes'
 local home = vim.fn.expand(note_dir)
+
 return {
     {
         'vimwiki/vimwiki',
-        config = function()
+        init = function()
             vim.g.vimwiki_list = {
                 {
                     name = 'notes',
@@ -13,7 +14,8 @@ return {
                 }
             }
         end
-    }, {
+    },
+    {
         "zk-org/zk-nvim",
         config = function()
             require("zk").setup({
@@ -35,10 +37,12 @@ return {
                 }
             })
         end
-    }, {
+    },
+    {
         'renerocksai/telekasten.nvim',
         dependencies = {
-            'nvim-telescope/telescope.nvim', 'renerocksai/calendar-vim'
+            'nvim-telescope/telescope.nvim',
+            'renerocksai/calendar-vim'
         },
         config = function()
             require('telekasten').setup({
@@ -73,5 +77,15 @@ return {
             -- Call insert link automatically when we start typing a link
             vim.keymap.set("i", "[[", "<cmd>Telekasten insert_link<CR>")
         end
-    }, 'tools-life/taskwiki'
+    },
+    {
+        "ribelo/taskwarrior.nvim",
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        },
+        -- or 
+        config = true
+    }
 }
