@@ -1,7 +1,18 @@
 local note_dir = '~/Notes'
 local home = vim.fn.expand(note_dir)
+local templates = vim.fn.expand(home) .. '/templates/telekasten'
 
 return {
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = {
+            "MarkdownPreviewToggle",
+            "MarkdownPreview",
+            "MarkdownPreviewStop"
+        },
+        ft = {"markdown"},
+        build = function() vim.fn["mkdp#util#install"]() end
+    },
     {
         'vimwiki/vimwiki',
         init = function()
@@ -49,12 +60,8 @@ return {
                 home = home,
                 dailies = home .. '/journal/' .. 'daily',
                 weeklies = home .. '/journal/' .. 'weekly',
-                templates = home .. '/' .. 'templates',
-                template_new_daily = home .. '/' ..
-                    'templates/daily-template.md',
-
-                template_new_weekly = home .. '/' ..
-                    'templates/weekly-template.md'
+                template_new_daily = templates .. 'daily-template.md',
+                template_new_weekly = templates .. 'weekly-template.md'
             })
 
             -- Launch panel if nothing is typed after <leader>z
