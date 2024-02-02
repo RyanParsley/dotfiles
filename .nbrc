@@ -14,3 +14,7 @@
 ###############################################################################
 
 export NB_DIR="${NB_DIR:-/Users/ryan/Notes}" # Set by `nb` • Thu Jan 18 12:07:52 EST 2024
+
+export EDITOR="nvim" # Set by `nb` • Wed Jan 31 22:03:20 EST 2024
+
+export NB_MARKDOWN_TOOL="mdcat"
