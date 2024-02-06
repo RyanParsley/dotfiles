@@ -18,11 +18,25 @@ return {
                 terminal_height = 20 -- # change the terminal display option height (if horizontal)
             },
             interpreter_options = {
+                Generic = {
+                    nushell = {
+                        supported_filetypes = {"nu"},
+                        extension = ".nu",
+
+                        interpreter = "nu",
+                        compiler = "",
+
+                        exe_name = "",
+                        boilerplate_pre = "",
+                        boilerplate_post = ""
+                    }
+                },
                 GFM_original = {
                     use_on_filetypes = {
                         'markdown.pandoc',
                         'markdown',
                         'vimwiki',
+                        'telekasten',
                         'markdown_fenced_languages',
                         'markdown_inline'
                     },

@@ -8,8 +8,17 @@ vim.cmd 'set shiftwidth=2'
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.markdown_fenced_languages = {
-    'scss', 'css', 'javascript', 'typescript', 'bash', 'lua', 'go', 'rust', 'c',
-    'cpp'
+    'scss',
+    'css',
+    'javascript',
+    'typescript',
+    'bash',
+    'lua',
+    'go',
+    'rust',
+    'c',
+    'cpp',
+    'nu'
 }
 
 -- Install package manager
@@ -18,8 +27,11 @@ vim.g.markdown_fenced_languages = {
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system {
-        'git', 'clone', '--filter=blob:none',
-        'https://github.com/folke/lazy.nvim.git', '--branch=stable', -- latest stable release
+        'git',
+        'clone',
+        '--filter=blob:none',
+        'https://github.com/folke/lazy.nvim.git',
+        '--branch=stable', -- latest stable release
         lazypath
     }
 end
