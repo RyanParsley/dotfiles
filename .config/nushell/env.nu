@@ -100,10 +100,8 @@ $env.NU_PLUGIN_DIRS = [
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
-$env.PATH = ($env.PATH | split row (char esep) | prepend '/opt/homebrew/bin')
-$env.PATH = ($env.PATH | split row (char esep) | append '/Users/ryan/.cargo/bin')
+$env.PATH = ($env.PATH | split row (char esep) | prepend '/Users/ryan/bin' | prepend '/opt/homebrew/bin' | append '/Users/ryan/.cargo/bin')
 $env.EDITOR = nvim
-$env.PATH = ($env.PATH | split row (char esep) | prepend '/Users/ryan/bin')
 
 mkdir ~/.cache/starship
 starship init nu | save -f ~/.cache/starship/init.nu

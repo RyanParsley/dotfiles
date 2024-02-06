@@ -760,6 +760,4 @@ alias nx = npx nx
 use ~/.cache/starship/init.nu
 source ~/.zoxide.nu
 
-source "/Users/ryan/Library/Application Support/nushell/mise.nu"
-source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
 source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
