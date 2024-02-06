@@ -116,3 +116,11 @@ if [ -f '/Users/ryan/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/ryan/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+[ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
+
+[ -s ~/.luaver/completions/luaver.zsh ] && . ~/.luaver/completions/luaver.zsh
+
+export LDFLAGS="-L/opt/homebrew/opt/libffi/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/libffi/include"
+export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
