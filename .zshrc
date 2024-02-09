@@ -110,6 +110,7 @@ source ~/.bin/smug.zsh
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/bin:$PATH"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/ryan/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/Downloads/google-cloud-sdk/path.zsh.inc'; fi

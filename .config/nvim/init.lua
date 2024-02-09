@@ -7,19 +7,13 @@ vim.cmd 'set shiftwidth=2'
 -- NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+
+-- TODO: I'd like nu in this list, but as of 2024-02-07 it poses issues
 vim.g.markdown_fenced_languages = {
-    'scss',
-    'css',
-    'javascript',
-    'typescript',
-    'bash',
-    'lua',
-    'go',
-    'rust',
-    'c',
-    'cpp',
-    'nu'
+    'scss', 'css', 'javascript', 'typescript', 'bash', 'lua', 'go', 'rust', 'c',
+    'cpp'
 }
+vim.opt.conceallevel = 1
 
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
@@ -27,11 +21,8 @@ vim.g.markdown_fenced_languages = {
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system {
-        'git',
-        'clone',
-        '--filter=blob:none',
-        'https://github.com/folke/lazy.nvim.git',
-        '--branch=stable', -- latest stable release
+        'git', 'clone', '--filter=blob:none',
+        'https://github.com/folke/lazy.nvim.git', '--branch=stable', -- latest stable release
         lazypath
     }
 end
