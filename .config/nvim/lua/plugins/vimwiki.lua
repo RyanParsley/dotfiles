@@ -1,4 +1,4 @@
-local note_dir = '~/Notes'
+local note_dir = '~/notes'
 local home = vim.fn.expand(note_dir)
 local templates = vim.fn.expand(home) .. '/templates/telekasten'
 
@@ -10,6 +10,18 @@ return {
         },
         ft = {"markdown"},
         build = function() vim.fn["mkdp#util#install"]() end
+    }, {
+        'vimwiki/vimwiki',
+        init = function()
+            vim.g.vimwiki_list = {
+                {
+                    name = 'notes',
+                    path = note_dir,
+                    syntax = 'markdown',
+                    ext = '.md'
+                }
+            }
+        end
     }, {
         "zk-org/zk-nvim",
         config = function()

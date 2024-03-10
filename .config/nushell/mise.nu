@@ -33,7 +33,7 @@ def --wrapped mise [command?: string, --help, ...rest: string] {
     | parse vars
     | update-env
   } else {
-    ^"/opt/homebrew/bin/mise" $command ...$rest
+    ^"/usr/local/bin/mise" $command ...$rest
   }
 }
   
@@ -48,7 +48,7 @@ def --env "update-env" [] {
 }
   
 def --env mise_hook [] {
-  ^"/opt/homebrew/bin/mise" hook-env -s nu
+  ^"/usr/local/bin/mise" hook-env -s nu
     | parse vars
     | update-env
 }

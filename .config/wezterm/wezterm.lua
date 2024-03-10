@@ -15,7 +15,7 @@ if wezterm.config_builder then config = wezterm.config_builder() end
 config.color_scheme = 'nord'
 config.font = wezterm.font 'FiraCode Nerd Font'
 config.font_size = 16
-config.default_prog = {'/opt/homebrew/bin/nu', '-l'}
+config.default_prog = {'/usr/local/bin/nu', '-l'}
 
 config.window_frame = {
     -- The font used in the tab bar.
