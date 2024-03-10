@@ -1,21 +1,20 @@
 -- Highlight, edit, and navigate code
 return {
-    'nushell/tree-sitter-nu', {
+    'nushell/tree-sitter-nu', 'MDeiml/tree-sitter-markdown',
+    'nvim-treesitter/nvim-treesitter-refactor',
+    -- fork of https://github.com/nvim-treesitter/nvim-treesitter-angular with bug patch
+    {
         'nvim-treesitter/nvim-treesitter',
-        dependencies = {
-            'nvim-treesitter/nvim-treesitter-textobjects',
-            'nushell/tree-sitter-nu'
-        },
+
+        dependencies = {'nvim-treesitter/nvim-treesitter-textobjects'},
+        build = ':TSUpdate',
         config = function()
-            pcall(require('nvim-treesitter.install').update {with_sync = true})
-            -- [[ Configure Treesitter ]]
-            -- See `:help nvim-treesitter`
             require('nvim-treesitter.configs').setup {
                 -- Add languages to be installed here that you want installed for treesitter
                 ensure_installed = {
-                    'angular', 'astro', 'c', 'cpp', 'css', 'go', 'html', 'lua',
-                    'markdown', 'markdown_inline', 'nu', 'python', 'rust',
-                    'scss', 'toml', 'tsx', 'typescript', 'vimdoc', 'vim'
+                    'angular', 'astro', 'bash', 'c', 'cpp', 'css', 'go', 'html',
+                    'lua', 'markdown', 'markdown_inline', 'nu', 'python',
+                    'rust', 'scss', 'toml', 'tsx', 'typescript', 'vimdoc', 'vim'
                 },
 
                 -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
@@ -100,8 +99,5 @@ return {
                 }
             }
         end
-    }, 'MDeiml/tree-sitter-markdown',
-    'nvim-treesitter/nvim-treesitter-refactor',
-    -- fork of https://github.com/nvim-treesitter/nvim-treesitter-angular with bug patch
-    {'elgiano/nvim-treesitter-angular', branch = 'topic/jsx-fix'}
+    }
 }

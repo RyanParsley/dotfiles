@@ -1,5 +1,5 @@
 return {
-    {
+    'simrat39/inlay-hints.nvim', {
         'williamboman/mason.nvim',
         lazy = false,
         config = function() require('mason').setup() end
@@ -19,8 +19,10 @@ return {
             {'j-hui/fidget.nvim', tag = 'legacy', opts = {}},
 
             -- Additional lua configuration, makes nvim stuff amazing!
-            'folke/neodev.nvim'
+            'folke/neodev.nvim', 'simrat39/inlay-hints.nvim',
+            'lvimuser/lsp-inlayhints.nvim'
         },
+        opts = {inlay_hints = {enabled = true}},
         config = function()
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
             require('neodev').setup()
@@ -28,7 +30,35 @@ return {
             local lspconfig = require('lspconfig')
             lspconfig.tsserver.setup({
                 capabilities = capabilities,
-                settings = {typescript = {format = {enable = true}}}
+                on_attach = function(c, b)
+                    require("lsp-inlayhints").on_attach(c, b)
+                    require("inlay-hints").on_attach(c, b)
+                end,
+                settings = {
+                    javascript = {
+                        inlayHints = {
+                            includeInlayEnumMemberValueHints = true,
+                            includeInlayFunctionLikeReturnTypeHints = true,
+                            includeInlayFunctionParameterTypeHints = true,
+                            includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+                            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayVariableTypeHints = true
+                        }
+                    },
+                    typescript = {
+                        {format = {enable = true}},
+                        inlayHints = {
+                            includeInlayEnumMemberValueHints = true,
+                            includeInlayFunctionLikeReturnTypeHints = true,
+                            includeInlayFunctionParameterTypeHints = true,
+                            includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+                            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayVariableTypeHints = true
+                        }
+                    }
+                }
             })
             lspconfig.html.setup({capabilities = capabilities})
             lspconfig.lua_ls.setup({capabilities = capabilities})

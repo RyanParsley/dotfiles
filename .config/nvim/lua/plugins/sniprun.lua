@@ -33,12 +33,8 @@ return {
                 },
                 GFM_original = {
                     use_on_filetypes = {
-                        'markdown.pandoc',
-                        'markdown',
-                        'vimwiki',
-                        'telekasten',
-                        'markdown_fenced_languages',
-                        'markdown_inline'
+                        'markdown.pandoc', 'markdown', 'vimwiki', 'telekasten',
+                        'markdown_fenced_languages', 'markdown_inline'
                     },
                     default_filetype = 'typescript' -- default filetype (not github flavored markdown name)
                 }

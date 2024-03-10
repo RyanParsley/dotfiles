@@ -23,5 +23,12 @@ return {
         -- See `:help indent_blankline.txt`
         main = 'ibl',
         opts = {}
-    }, {'willothy/wezterm.nvim', config = true}
+    }, {'willothy/wezterm.nvim', config = true},
+    -- Highlight todo, notes, etc in comments
+    {
+        'folke/todo-comments.nvim',
+        event = 'VimEnter',
+        dependencies = {'nvim-lua/plenary.nvim'},
+        opts = {signs = false}
+    }
 }
