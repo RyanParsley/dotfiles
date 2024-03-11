@@ -18,7 +18,8 @@ return {
                         file_ignore_patterns = {'.git/', '.cache'},
                         hidden = true
                     }
-                }
+                },
+                previewers = {vimgrep = {new = 'bat'}}
             }
 
             -- Enable telescope fzf native, if installed
@@ -35,7 +36,7 @@ return {
                 require('telescope.builtin').current_buffer_fuzzy_find(require(
                                                                            'telescope.themes').get_dropdown {
                     winblend = 10,
-                    previewer = false
+                    previewer = true
                 })
             end, {desc = '[/] Fuzzily search in current buffer'})
 
