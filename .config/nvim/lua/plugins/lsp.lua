@@ -3,16 +3,19 @@ return {
         'williamboman/mason.nvim',
         lazy = false,
         config = function() require('mason').setup() end
-    }, {
+    },
+    {
         'williamboman/mason-lspconfig.nvim',
         lazy = false,
         opts = {auto_install = true}
-    }, {
+    },
+    {
         'neovim/nvim-lspconfig',
         lazy = false,
         dependencies = {
             -- Automatically install LSPs to stdpath for neovim
-            'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim',
+            'williamboman/mason.nvim',
+            'williamboman/mason-lspconfig.nvim',
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -24,6 +27,10 @@ return {
         },
         opts = {inlay_hints = {enabled = true}},
         config = function()
+
+            require'lspconfig'.angularls.setup {}
+            require'lspconfig'.eslint.setup {}
+
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
             require('neodev').setup()
 
@@ -60,6 +67,7 @@ return {
                     }
                 }
             })
+            lspconfig.nushell.setup({capabilities = capabilities})
             lspconfig.html.setup({capabilities = capabilities})
             lspconfig.lua_ls.setup({capabilities = capabilities})
             lspconfig.stylelint_lsp.setup({
