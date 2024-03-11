@@ -1,0 +1,54 @@
+layout {
+    cwd "~/Projects/swapi-nx"
+    default_tab_template {
+        pane split_direction="vertical" size=1 {
+          pane {
+            size 30
+            borderless true
+            name "zentime"
+            command "zentime"
+          }
+          pane borderless=true {
+              plugin location="zellij:tab-bar"
+          }
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+    tab name="Edit" split_direction="vertical" focus=true {
+        pane command="nvim" focus=true
+        pane split_direction="horizontal" {
+            pane command="npm" {
+                args "run" "test" "--" "--watch"
+            }
+            pane
+        }
+    }
+    tab name="Client" {
+        pane command="npx" {
+            args "nx" "run" "swapi-web:serve"
+        }
+    }
+    tab name="Server" {
+        pane command="npm" {
+            args "run" "run:server"
+        }
+    }
+    tab name="Cypress" {
+        pane command="npm" {
+            args "run" "cypress-open"
+        }
+    }
+    tab name="Storybook" {
+        pane command="npm" {
+            args "run" "storybook"
+        }
+    }
+    tab name="Documentation" {
+        pane command="npm" {
+            args "run" "docs:view"
+        }
+    }
+}
