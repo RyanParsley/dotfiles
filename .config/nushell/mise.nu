@@ -1,3 +1,5 @@
+let bin_prefix = (brew --prefix)
+
 export-env {
   $env.MISE_SHELL = "nu"
   
@@ -25,15 +27,15 @@ def --wrapped mise [command?: string, --help, ...rest: string] {
   let commands = ["shell", "deactivate"]
   
   if ($command == null) {
-    ^"/opt/homebrew/bin/mise"
+    ^$"($bin_prefix)/bin/mise"
   } else if ($command == "activate") {
     $env.MISE_SHELL = "nu"
   } else if ($command in $commands) {
-    ^"/opt/homebrew/bin/mise" $command ...$rest
+    ^$"($bin_prefix)/bin/mise" $command ...$rest
     | parse vars
     | update-env
   } else {
-    ^"/usr/local/bin/mise" $command ...$rest
+    ^$"($bin_prefix)/bin/mise" $command ...$rest
   }
 }
   
@@ -48,7 +50,7 @@ def --env "update-env" [] {
 }
   
 def --env mise_hook [] {
-  ^"/usr/local/bin/mise" hook-env -s nu
+  ^$"($bin_prefix)/bin/mise" hook-env -s nu
     | parse vars
     | update-env
 }
