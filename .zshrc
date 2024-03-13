@@ -111,6 +111,7 @@ source ~/.bin/smug.zsh
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
+export PATH="/Users/ryan/.local/share/bob/nvim-bin:$PATH"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/ryan/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/Downloads/google-cloud-sdk/path.zsh.inc'; fi

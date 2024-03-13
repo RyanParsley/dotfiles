@@ -101,6 +101,7 @@ $env.NU_PLUGIN_DIRS = [
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
 $env.PATH = ($env.PATH | split row (char esep) |
+    prepend '/Users/Ryan/.local/share/bob/nvim-bin' |
     prepend '/Users/Ryan/.local/bin' |
     prepend '/usr/local/bin' |
     prepend '/Users/ryan/bin' |
