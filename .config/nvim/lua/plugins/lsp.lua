@@ -1,21 +1,19 @@
 return {
-    'simrat39/inlay-hints.nvim', {
+    'simrat39/inlay-hints.nvim', 'lvimuser/lsp-inlayhints.nvim',
+    'joeveiga/ng.nvim', {
         'williamboman/mason.nvim',
         lazy = false,
         config = function() require('mason').setup() end
-    },
-    {
+    }, {
         'williamboman/mason-lspconfig.nvim',
         lazy = false,
         opts = {auto_install = true}
-    },
-    {
+    }, {
         'neovim/nvim-lspconfig',
         lazy = false,
         dependencies = {
             -- Automatically install LSPs to stdpath for neovim
-            'williamboman/mason.nvim',
-            'williamboman/mason-lspconfig.nvim',
+            'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim',
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
@@ -27,19 +25,21 @@ return {
         },
         opts = {inlay_hints = {enabled = true}},
         config = function()
-
-            require'lspconfig'.angularls.setup {}
-            require'lspconfig'.eslint.setup {}
+            require('lspconfig').eslint.setup {}
 
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
             require('neodev').setup()
 
-            local lspconfig = require('lspconfig')
-            lspconfig.tsserver.setup({
+            local lspconfig = require 'lspconfig'
+            lspconfig.angularls.setup {}
+            lspconfig.tsserver.setup {
                 capabilities = capabilities,
-                on_attach = function(c, b)
-                    require("lsp-inlayhints").on_attach(c, b)
-                    require("inlay-hints").on_attach(c, b)
+                on_attach = function(client, bufnr)
+                    require('lsp-inlayhints').on_attach(client, bufnr)
+                    require('inlay-hints').on_attach(client, bufnr)
+                    if client.server_capabilities.inlayHintProvider then
+                        vim.lsp.inlay_hint.enable(bufnr, true)
+                    end
                 end,
                 settings = {
                     javascript = {
@@ -47,7 +47,7 @@ return {
                             includeInlayEnumMemberValueHints = true,
                             includeInlayFunctionLikeReturnTypeHints = true,
                             includeInlayFunctionParameterTypeHints = true,
-                            includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+                            includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
                             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
                             includeInlayPropertyDeclarationTypeHints = true,
                             includeInlayVariableTypeHints = true
@@ -59,18 +59,18 @@ return {
                             includeInlayEnumMemberValueHints = true,
                             includeInlayFunctionLikeReturnTypeHints = true,
                             includeInlayFunctionParameterTypeHints = true,
-                            includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+                            includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
                             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
                             includeInlayPropertyDeclarationTypeHints = true,
                             includeInlayVariableTypeHints = true
                         }
                     }
                 }
-            })
-            lspconfig.nushell.setup({capabilities = capabilities})
-            lspconfig.html.setup({capabilities = capabilities})
-            lspconfig.lua_ls.setup({capabilities = capabilities})
-            lspconfig.stylelint_lsp.setup({
+            }
+            lspconfig.nushell.setup {capabilities = capabilities}
+            lspconfig.html.setup {capabilities = capabilities}
+            lspconfig.lua_ls.setup {capabilities = capabilities}
+            lspconfig.stylelint_lsp.setup {
                 capabilities = capabilities,
                 settings = {
                     stylelintplus = {
@@ -78,7 +78,7 @@ return {
                         autoFixOnFormat = true
                     }
                 }
-            })
+            }
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
             vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, {})
             vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, {})
