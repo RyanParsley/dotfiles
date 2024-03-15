@@ -46,6 +46,13 @@ def create_right_prompt [] {
     ([$last_exit_code, (char space), $time_segment] | str join)
 }
 
+# https://www.nushell.sh/cookbook/external_completers.html#fish-completer
+let fish_completer = {|spans|
+    fish --command $'complete "--do-complete=($spans | str join " ")"'
+    | $"value(char tab)description(char newline)" + $in
+    | from tsv --flexible --no-infer
+}
+
 # Use nushell functions to define your right and left prompt
 $env.PROMPT_COMMAND = {|| create_left_prompt }
 # FIXME: This default is not implemented in rust code as of 2023-09-08.
@@ -87,14 +94,12 @@ $env.ENV_CONVERSIONS = {
 
 # Directories to search for scripts when calling source or use
 $env.NU_LIB_DIRS = [
-    # FIXME: This default is not implemented in rust code as of 2023-09-06.
-    ($nu.default-config-dir | path join 'scripts') # add <nushell-config-dir>/scripts
+    ($nu.home-path | path join '.config/nushell/scripts') # add <nushell-config-dir>/scripts
 ]
 
 # Directories to search for plugin binaries when calling register
 $env.NU_PLUGIN_DIRS = [
-    # FIXME: This default is not implemented in rust code as of 2023-09-06.
-    ($nu.default-config-dir | path join 'plugins') # add <nushell-config-dir>/plugins
+    ($nu.home-path | path join '.config/nushell/plugins') # add <nushell-config-dir>/plugins
 ]
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
@@ -103,6 +108,8 @@ $env.NU_PLUGIN_DIRS = [
 $env.PATH = ($env.PATH | split row (char esep) |
     prepend '/Users/Ryan/.local/share/bob/nvim-bin' |
     prepend '/Users/Ryan/.local/bin' |
+    prepend '/Users/ryan/bin' |
+    prepend '/Users/ryan/bin/google-cloud-sdk/bin' |
     prepend '/usr/local/bin' |
     prepend '/Users/ryan/bin' |
     append '/opt/homebrew/bin' |
@@ -112,4 +119,9 @@ $env.EDITOR = nvim
 
 mkdir ~/.cache/starship
 starship init nu | save -f ~/.cache/starship/init.nu
+
+# https://carapace-sh.github.io/carapace-bin/
+$env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
+mkdir ~/.cache/carapace
+carapace _carapace nushell | save --force ~/.cache/carapace/init.nu
 

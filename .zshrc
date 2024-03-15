@@ -113,12 +113,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
 export PATH="/Users/ryan/.local/share/bob/nvim-bin:$PATH"
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/ryan/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/Downloads/google-cloud-sdk/path.zsh.inc'; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/ryan/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
-
 [ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
 
 [ -s ~/.luaver/completions/luaver.zsh ] && . ~/.luaver/completions/luaver.zsh
@@ -126,3 +120,9 @@ if [ -f '/Users/ryan/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/
 export LDFLAGS="-L/opt/homebrew/opt/libffi/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/libffi/include"
 export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/ryan/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/bin/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/ryan/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/bin/google-cloud-sdk/completion.zsh.inc'; fi

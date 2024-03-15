@@ -228,7 +228,7 @@ $env.config = {
     buffer_editor: "" # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
     use_ansi_coloring: true
     bracketed_paste: true # enable bracketed paste, currently useless on windows
-    edit_mode: emacs # emacs, vi
+    edit_mode: vi # emacs, vi
     shell_integration: false # enables terminal shell integration. Off by default, as some terminals have issues with this.
     render_right_prompt_on_last_line: false # true or false to enable or disable right prompt to be rendered on last line of the prompt.
     use_kitty_protocol: false # enables keyboard enhancement protocol implemented by kitty console, only if your terminal support this
@@ -756,8 +756,34 @@ $env.config = {
     ]
 }
 
+# https://www.nushell.sh/book/configuration.html#macos-keeping-usr-bin-open-as-open
+def nuopen [arg, --raw (-r)] { if $raw { open -r $arg } else { open $arg } }
+alias open = ^open
+
 alias nx = npx nx
 use ~/.cache/starship/init.nu
 source ~/.zoxide.nu
 
+# enable custom completions
+source /Users/ryan/.config/nushell/completions/ack-completions.nu
+source /Users/ryan/.config/nushell/completions/bat-completions.nu
+source /Users/ryan/.config/nushell/completions/cargo-completions.nu
+source /Users/ryan/.config/nushell/completions/cargo-make-completions.nu
+source /Users/ryan/.config/nushell/completions/curl-completions.nu
+source /Users/ryan/.config/nushell/completions/gh-completions.nu
+source /Users/ryan/.config/nushell/completions/glow-completions.nu
+source /Users/ryan/.config/nushell/completions/godoc-completions.nu
+source /Users/ryan/.config/nushell/completions/git-completions.nu
+source /Users/ryan/.config/nushell/completions/just-completions.nu
+source /Users/ryan/.config/nushell/completions/make-completions.nu
+source /Users/ryan/.config/nushell/completions/nx-completions.nu
+source /Users/ryan/.config/nushell/completions/man-completions.nu
+source /Users/ryan/.config/nushell/completions/npm-completions.nu
+source /Users/ryan/.config/nushell/completions/rg-completions.nu
+source /Users/ryan/.config/nushell/completions/rustup-completions.nu
+source /Users/ryan/.config/nushell/completions/zellij-completions.nu
+
 source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
+
+# https://carapace-sh.github.io/carapace-bin/setup.html
+source ~/.cache/carapace/init.nu

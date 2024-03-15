@@ -48,7 +48,7 @@ filename = ""
 
 [group.daily]
 paths = ["journal/daily"]
-filename = "foo/{now}"
+filename = "{{format-date now '%m-%B/%Y-%m-%d}}"
 template = "telekasten/daily.md"
 
 # MARKDOWN SETTINGS
