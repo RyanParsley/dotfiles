@@ -111,6 +111,7 @@ source ~/.bin/smug.zsh
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
+export PATH="/Users/ryan/local/bin:$PATH"
 export PATH="/Users/ryan/.local/share/bob/nvim-bin:$PATH"
 
 [ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
