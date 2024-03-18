@@ -1,6 +1,6 @@
 # NOTEBOOK SETTINGS
 [notebook]
-dir = "~/Notes"
+dir = "~/notes"
 
 # NOTE SETTINGS
 [note]
@@ -48,8 +48,10 @@ filename = ""
 
 [group.daily]
 paths = ["journal/daily"]
-filename = "{{format-date now '%m-%B/%Y-%m-%d}}"
-template = "telekasten/daily.md"
+
+[group.daily.note]
+filename = "{{format-date now 'journal/daily/%Y/%m-%B/%Y-%m-%d'}}"
+template = "daily.md"
 
 # MARKDOWN SETTINGS
 [format.markdown]
@@ -80,6 +82,7 @@ recents = "--sort created- --created-after 'last two weeks'"
 
 # COMMAND ALIASES
 [alias]
+daily = "zk new --group daily"
 
 # Edit the last modified note.
 edlast = "zk edit --limit 1 --sort modified- $@"
