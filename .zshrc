@@ -127,3 +127,8 @@ if [ -f '/Users/ryan/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/b
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/ryan/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/bin/google-cloud-sdk/completion.zsh.inc'; fi
+eval "$(/usr/local/bin/mise activate zsh)"
+export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3
+export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$(brew --prefix qt@5)
+export PATH=$PATH:$(brew --prefix qt@5)/bin
+fpath=(${HOME}/.zsh_completion.d $fpath)
