@@ -787,3 +787,6 @@ source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
 
 # https://carapace-sh.github.io/carapace-bin/setup.html
 source ~/.cache/carapace/init.nu
+
+source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
+source ~/.config/nushell/settle.nu
