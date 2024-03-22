@@ -105,29 +105,30 @@ source ~/.bin/smug.zsh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # bun completions
-[ -s "/Users/ryan/.bun/_bun" ] && source "/Users/ryan/.bun/_bun"
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 export PATH="$HOME/bin:$PATH"
-export PATH="/Users/ryan/local/bin:$PATH"
-export PATH="/Users/ryan/.local/share/bob/nvim-bin:$PATH"
+export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/local/bin:$PATH"
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 
 [ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
 
 [ -s ~/.luaver/completions/luaver.zsh ] && . ~/.luaver/completions/luaver.zsh
 
-export LDFLAGS="-L/opt/homebrew/opt/libffi/lib"
-export CPPFLAGS="-I/opt/homebrew/opt/libffi/include"
-export PKG_CONFIG_PATH="/opt/homebrew/opt/libffi/lib/pkgconfig"
+export LDFLAGS="-L$(brew --prefix)/opt/libffi/lib"
+export CPPFLAGS="-I$(brew --prefix)/opt/libffi/include"
+export PKG_CONFIG_PATH="$(brew --prefix)/opt/libffi/lib/pkgconfig"
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/ryan/bin/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/bin/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f "$HOME/bin/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/bin/google-cloud-sdk/path.zsh.inc"; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/ryan/bin/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/bin/google-cloud-sdk/completion.zsh.inc'; fi
-eval "$(/usr/local/bin/mise activate zsh)"
+if [ -f "$HOME/bin/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/bin/google-cloud-sdk/completion.zsh.inc"; fi
+eval "$($(brew --prefix)/bin/mise activate zsh)"
 export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3
 export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$(brew --prefix qt@5)
 export PATH=$PATH:$(brew --prefix qt@5)/bin
