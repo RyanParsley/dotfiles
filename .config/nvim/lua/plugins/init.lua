@@ -2,7 +2,7 @@ return {
     'tpope/vim-fugitive', 'tpope/vim-rhubarb', 'evanleck/vim-svelte',
     'aserowy/tmux.nvim', 'tpope/vim-sleuth', 'sbdchd/neoformat',
     'mfussenegger/nvim-lint', 'nvim-tree/nvim-web-devicons', 'Canop/nvim-bacon',
-    'mattn/webapi-vim', {
+    'nvim-neotest/nvim-nio', 'mattn/webapi-vim', {
         'numToStr/Comment.nvim',
         opts = {
             -- add any options here
