@@ -1,8 +1,8 @@
 # User configuration
 . "$HOME/.cargo/env"
 
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-export GOPATH=/Users/$USER/go
+export PATH="$(brew --prefix)/opt/openjdk/bin:$PATH"
+export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
-export PATH=$PATH:/opt/homebrew/bin/
+export PATH=$PATH:$(brew --prefix)/bin/
 

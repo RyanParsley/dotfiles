@@ -1,6 +1,6 @@
 #!/usr/bin/env nu
 
-let note_dir = "/Users/ryan/notes"
+let note_dir = $"($env.HOME)/Notes"
 let daily_dir = "journal/daily"
 
 let current_year = (date now | format date "%Y")

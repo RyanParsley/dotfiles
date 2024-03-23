@@ -31,7 +31,20 @@ return {
             require('neodev').setup()
 
             local lspconfig = require 'lspconfig'
-            lspconfig.angularls.setup {}
+            lspconfig.markdown_oxide.setup {}
+            lspconfig.marksman.setup {capabilities = capabilities}
+            lspconfig.angularls.setup {
+                on_attach = function(_, bufnr)
+                    -- refresh codelens on TextChanged and InsertLeave as well
+                    vim.api.nvim_create_autocmd({
+                        'TextChanged', 'InsertLeave', 'CursorHold', 'LspAttach'
+                    }, {buffer = bufnr, callback = vim.lsp.codelens.refresh})
+
+                    -- trigger codelens refresh
+                    vim.api
+                        .nvim_exec_autocmds('User', {pattern = 'LspAttached'})
+                end
+            }
             lspconfig.tsserver.setup {
                 capabilities = capabilities,
                 on_attach = function(client, bufnr)
@@ -94,5 +107,11 @@ return {
             vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist,
                            {desc = 'Open diagnostics list'})
         end
+    }, {
+        'nvimdev/lspsaga.nvim',
+        config = function() require('lspsaga').setup {} end,
+        dependencies = {
+            'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons'
+        }
     }
 }

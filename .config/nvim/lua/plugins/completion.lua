@@ -79,7 +79,16 @@ return {
                     end
                 end, {'i', 's'})
             },
-            sources = {{name = 'nvim_lsp'}, {name = 'luasnip'}, {name = 'path'}}
+            sources = {
+                {name = 'luasnip'}, {name = 'path'}, {
+                    name = 'nvim_lsp',
+                    option = {
+                        markdown_oxide = {
+                            keyword_pattern = [[\(\k\| \|\/\|#\)\+]]
+                        }
+                    }
+                }
+            }
         }
     end
 }

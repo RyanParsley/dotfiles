@@ -3,7 +3,7 @@ return {
     dependencies = {
         'nvim-lua/plenary.nvim', 'nvim-treesitter/nvim-treesitter',
         'antoinemadec/FixCursorHold.nvim', 'haydenmeade/neotest-jest',
-        'rouge8/neotest-rust'
+        'rouge8/neotest-rust', 'nvim-neotest/nvim-nio'
     },
     config = function()
         require('neotest').setup {

@@ -1,6 +1,6 @@
 # NOTEBOOK SETTINGS
 [notebook]
-dir = "~/notes"
+dir = "~/Notes"
 
 # NOTE SETTINGS
 [note]
