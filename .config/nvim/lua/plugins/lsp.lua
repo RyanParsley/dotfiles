@@ -25,12 +25,11 @@ return {
         },
         opts = {inlay_hints = {enabled = true}},
         config = function()
-            require('lspconfig').eslint.setup {}
-
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
             require('neodev').setup()
 
             local lspconfig = require 'lspconfig'
+            lspconfig.eslint.setup {capabilities = capabilities}
             lspconfig.markdown_oxide.setup {}
             lspconfig.marksman.setup {capabilities = capabilities}
             lspconfig.angularls.setup {
@@ -55,7 +54,9 @@ return {
                     end
                 end,
                 settings = {
+                    implicitProjectConfiguration = {checkJs = true},
                     javascript = {
+                        {format = {enable = true}},
                         inlayHints = {
                             includeInlayEnumMemberValueHints = true,
                             includeInlayFunctionLikeReturnTypeHints = true,
