@@ -11,12 +11,13 @@ return {
             --
             -- You can use a sub-list to tell conform to run *until* a formatter
             -- is found.
-            javascript = {{'prettierd', 'prettier'}}
+            javascript = {{'prettierd', 'prettier'}},
+            markdown = {'markdownlint'}
         }
     },
     {
         'mfussenegger/nvim-lint',
-        optional = true,
-        opts = {linters_by_ft = {markdown = {'markdownlint'}}}
+        optional = true
+        -- opts = {linters_by_ft = {markdown = {'markdownlint'}}}
     }
 }
