@@ -53,6 +53,13 @@ paths = ["journal/daily"]
 filename = "{{format-date now 'journal/daily/%Y/%m-%B/%Y-%m-%d'}}"
 template = "daily.md"
 
+[group.meeting]
+paths = ["Notes/meetings"]
+
+[group.meeting.note]
+filename = "Notes/meetings/{{format-date now '%Y-%m-%d'}}"
+template = "meeting.md"
+
 # MARKDOWN SETTINGS
 [format.markdown]
 # Enable support for #hashtags
@@ -83,6 +90,8 @@ recents = "--sort created- --created-after 'last two weeks'"
 # COMMAND ALIASES
 [alias]
 daily = "zk new --group daily"
+meeting = "zk new --group meeting"
+daily-work = "zk new --group daily --template daily-work.md"
 
 # Edit the last modified note.
 edlast = "zk edit --limit 1 --sort modified- $@"
