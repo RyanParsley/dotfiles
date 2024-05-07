@@ -6,54 +6,32 @@ return {
     {
         'iamcco/markdown-preview.nvim',
         cmd = {
-            'MarkdownPreviewToggle', 'MarkdownPreview', 'MarkdownPreviewStop'
+            'MarkdownPreviewToggle',
+            'MarkdownPreview',
+            'MarkdownPreviewStop'
         },
-        ft = {'markdown'},
-        build = function() vim.fn['mkdp#util#install']() end
-    }, {
-        'vimwiki/vimwiki',
-        init = function()
-            vim.g.vimwiki_list = {
-                {
-                    name = 'notes',
-                    path = note_dir,
-                    syntax = 'markdown',
-                    ext = '.md'
-                }
+        build = function() vim.fn['mkdp#util#install']() end,
+        keys = {
+            {
+                '<leader>cp',
+                ft = 'markdown',
+                '<cmd>MarkdownPreviewToggle<cr>',
+                desc = 'Markdown Preview'
             }
-        end
-    }, {
-        'zk-org/zk-nvim',
-        config = function()
-            require('zk').setup {
-                -- can be "telescope", "fzf", "fzf_lua" or "select" (`vim.ui.select`)
-                -- it's recommended to use "telescope", "fzf" or "fzf_lua"
-                picker = 'telescope',
-
-                lsp = {
-                    -- `config` is passed to `vim.lsp.start_client(config)`
-                    config = {
-                        cmd = {'zk', 'lsp'},
-                        name = 'zk'
-                        -- on_attach = ...
-                        -- etc, see `:h vim.lsp.start_client()`
-                    },
-
-                    -- automatically attach buffers in a zk notebook that match the given filetypes
-                    auto_attach = {enabled = true, filetypes = {'markdown'}}
-                }
-            }
-        end
-    }, {
+        },
+        config = function() vim.cmd [[do FileType]] end
+    },
+    {
         'renerocksai/telekasten.nvim',
         dependencies = {
-            'nvim-telescope/telescope.nvim', 'renerocksai/calendar-vim'
+            'nvim-telescope/telescope.nvim',
+            'renerocksai/calendar-vim'
         },
         config = function()
             require('telekasten').setup {
-                home = home,
-                dailies = home .. '/journal/' .. 'daily',
-                weeklies = home .. '/journal/' .. 'weekly',
+                home = vim.fn.expand '~/Notes',
+                dailies = home .. '/Journal/' .. 'daily',
+                weeklies = home .. '/Journal/' .. 'weekly',
                 template_new_daily = templates .. 'daily-template.md',
                 template_new_weekly = templates .. 'weekly-template.md'
             }
@@ -78,7 +56,37 @@ return {
             -- Call insert link automatically when we start typing a link
             vim.keymap.set('i', '[[', '<cmd>Telekasten insert_link<CR>')
         end
-    }, {
+    },
+    {
+        'lukas-reineke/headlines.nvim',
+        dependencies = 'nvim-treesitter/nvim-treesitter',
+        opts = function()
+            local opts = {}
+            for _, ft in ipairs {'markdown', 'norg', 'rmd', 'org'} do
+                opts[ft] = {
+                    headline_highlights = {},
+                    -- disable bullets for now. See https://github.com/lukas-reineke/headlines.nvim/issues/66
+                    bullets = {}
+                }
+                for i = 1, 6 do
+                    local hl = 'Headline' .. i
+                    vim.api.nvim_set_hl(0, hl,
+                                        {link = 'Headline', default = true})
+                    table.insert(opts[ft].headline_highlights, hl)
+                end
+            end
+            return opts
+        end,
+        ft = {'markdown', 'norg', 'rmd', 'org'},
+        config = function(_, opts)
+            -- PERF: schedule to prevent headlines slowing down opening a file
+            vim.schedule(function()
+                require('headlines').setup(opts)
+                require('headlines').refresh()
+            end)
+        end
+    },
+    {
         'ribelo/taskwarrior.nvim',
         opts = {
             -- your configuration comes here
