@@ -1,5 +1,6 @@
 return {
-    'nvim-telescope/telescope-ui-select.nvim', {
+    'nvim-telescope/telescope-ui-select.nvim',
+    {
         'nvim-telescope/telescope.nvim',
         version = '*',
         dependencies = {'nvim-lua/plenary.nvim'},
@@ -15,7 +16,12 @@ return {
                 },
                 pickers = {
                     find_files = {
-                        file_ignore_patterns = {'.git/', '.cache'},
+                        file_ignore_patterns = {
+                            '.git/',
+                            '.cache',
+                            '.obsidian',
+                            'Archive'
+                        },
                         hidden = true
                     }
                 },
@@ -55,6 +61,16 @@ return {
             vim.keymap.set('n', '<leader>sd',
                            require('telescope.builtin').diagnostics,
                            {desc = '[S]earch [D]iagnostics'})
+            -- Shortcut for searching your Neovim configuration files
+            vim.keymap.set('n', '<leader>sn', function()
+                require('telescope.builtin').find_files {cwd = '~/Notes/'}
+            end, {desc = '[S]earch [N]otes'})
+            -- Shortcut for searching your Neovim configuration files
+            vim.keymap.set('n', '<leader>sv', function()
+                require('telescope.builtin').find_files {
+                    cwd = vim.fn.stdpath 'config'
+                }
+            end, {desc = '[S]earch neo[V]im files'})
         end
     }, -- Fuzzy Finder (files, lsp, etc)
     -- Fuzzy Finder Algorithm which requires local dependencies to be built.
