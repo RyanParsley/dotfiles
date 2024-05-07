@@ -1,28 +1,31 @@
 layout {
-    cwd "~/Projects/speed-run"
-    default_tab_template {
-        pane split_direction="vertical" size=1 {
-          pane borderless=true {
-              plugin location="zellij:tab-bar"
-          }
+    cwd "~/Projects/speed-runs/2024-05-skill-up/"
+        default_tab_template {
+            pane size=1 borderless=true {
+                plugin location="zellij:tab-bar"
+            }
+            children
+            pane size=2 borderless=true {
+                plugin location="zellij:status-bar"
+            }
         }
-        children
-        pane size=2 borderless=true {
-            plugin location="zellij:status-bar"
-        }
-    }
     tab name="Edit" split_direction="vertical" focus=true {
         pane command="nvim" focus=true
-        pane split_direction="horizontal" {
-            pane command="npm" {
-                args "run" "test" "--" "--watch"
+            pane split_direction="horizontal" {
+                pane command="npm" {
+                    args "run" "test" "--" "--watch"
+                }
+                pane
             }
-            pane
-        }
     }
     tab name="Client" {
         pane command="npx" {
-            args "nx" "run" "speed-run:serve"
+            args "nx" "run" "web-ui-day2:serve"
+        }
+    }
+    tab name="Instructions" {
+        pane command="mdbook" {
+            args "watch" "--open"
         }
     }
     tab name="Serve Score" {
@@ -33,6 +36,16 @@ layout {
     tab name="Cypress" {
         pane command="npm" {
             args "run" "cypress-open"
+        }
+    }
+    tab name="Storybook" {
+        pane command="npx" {
+            args "nx" "run" "web-ui-day2:storybook"
+        }
+    }
+    tab name="Documentation" {
+        pane command="npm" {
+            args "run" "docs:view"
         }
     }
 }
