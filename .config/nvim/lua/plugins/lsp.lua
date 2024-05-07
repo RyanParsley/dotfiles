@@ -1,42 +1,74 @@
 return {
-    'simrat39/inlay-hints.nvim', 'lvimuser/lsp-inlayhints.nvim',
-    'joeveiga/ng.nvim', {
+    'simrat39/inlay-hints.nvim',
+    'lvimuser/lsp-inlayhints.nvim',
+    'joeveiga/ng.nvim',
+    {
         'williamboman/mason.nvim',
         lazy = false,
         config = function() require('mason').setup() end
-    }, {
+    },
+    {
         'williamboman/mason-lspconfig.nvim',
         lazy = false,
         opts = {auto_install = true}
-    }, {
+    },
+    {
         'neovim/nvim-lspconfig',
         lazy = false,
         dependencies = {
             -- Automatically install LSPs to stdpath for neovim
-            'williamboman/mason.nvim', 'williamboman/mason-lspconfig.nvim',
+            'williamboman/mason.nvim',
+            'williamboman/mason-lspconfig.nvim',
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
             {'j-hui/fidget.nvim', tag = 'legacy', opts = {}},
 
             -- Additional lua configuration, makes nvim stuff amazing!
-            'folke/neodev.nvim', 'simrat39/inlay-hints.nvim',
+            'folke/neodev.nvim',
+            'simrat39/inlay-hints.nvim',
             'lvimuser/lsp-inlayhints.nvim'
         },
         opts = {inlay_hints = {enabled = true}},
         config = function()
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
+            local capabilities_oxide = capabilities
+            capabilities_oxide.workspace = {
+                didChangeWatchedFiles = {dynamicRegistration = true}
+            }
+
             require('neodev').setup()
 
             local lspconfig = require 'lspconfig'
             lspconfig.eslint.setup {capabilities = capabilities}
-            lspconfig.markdown_oxide.setup {}
-            lspconfig.marksman.setup {capabilities = capabilities}
+            lspconfig.markdown_oxide.setup {
+                on_attach = function(_, bufnr)
+                    -- refresh codelens on TextChanged and InsertLeave as well
+                    vim.api.nvim_create_autocmd({
+                        'TextChanged',
+                        'InsertLeave',
+                        'CursorHold',
+                        'LspAttach'
+                    }, {buffer = bufnr, callback = vim.lsp.codelens.refresh})
+
+                    -- trigger codelens refresh
+                    vim.api
+                        .nvim_exec_autocmds('User', {pattern = 'LspAttached'})
+                end,
+                capabilities = capabilities_oxide,
+                filetypes = {'markdown'},
+                root_dir = lspconfig.util.root_pattern('.git', '.obsidian',
+                                                       '.moxide.toml', '*.md'),
+                cmd = {'markdown-oxide'}
+            }
             lspconfig.angularls.setup {
                 on_attach = function(_, bufnr)
                     -- refresh codelens on TextChanged and InsertLeave as well
                     vim.api.nvim_create_autocmd({
-                        'TextChanged', 'InsertLeave', 'CursorHold', 'LspAttach'
+                        'TextChanged',
+                        'InsertLeave',
+                        'CursorHold',
+                        'LspAttach'
                     }, {buffer = bufnr, callback = vim.lsp.codelens.refresh})
 
                     -- trigger codelens refresh
@@ -108,11 +140,13 @@ return {
             vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist,
                            {desc = 'Open diagnostics list'})
         end
-    }, {
+    },
+    {
         'nvimdev/lspsaga.nvim',
         config = function() require('lspsaga').setup {} end,
         dependencies = {
-            'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons'
+            'nvim-treesitter/nvim-treesitter',
+            'nvim-tree/nvim-web-devicons'
         }
     }
 }

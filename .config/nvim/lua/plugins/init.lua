@@ -6,7 +6,6 @@ return {
     'aserowy/tmux.nvim',
     'tpope/vim-sleuth',
     'sbdchd/neoformat',
-    'mfussenegger/nvim-lint',
     'nvim-tree/nvim-web-devicons',
     'Canop/nvim-bacon',
     'nvim-neotest/nvim-nio',
