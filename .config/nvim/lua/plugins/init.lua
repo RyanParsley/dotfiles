@@ -1,14 +1,24 @@
 return {
-    'zaid/vim-rec', 'tpope/vim-fugitive', 'tpope/vim-rhubarb',
-    'evanleck/vim-svelte', 'aserowy/tmux.nvim', 'tpope/vim-sleuth',
-    'sbdchd/neoformat', 'mfussenegger/nvim-lint', 'nvim-tree/nvim-web-devicons',
-    'Canop/nvim-bacon', 'nvim-neotest/nvim-nio', 'mattn/webapi-vim', {
+    'zaid/vim-rec',
+    'tpope/vim-fugitive',
+    'tpope/vim-rhubarb',
+    'evanleck/vim-svelte',
+    'aserowy/tmux.nvim',
+    'tpope/vim-sleuth',
+    'sbdchd/neoformat',
+    'mfussenegger/nvim-lint',
+    'nvim-tree/nvim-web-devicons',
+    'Canop/nvim-bacon',
+    'nvim-neotest/nvim-nio',
+    'mattn/webapi-vim',
+    {
         'numToStr/Comment.nvim',
         opts = {
             -- add any options here
         },
         lazy = false
-    }, {
+    },
+    {
         'folke/which-key.nvim',
         config = function()
             require('which-key').setup {
@@ -17,7 +27,8 @@ return {
                 -- refer to the configuration section below
             }
         end
-    }, {
+    },
+    {
         -- Add indentation guides even on blank lines
         'lukas-reineke/indent-blankline.nvim',
         -- Enable `lukas-reineke/indent-blankline.nvim`
