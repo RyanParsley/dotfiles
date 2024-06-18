@@ -1,6 +1,6 @@
 -- Highlight, edit, and navigate code
 return {
-    'nushel/tree-sitter-nu',
+    'nushell/tree-sitter-nu',
     'MDeiml/tree-sitter-markdown',
     {
         'nvim-treesitter/nvim-treesitter',

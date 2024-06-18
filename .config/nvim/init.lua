@@ -2,6 +2,8 @@ vim.cmd 'set expandtab'
 vim.cmd 'set tabstop=2'
 vim.cmd 'set softtabstop=2'
 vim.cmd 'set shiftwidth=2'
+vim.cmd 'set textwidth=80'
+vim.cmd 'set colorcolumn=+1'
 -- Set <space> as the leader key
 -- See `:help mapleader`
 -- NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
@@ -10,7 +12,15 @@ vim.g.maplocalleader = ' '
 
 -- TODO: I'd like nu in this list, but as of 2024-02-07 it poses issues
 vim.g.markdown_fenced_languages = {
-    'scss', 'css', 'javascript', 'typescript', 'bash', 'lua', 'go', 'rust', 'c',
+    'scss',
+    'css',
+    'javascript',
+    'typescript',
+    'bash',
+    'lua',
+    'go',
+    'rust',
+    'c',
     'cpp'
 }
 vim.opt.conceallevel = 1
@@ -21,8 +31,11 @@ vim.opt.conceallevel = 1
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
     vim.fn.system {
-        'git', 'clone', '--filter=blob:none',
-        'https://github.com/folke/lazy.nvim.git', '--branch=stable', -- latest stable release
+        'git',
+        'clone',
+        '--filter=blob:none',
+        'https://github.com/folke/lazy.nvim.git',
+        '--branch=stable', -- latest stable release
         lazypath
     }
 end
@@ -95,14 +108,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     callback = function() vim.highlight.on_yank() end,
     group = highlight_group,
     pattern = '*'
-})
-
--- format on save
-local format_on_save_group = vim.api.nvim_create_augroup('fmt', {clear = true})
-vim.api.nvim_create_autocmd('BufWritePre', {
-    pattern = '*',
-    command = 'undojoin | Neoformat',
-    group = format_on_save_group
 })
 
 local format_on_save_ts = vim.api.nvim_create_augroup('fmt-ts', {})

@@ -1,11 +1,11 @@
 return {
+    "zapling/mason-conform.nvim",
     'zaid/vim-rec',
     'tpope/vim-fugitive',
     'tpope/vim-rhubarb',
     'evanleck/vim-svelte',
     'aserowy/tmux.nvim',
     'tpope/vim-sleuth',
-    'sbdchd/neoformat',
     'nvim-tree/nvim-web-devicons',
     'Canop/nvim-bacon',
     'nvim-neotest/nvim-nio',
