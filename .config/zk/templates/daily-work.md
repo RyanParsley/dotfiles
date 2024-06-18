@@ -9,7 +9,7 @@ tags:
 
 ## Navigation
 
-[Yesterday](/journal/daily/{{format-date (date "yesterday") '%Y/%DD-%MMMM/%Y-%m-%d'}}) <-> [Tomorrow](/journal/daily/{{format-date (date "tomorrow") '%Y/%DD-%MMMM/%Y-%m-%d'}})
+[Yesterday](/Journal/Daily/{{format-date (date "yesterday") '%Y/%m-%B/%Y-%m-%d.md'}}) <-> [Tomorrow](/Journal/Daily/{{format-date (date "tomorrow") '%Y/%m-%B/%Y-%m-%d.md'}})
 
 ## Standup
 
