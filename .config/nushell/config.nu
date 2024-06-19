@@ -764,6 +764,14 @@ alias nx = npx nx
 use ~/.cache/starship/init.nu
 source ~/.zoxide.nu
 
+def meeting-note [arg?] {
+    let note_dir = "~/Notes/notes/meetings";
+    let file_name = $arg | default (date now | format date "%Y-%m-%d");
+    cd $note_dir
+
+    nvim $"($file_name).md" 
+}
+
 # enable custom completions
 source /Users/ryan/.config/nushell/completions/ack-completions.nu
 source /Users/ryan/.config/nushell/completions/bat-completions.nu

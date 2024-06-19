@@ -108,9 +108,10 @@ $env.NU_PLUGIN_DIRS = [
 $env.PATH = ($env.PATH | split row (char esep) |
     prepend '~/.local/share/bob/nvim-bin' |
     prepend '~/.local/bin' |
+    prepend '~/.bin' |
+    prepend '~/bin' |
     prepend '~/bin/google-cloud-sdk/bin' |
     prepend '/usr/local/bin' |
-    prepend '~/bin' |
     append '/opt/homebrew/bin' |
     append '~/.cargo/bin')
 

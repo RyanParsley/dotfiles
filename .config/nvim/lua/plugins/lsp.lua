@@ -5,12 +5,14 @@ return {
     {
         'williamboman/mason.nvim',
         lazy = false,
-        config = function() require('mason').setup() end
+        config = function()
+            require('mason').setup()
+        end,
     },
     {
         'williamboman/mason-lspconfig.nvim',
         lazy = false,
-        opts = {auto_install = true}
+        opts = { auto_install = true },
     },
     {
         'neovim/nvim-lspconfig',
@@ -22,25 +24,25 @@ return {
 
             -- Useful status updates for LSP
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            {'j-hui/fidget.nvim', tag = 'legacy', opts = {}},
+            { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
 
             -- Additional lua configuration, makes nvim stuff amazing!
             'folke/neodev.nvim',
             'simrat39/inlay-hints.nvim',
-            'lvimuser/lsp-inlayhints.nvim'
+            'lvimuser/lsp-inlayhints.nvim',
         },
-        opts = {inlay_hints = {enabled = true}},
+        opts = { inlay_hints = { enabled = true } },
         config = function()
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
             local capabilities_oxide = capabilities
             capabilities_oxide.workspace = {
-                didChangeWatchedFiles = {dynamicRegistration = true}
+                didChangeWatchedFiles = { dynamicRegistration = true },
             }
 
             require('neodev').setup()
 
             local lspconfig = require 'lspconfig'
-            lspconfig.eslint.setup {capabilities = capabilities}
+            lspconfig.eslint.setup { capabilities = capabilities }
             lspconfig.markdown_oxide.setup {
                 on_attach = function(_, bufnr)
                     -- refresh codelens on TextChanged and InsertLeave as well
@@ -48,18 +50,16 @@ return {
                         'TextChanged',
                         'InsertLeave',
                         'CursorHold',
-                        'LspAttach'
-                    }, {buffer = bufnr, callback = vim.lsp.codelens.refresh})
+                        'LspAttach',
+                    }, { buffer = bufnr, callback = vim.lsp.codelens.refresh })
 
                     -- trigger codelens refresh
-                    vim.api
-                        .nvim_exec_autocmds('User', {pattern = 'LspAttached'})
+                    vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
                 end,
                 capabilities = capabilities_oxide,
-                filetypes = {'markdown'},
-                root_dir = lspconfig.util.root_pattern('.git', '.obsidian',
-                                                       '.moxide.toml', '*.md'),
-                cmd = {'markdown-oxide'}
+                filetypes = { 'markdown' },
+                root_dir = lspconfig.util.root_pattern('.git', '.obsidian', '.moxide.toml'),
+                cmd = { 'markdown-oxide' },
             }
             lspconfig.angularls.setup {
                 on_attach = function(_, bufnr)
@@ -68,13 +68,12 @@ return {
                         'TextChanged',
                         'InsertLeave',
                         'CursorHold',
-                        'LspAttach'
-                    }, {buffer = bufnr, callback = vim.lsp.codelens.refresh})
+                        'LspAttach',
+                    }, { buffer = bufnr, callback = vim.lsp.codelens.refresh })
 
                     -- trigger codelens refresh
-                    vim.api
-                        .nvim_exec_autocmds('User', {pattern = 'LspAttached'})
-                end
+                    vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
+                end,
             }
             lspconfig.tsserver.setup {
                 capabilities = capabilities,
@@ -86,9 +85,9 @@ return {
                     end
                 end,
                 settings = {
-                    implicitProjectConfiguration = {checkJs = true},
+                    implicitProjectConfiguration = { checkJs = true },
                     javascript = {
-                        {format = {enable = true}},
+                        { format = { enable = true } },
                         inlayHints = {
                             includeInlayEnumMemberValueHints = true,
                             includeInlayFunctionLikeReturnTypeHints = true,
@@ -96,11 +95,11 @@ return {
                             includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
                             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
                             includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayVariableTypeHints = true
-                        }
+                            includeInlayVariableTypeHints = true,
+                        },
                     },
                     typescript = {
-                        {format = {enable = true}},
+                        { format = { enable = true } },
                         inlayHints = {
                             includeInlayEnumMemberValueHints = true,
                             includeInlayFunctionLikeReturnTypeHints = true,
@@ -108,22 +107,22 @@ return {
                             includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
                             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
                             includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayVariableTypeHints = true
-                        }
-                    }
-                }
+                            includeInlayVariableTypeHints = true,
+                        },
+                    },
+                },
             }
-            lspconfig.nushell.setup {capabilities = capabilities}
-            lspconfig.html.setup {capabilities = capabilities}
-            lspconfig.lua_ls.setup {capabilities = capabilities}
+            lspconfig.nushell.setup { capabilities = capabilities }
+            lspconfig.html.setup { capabilities = capabilities }
+            lspconfig.lua_ls.setup { capabilities = capabilities }
             lspconfig.stylelint_lsp.setup {
                 capabilities = capabilities,
                 settings = {
                     stylelintplus = {
                         autoFixOnSave = true,
-                        autoFixOnFormat = true
-                    }
-                }
+                        autoFixOnFormat = true,
+                    },
+                },
             }
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
             vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, {})
@@ -131,22 +130,20 @@ return {
             vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {})
 
             -- Diagnostic keymaps
-            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev,
-                           {desc = 'Go to previous diagnostic message'})
-            vim.keymap.set('n', ']d', vim.diagnostic.goto_next,
-                           {desc = 'Go to next diagnostic message'})
-            vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float,
-                           {desc = 'Open floating diagnostic message'})
-            vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist,
-                           {desc = 'Open diagnostics list'})
-        end
+            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+            vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+            vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+            vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
+        end,
     },
     {
         'nvimdev/lspsaga.nvim',
-        config = function() require('lspsaga').setup {} end,
+        config = function()
+            require('lspsaga').setup {}
+        end,
         dependencies = {
             'nvim-treesitter/nvim-treesitter',
-            'nvim-tree/nvim-web-devicons'
-        }
-    }
+            'nvim-tree/nvim-web-devicons',
+        },
+    },
 }
