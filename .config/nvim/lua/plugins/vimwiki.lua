@@ -34,8 +34,8 @@ return {
         config = function()
             require('telekasten').setup {
                 home = vim.fn.expand '~/Notes',
-                dailies = home .. '/Journal/' .. 'daily',
-                weeklies = home .. '/Journal/' .. 'weekly',
+                dailies = home .. '/Journal/daily/' .. os.date '%Y/%m-%B/',
+                weeklies = home .. '/Journal/weekly/' .. os.date '%Y/',
                 template_new_daily = templates .. 'daily-template.md',
                 template_new_weekly = templates .. 'weekly-template.md',
             }
@@ -70,6 +70,29 @@ return {
     {
         'lukas-reineke/headlines.nvim',
         dependencies = 'nvim-treesitter/nvim-treesitter',
-        config = true, -- or `opts = {}`
+        opts = function()
+            local opts = {}
+            for _, ft in ipairs { 'markdown', 'norg', 'rmd', 'org', 'telekasten' } do
+                opts[ft] = {
+                    headline_highlights = {},
+                    -- disable bullets for now. See https://github.com/lukas-reineke/headlines.nvim/issues/66
+                    bullets = {},
+                }
+                for i = 1, 6 do
+                    local hl = 'Headline' .. i
+                    vim.api.nvim_set_hl(0, hl, { link = 'Headline', default = true })
+                    table.insert(opts[ft].headline_highlights, hl)
+                end
+            end
+            return opts
+        end,
+        ft = { 'markdown', 'norg', 'rmd', 'org', 'telekasten' },
+        config = function(_, opts)
+            -- PERF: schedule to prevent headlines slowing down opening a file
+            vim.schedule(function()
+                require('headlines').setup(opts)
+                require('headlines').refresh()
+            end)
+        end,
     },
 }
