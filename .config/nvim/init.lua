@@ -4,10 +4,12 @@ vim.cmd 'set softtabstop=2'
 vim.cmd 'set shiftwidth=2'
 vim.cmd 'set textwidth=80'
 vim.cmd 'set colorcolumn=+1'
-vim.cmd 'set fo+=a'
--- Set <space> as the leader key
--- See `:help mapleader`
--- NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
+-- I almost like this next line. It auto wraps text as you write. It's nice for
+-- markdown, but bad for yaml and other things with tags. Perhaps theres a
+-- subtly different way to use it?
+--vim.cmd 'set fo+=a'
+--Set <space> as the leader key See `:help mapleader` NOTE: Must happen before
+--plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
