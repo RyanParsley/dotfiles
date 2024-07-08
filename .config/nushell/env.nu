@@ -112,6 +112,7 @@ $env.PATH = ($env.PATH | split row (char esep) |
     prepend '~/bin' |
     prepend '~/bin/google-cloud-sdk/bin' |
     prepend '/usr/local/bin' |
+    append '/data/data/com.termux/files/home/.l      ocal/share/nvim/mason/bin' |
     append '/opt/homebrew/bin' |
     append '~/.cargo/bin')
 

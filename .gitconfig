@@ -39,3 +39,9 @@
   keepBackup = false
 [merge]
   tool = vimdiff
+[user]
+	name = Ryan Parsley
+	email = RMParsley@gmail.com
+[safe]
+	directory = /storage/emulated/0/Notes/home
+	directory = *
