@@ -1,6 +1,6 @@
 # Leave blank to try to import from Obsidian Daily Notes
 # Formatting from https://docs.rs/chrono/latest/chrono/format/strftime/index.html
-dailynote = "Journal/Daily/%Y/%m-%M/%Y-%m-%d" # this is akin to YYYY-MM-DD from Obsidian
+dailynote = "Journal/Daily/%Y/%m-%B/%Y-%m-%d" # this is akin to YYYY-MM-DD from Obsidian
 
 # Fuzzy match file headings in completions
 heading_completions = true
