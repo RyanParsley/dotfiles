@@ -1,6 +1,4 @@
 return {
-    'simrat39/inlay-hints.nvim',
-    'lvimuser/lsp-inlayhints.nvim',
     'joeveiga/ng.nvim',
     {
         'williamboman/mason.nvim',
@@ -18,18 +16,18 @@ return {
         'neovim/nvim-lspconfig',
         lazy = false,
         dependencies = {
-            -- Automatically install LSPs to stdpath for neovim
-            'williamboman/mason.nvim',
+            -- Automatically install LSPs and related tools to stdpath for Neovim
+            { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
             'williamboman/mason-lspconfig.nvim',
+            'WhoIsSethDaniel/mason-tool-installer.nvim',
 
-            -- Useful status updates for LSP
+            -- Useful status updates for LSP.
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+            { 'j-hui/fidget.nvim', opts = {} },
 
-            -- Additional lua configuration, makes nvim stuff amazing!
-            'folke/neodev.nvim',
-            'simrat39/inlay-hints.nvim',
-            'lvimuser/lsp-inlayhints.nvim',
+            -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
+            -- used for completion, annotations and signatures of Neovim apis
+            { 'folke/neodev.nvim', opts = {} },
         },
         opts = { inlay_hints = { enabled = true } },
         config = function()
@@ -78,36 +76,34 @@ return {
             lspconfig.tsserver.setup {
                 capabilities = capabilities,
                 on_attach = function(client, bufnr)
-                    require('lsp-inlayhints').on_attach(client, bufnr)
-                    require('inlay-hints').on_attach(client, bufnr)
                     if client.server_capabilities.inlayHintProvider then
-                        vim.lsp.inlay_hint.enable(bufnr, true)
+                        vim.lsp.inlay_hint.enable(true)
                     end
                 end,
                 settings = {
                     implicitProjectConfiguration = { checkJs = true },
-                    javascript = {
-                        { format = { enable = true } },
+                    typescript = {
                         inlayHints = {
-                            includeInlayEnumMemberValueHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
+                            includeInlayParameterNameHints = 'all',
                             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayFunctionParameterTypeHints = true,
                             includeInlayVariableTypeHints = true,
+                            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayFunctionLikeReturnTypeHints = true,
+                            includeInlayEnumMemberValueHints = true,
                         },
                     },
-                    typescript = {
-                        { format = { enable = true } },
+                    javascript = {
                         inlayHints = {
-                            includeInlayEnumMemberValueHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayParameterNameHints = 'all', -- 'none' | 'literals' | 'all';
+                            includeInlayParameterNameHints = 'all',
                             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayFunctionParameterTypeHints = true,
                             includeInlayVariableTypeHints = true,
+                            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayFunctionLikeReturnTypeHints = true,
+                            includeInlayEnumMemberValueHints = true,
                         },
                     },
                 },
