@@ -1,5 +1,5 @@
 return {
-    "zapling/mason-conform.nvim",
+    'zapling/mason-conform.nvim',
     'zaid/vim-rec',
     'tpope/vim-fugitive',
     'tpope/vim-rhubarb',
@@ -15,7 +15,7 @@ return {
         opts = {
             -- add any options here
         },
-        lazy = false
+        lazy = false,
     },
     {
         'folke/which-key.nvim',
@@ -25,7 +25,7 @@ return {
                 -- or leave it empty to use the default settings
                 -- refer to the configuration section below
             }
-        end
+        end,
     },
     {
         -- Add indentation guides even on blank lines
@@ -33,12 +33,12 @@ return {
         -- Enable `lukas-reineke/indent-blankline.nvim`
         -- See `:help indent_blankline.txt`
         main = 'ibl',
-        opts = {}
+        opts = {},
     }, -- Highlight todo, notes, etc in comments
     {
         'folke/todo-comments.nvim',
         event = 'VimEnter',
-        dependencies = {'nvim-lua/plenary.nvim'},
-        opts = {signs = false}
-    }
+        dependencies = { 'nvim-lua/plenary.nvim' },
+        opts = { signs = false },
+    },
 }
