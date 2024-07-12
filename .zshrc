@@ -107,6 +107,10 @@ source ~/.bin/smug.zsh
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
+export DYLD_LIBRARY_PATH="$(brew --prefix)/lib:$DYLD_LIBRARY_PATH"
+export MAGICK_HOME=$(brew --prefix)
+export WAND_MAGICK_LIBRARY_SUFFIX="-7.Q16HDRI;-6.Q16HDRI"
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
@@ -114,10 +118,6 @@ export PATH="$HOME/bin:$PATH"
 export PATH="$HOME/.bin:$PATH"
 export PATH="$HOME/local/bin:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
-
-[ -s ~/.luaver/luaver ] && . ~/.luaver/luaver
-
-[ -s ~/.luaver/completions/luaver.zsh ] && . ~/.luaver/completions/luaver.zsh
 
 export LDFLAGS="-L$(brew --prefix)/opt/libffi/lib"
 export CPPFLAGS="-I$(brew --prefix)/opt/libffi/include"

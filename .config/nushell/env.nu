@@ -105,6 +105,7 @@ $env.NU_PLUGIN_DIRS = [
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
+
 $env.PATH = ($env.PATH | split row (char esep) |
     prepend '~/.local/share/bob/nvim-bin' |
     prepend '~/.local/bin' |
@@ -112,8 +113,10 @@ $env.PATH = ($env.PATH | split row (char esep) |
     prepend '~/bin' |
     prepend '~/bin/google-cloud-sdk/bin' |
     prepend '/usr/local/bin' |
-    append '/opt/homebrew/bin' |
+    append  '/opt/homebrew/bin' |
     append '~/.cargo/bin')
+
+$env.DYLD_LIBRARY_PATH = '/opt/homebrew/lib'
 
 $env.EDITOR = nvim
 
