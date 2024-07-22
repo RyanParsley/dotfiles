@@ -41,4 +41,5 @@ return {
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = false },
     },
+    { 'nvim-neorg/neorg', opts = {} },
 }
