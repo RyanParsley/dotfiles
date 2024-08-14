@@ -41,5 +41,8 @@ return {
         dependencies = { 'nvim-lua/plenary.nvim' },
         opts = { signs = false },
     },
-    { 'nvim-neorg/neorg', opts = {} },
+    {
+        'https://github.com/fresh2dev/zellij.vim.git',
+        lazy = false,
+    },
 }
