@@ -214,9 +214,9 @@ return {
                     end, { 'i', 's' }),
                 },
                 sources = {
+                    { name = 'path' },
                     { name = 'copilot' },
                     { name = 'luasnip' },
-                    { name = 'path' },
                     {
                         name = 'nvim_lsp',
                         option = {
