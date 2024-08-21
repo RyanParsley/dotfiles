@@ -39,6 +39,31 @@ return {
                 -- vim.fn.jobstart({"xdg-open", url})  -- linux
             end,
         },
+        keys = {
+            {
+                '<leader>nn',
+                '<cmd>ObsidianNew<cr>',
+                desc = 'Obsidian - New Note',
+            },
+            {
+                '<leader>nt',
+                '<cmd>ObsidianNewFromTemplate<cr>',
+                desc = 'Obsidian - New From Template',
+            },
+            {
+                '<leader>nm',
+                function()
+                    local input = vim.fn.input 'Meeting Name: '
+                    vim.cmd('ObsidianNewFromTemplate notes/meetings/' .. input .. '.md')
+                end,
+                desc = 'Obsidian - New Meeting',
+            },
+            {
+                '<leader>it',
+                '<cmd>ObsidianTemplate<cr>',
+                desc = 'Obsidian - Insert Template',
+            },
+        },
     },
     {
         'iamcco/markdown-preview.nvim',
