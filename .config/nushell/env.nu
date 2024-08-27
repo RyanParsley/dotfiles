@@ -118,7 +118,7 @@ $env.PATH = ($env.PATH | split row (char esep) |
 
 $env.DYLD_LIBRARY_PATH = '/opt/homebrew/lib'
 
-$env.EDITOR = nvim
+$env.EDITOR = 'nvim'
 
 mkdir ~/.cache/starship
 starship init nu | save -f ~/.cache/starship/init.nu
