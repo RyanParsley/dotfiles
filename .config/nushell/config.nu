@@ -809,6 +809,10 @@ $env.config = {
 def nuopen [arg, --raw (-r)] { if $raw { open -r $arg } else { open $arg } }
 alias open = ^open
 
+def gemini [arg, string] {
+    shelldon $arg --model gemini-1.5-flash-latest $string
+}
+
 alias nx = npx nx
 use ~/.cache/starship/init.nu
 source ~/.zoxide.nu
@@ -821,6 +825,7 @@ def meeting-note [arg?] {
     nvim $"($file_name).md" 
 }
 
+source ~/env.local.nu
 # enable custom completions
 source /Users/ryan/.config/nushell/completions/ack-completions.nu
 source /Users/ryan/.config/nushell/completions/bat-completions.nu

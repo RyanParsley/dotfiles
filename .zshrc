@@ -137,14 +137,14 @@ export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export LDFLAGS="-L$(brew --prefix)/opt/libffi/lib"
 export CPPFLAGS="-I$(brew --prefix)/opt/libffi/include"
 export PKG_CONFIG_PATH="$(brew --prefix)/opt/libffi/lib/pkgconfig"
-
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f "$HOME/bin/google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/bin/google-cloud-sdk/path.zsh.inc"; fi
-
-# The next line enables shell command completion for gcloud.
-if [ -f "$HOME/bin/google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/bin/google-cloud-sdk/completion.zsh.inc"; fi
 eval "$($(brew --prefix)/bin/mise activate zsh)"
 export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3
 export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$(brew --prefix qt@5)
 export PATH=$PATH:$(brew --prefix qt@5)/bin
 fpath=(${HOME}/.zsh_completion.d $fpath)
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'; fi
