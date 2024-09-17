@@ -114,7 +114,7 @@ $env.PATH = ($env.PATH | split row (char esep) |
     prepend '~/bin/google-cloud-sdk/bin' |
     prepend '/usr/local/bin' |
     append  '/opt/homebrew/bin' |
-    append '~/.cargo/bin')
+    prepend '~/.cargo/bin')
 
 $env.DYLD_LIBRARY_PATH = '/opt/homebrew/lib'
 
