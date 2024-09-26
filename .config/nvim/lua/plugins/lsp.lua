@@ -94,7 +94,7 @@ return {
                     vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
                 end,
             }
-            lspconfig.tsserver.setup {
+            lspconfig.ts_ls.setup {
                 capabilities = capabilities,
                 on_attach = function(client, bufnr)
                     if client.server_capabilities.inlayHintProvider then
