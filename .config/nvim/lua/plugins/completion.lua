@@ -12,6 +12,23 @@ return {
             },
         },
         config = true,
+        keys = {
+            {
+                '<leader>a',
+                '<cmd>CodeCompanionToggle<cr>',
+                desc = 'CodeCompanion Toggle',
+            },
+            {
+                '<leader>ca',
+                '<cmd>CodeCompanionActions<cr>',
+                desc = 'CodeCompanion Actions',
+            },
+            {
+                '<leader>ct',
+                '<cmd>CodeCompanionToggle<cr>',
+                desc = 'CodeCompanion Toggle',
+            },
+        },
         opts = {
             strategies = {
                 chat = {
