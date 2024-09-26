@@ -16,6 +16,7 @@ return {
         opts = {
             -- "ueberzug" or "kitty"
             backend = 'kitty',
+            only_render_image_at_cursor = true,
         },
     },
     {
