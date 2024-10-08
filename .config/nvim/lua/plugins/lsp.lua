@@ -1,5 +1,6 @@
 return {
     'joeveiga/ng.nvim',
+    'nvim-java/nvim-java',
     {
         'williamboman/mason.nvim',
         lazy = false,
@@ -38,6 +39,8 @@ return {
             }
 
             require('neodev').setup()
+            require('java').setup()
+            require('lspconfig').jdtls.setup {}
 
             local lspconfig = require 'lspconfig'
             lspconfig.eslint.setup { capabilities = capabilities }
