@@ -93,6 +93,8 @@ vim.o.completeopt = 'menuone,noselect'
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
+vim.g.astro_typescript = 'enable'
+
 -- [[ Basic Keymaps ]]
 
 -- Keymaps for better default experience
@@ -122,6 +124,7 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     command = 'silent! EslintFixAll',
     group = format_on_save_ts,
 })
+vim.lsp.inlay_hint.enable()
 
 -- Yes, we're just executing a bunch of Vimscript, but this is the officially
 -- endorsed method; see https://github.com/L3MON4D3/LuaSnip#keymaps

@@ -77,6 +77,13 @@ return {
             local cmp = require 'cmp'
             local luasnip = require 'luasnip'
             luasnip.config.setup {}
+            require('crates').setup {
+                completion = {
+                    cmp = {
+                        enabled = true,
+                    },
+                },
+            }
 
             cmp.setup {
                 snippet = {
@@ -127,6 +134,7 @@ return {
                 },
                 sources = {
                     { name = 'path' },
+                    { name = 'buffer' },
                     { name = 'luasnip' },
                     {
                         name = 'nvim_lsp',
@@ -136,6 +144,7 @@ return {
                             },
                         },
                     },
+                    { name = 'crates' },
                 },
             }
         end,
