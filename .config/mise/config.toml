@@ -2,3 +2,4 @@
 usage = "latest"
 python = "3.13.0"
 java = "22"
+ruby = "3.2.1"
