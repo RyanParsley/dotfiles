@@ -21,7 +21,6 @@ return {
             { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
             'williamboman/mason-lspconfig.nvim',
             'WhoIsSethDaniel/mason-tool-installer.nvim',
-
             -- Useful status updates for LSP.
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
             { 'j-hui/fidget.nvim', opts = {} },
@@ -41,7 +40,25 @@ return {
             require('neodev').setup()
             require('java').setup()
             require('lspconfig').jdtls.setup {}
-
+            require('lspconfig').astro.setup {
+                capabilities = capabilities,
+                init_options = {},
+                settings = {
+                    inlay_hints = true, -- enable/disable inlay hints on start
+                    typescript = {
+                        inlayHints = {
+                            includeInlayParameterNameHints = 'all',
+                            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+                            includeInlayFunctionParameterTypeHints = true,
+                            includeInlayVariableTypeHints = true,
+                            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayFunctionLikeReturnTypeHints = true,
+                            includeInlayEnumMemberValueHints = true,
+                        },
+                    },
+                },
+            }
             local lspconfig = require 'lspconfig'
             lspconfig.eslint.setup { capabilities = capabilities }
             lspconfig.markdown_oxide.setup {
