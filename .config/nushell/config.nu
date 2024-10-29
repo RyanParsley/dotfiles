@@ -993,3 +993,5 @@ source ~/.cache/carapace/init.nu
 
 source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
 source ~/.config/nushell/settle.nu
+
+use ($nu.default-config-dir | path join mise.nu)
