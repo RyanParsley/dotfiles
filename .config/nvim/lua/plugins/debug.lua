@@ -5,8 +5,11 @@ return {
         'mfussenegger/nvim-dap',
         dependencies = {
             'rcarriga/nvim-dap-ui',
-            'williamboman/mason.nvim',
             'jay-babu/mason-nvim-dap.nvim',
+            {
+                'williamboman/mason.nvim',
+                opts = { ensure_installed = { 'java-debug-adapter', 'java-test' } },
+            },
 
             -- Add your own debuggers here
             'leoluz/nvim-dap-go',

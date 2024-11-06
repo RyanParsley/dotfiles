@@ -68,6 +68,7 @@ return {
                 --
                 -- You can use a sub-list to tell conform to run *until* a formatter
                 -- is found.
+                java = { { 'prettierd', 'prettier' } },
                 javascript = { { 'prettierd', 'prettier' } },
                 typescript = { { 'prettierd', 'prettier' } },
                 ['markdown'] = { { 'prettierd', 'prettier' }, 'markdownlint-cli2', 'markdown-toc' },
