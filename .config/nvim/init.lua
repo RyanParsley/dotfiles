@@ -1,7 +1,8 @@
 package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?/init.lua'
 package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?.lua'
 package.cpath = package.cpath .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/lib/lua/5.1/?.so'
-
+-- tell neovim to use mise version of java
+vim.g.java_home = '/Users/ryan/.local/share/mise/installs/java/22.0.2/bin/java'
 vim.cmd 'set expandtab'
 vim.cmd 'set tabstop=2'
 vim.cmd 'set softtabstop=2'
@@ -49,6 +50,12 @@ end
 vim.opt.rtp:prepend(lazypath)
 vim.opt.relativenumber = true
 vim.opt.rnu = true
+
+-- Source local configuration if it exists
+local local_config = vim.fn.expand '~/.dotfiles-local/.config-local/nvim/init-local.lua'
+if vim.fn.filereadable(local_config) == 1 then
+    vim.cmd('source ' .. local_config)
+end
 
 require('lazy').setup 'plugins'
 
