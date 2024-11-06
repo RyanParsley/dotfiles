@@ -114,9 +114,6 @@ function ng() {
 eval "$(starship init zsh)"
 source ~/.bin/smug.zsh
 
-# Local config
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
-
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # bun completions
@@ -152,6 +149,9 @@ export GOPATH=$HOME/go
 
 # Update PATH to include GOPATH and GOROOT binaries
 export PATH=$GOPATH/bin:$GOROOT/bin:$HOME/.local/bin:$PATH
+
+# Local config
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/path.zsh.inc'; fi
