@@ -27,14 +27,14 @@ return {
             --    for various frameworks/libraries/etc. but you will have to
             --    set up the ones that are useful for you.
             'rafamadriz/friendly-snippets',
-            {
+            vim.g.copilotEnabled and {
                 'zbirenbaum/copilot-cmp',
                 dependencies = 'copilot.lua',
                 config = function(_, opts)
                     local copilot_cmp = require 'copilot_cmp'
                     copilot_cmp.setup(opts)
                 end,
-            },
+            } or {},
         },
         config = function()
             -- See `:help cmp`
@@ -99,7 +99,7 @@ return {
                 sources = {
                     { name = 'path' },
                     { name = 'buffer' },
-                    { name = 'copilot' },
+                    { name = 'crates' },
                     { name = 'luasnip' },
                     {
                         name = 'nvim_lsp',
@@ -109,7 +109,7 @@ return {
                             },
                         },
                     },
-                    { name = 'crates' },
+                    vim.g.copilotEnabled and { name = 'copilot' } or {},
                 },
             }
         end,

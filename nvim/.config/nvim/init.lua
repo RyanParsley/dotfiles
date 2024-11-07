@@ -51,8 +51,7 @@ vim.opt.rtp:prepend(lazypath)
 vim.opt.relativenumber = true
 vim.opt.rnu = true
 
--- Source local configuration if it exists
-local local_config = vim.fn.expand '~/.dotfiles-local/.config-local/nvim/init-local.lua'
+local local_config = vim.fn.expand '~/.config/nvim/init-local.lua'
 if vim.fn.filereadable(local_config) == 1 then
     vim.cmd('source ' .. local_config)
 end
