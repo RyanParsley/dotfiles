@@ -54,7 +54,6 @@ return {
                     'bashls',
                     'html',
                     'gradle_ls',
-                    'lua_ls',
                     'jdtls',
                     'marksman',
                     'quick_lint_js',
