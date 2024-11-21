@@ -39,3 +39,5 @@
   keepBackup = false
 [merge]
   tool = vimdiff
+[safe]
+	directory = /storage/emulated/0/Notes

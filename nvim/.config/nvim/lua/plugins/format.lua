@@ -50,14 +50,6 @@ return {
                         end
                     end,
                 },
-                ['markdownlint-cli2'] = {
-                    condition = function(_, ctx)
-                        local diag = vim.tbl_filter(function(d)
-                            return d.source == 'markdownlint'
-                        end, vim.diagnostic.get(ctx.buf))
-                        return #diag > 0
-                    end,
-                },
             },
             formatters_by_ft = {
                 lua = { 'stylua' },
@@ -71,8 +63,8 @@ return {
                 java = { { 'prettierd', 'prettier' } },
                 javascript = { { 'prettierd', 'prettier' } },
                 typescript = { { 'prettierd', 'prettier' } },
-                ['markdown'] = { { 'prettierd', 'prettier' }, 'markdownlint-cli2', 'markdown-toc' },
-                ['markdown.mdx'] = { { 'prettierd', 'prettier' }, 'markdownlint-cli2', 'markdown-toc' },
+                ['markdown'] = { { 'prettierd', 'prettier' }, 'markdown-toc' },
+                ['markdown.mdx'] = { { 'prettierd', 'prettier' }, 'markdown-toc' },
             },
         },
     },
@@ -84,7 +76,6 @@ return {
             events = { 'BufWritePost', 'BufReadPost', 'InsertLeave' },
             linters_by_ft = {
                 fish = { 'fish' },
-                markdown = { 'markdownlint-cli2' },
                 -- Use the "*" filetype to run linters on all filetypes.
                 -- ['*'] = { 'global linter' },
                 -- Use the "_" filetype to run linters on filetypes that don't have other linters configured.

@@ -1,13 +1,11 @@
 return {
     'joeveiga/ng.nvim',
-    'nvim-java/nvim-java',
     {
         'williamboman/mason.nvim',
         lazy = false,
         config = function()
             require('mason').setup()
         end,
-        opts = { ensure_installed = { 'java-debug-adapter', 'java-test' } },
     },
     {
         'williamboman/mason-lspconfig.nvim',
@@ -24,22 +22,14 @@ return {
             'WhoIsSethDaniel/mason-tool-installer.nvim',
             -- Useful status updates for LSP.
             -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-            { 'j-hui/fidget.nvim', opts = {} },
+            { 'j-hui/fidget.nvim',       opts = {} },
 
             -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
             -- used for completion, annotations and signatures of Neovim apis
-            { 'folke/neodev.nvim', opts = {} },
+            { 'folke/neodev.nvim',       opts = {} },
         },
         opts = {
             inlay_hints = { enabled = true },
-            servers = {
-                jdtls = {},
-            },
-            setup = {
-                jdtls = function()
-                    return true -- avoid duplicate servers
-                end,
-            },
         },
         config = function()
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -53,8 +43,6 @@ return {
                 ensure_installed = {
                     'bashls',
                     'html',
-                    'gradle_ls',
-                    'jdtls',
                     'marksman',
                     'quick_lint_js',
                     'yamlls',
@@ -62,10 +50,6 @@ return {
             }
             require('mason-tool-installer').setup {
                 -- Install these linters, formatters, debuggers automatically
-                ensure_installed = {
-                    'java-debug-adapter',
-                    'java-test',
-                },
             }
             -- There is an issue with mason-tools-installer running with VeryLazy, since it triggers on VimEnter which has already occurred prior to this plugin loading so we need to call install explicitly
             -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/issues/39
@@ -76,20 +60,7 @@ return {
                 -- Create your keybindings here...
             end
 
-            require('mason-lspconfig').setup_handlers {
-                function(server_name)
-                    -- Don't call setup for JDTLS Java LSP because it will be setup from a separate config
-                    if server_name ~= 'jdtls' then
-                        lspconfig[server_name].setup {
-                            on_attach = lsp_attach,
-                            capabilities = lsp_capabilities,
-                        }
-                    end
-                end,
-            }
-
             require('neodev').setup()
-            require('lspconfig').jdtls.setup {}
             require('lspconfig').astro.setup {
                 capabilities = capabilities,
                 init_options = {},
