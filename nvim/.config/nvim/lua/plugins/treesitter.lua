@@ -21,7 +21,6 @@ return {
                     'css',
                     'go',
                     'html',
-                    'java',
                     'jq',
                     'json',
                     'lua',

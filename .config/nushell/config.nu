@@ -1,6 +1,6 @@
 # Nushell Config File
 #
-# version = "0.99.2"
+# version = "0.100.0"
 
 # For more information on defining custom themes, see
 # https://www.nushell.sh/book/coloring_and_theming.html
@@ -145,55 +145,6 @@ let light_theme = {
 #     carapace $spans.0 nushell ...$spans | from json
 # }
 
-let carapace_completer = {|spans: list<string>|
-    carapace $spans.0 nushell ...$spans
-    | from json
-    | if ($in | default [] | where value =~ '^-.*ERR$' | is-empty) { $in } else { null }
-}
-
-# https://www.nushell.sh/cookbook/external_completers.html#fish-completer
-let fish_completer = {|spans|
-    fish --command $'complete "--do-complete=($spans | str join " ")"'
-    | $"value(char tab)description(char newline)" + $in
-    | from tsv --flexible --no-infer
-}
-
-# https://www.nushell.sh/cookbook/external_completers.html#zoxide-completer
-let zoxide_completer = {|spans|
-    $spans | skip 1 | zoxide query -l ...$in | lines | where {|x| $x != $env.PWD}
-}
-
-# This completer will use carapace by default
-let external_completer = {|spans|
-    let expanded_alias = scope aliases
-    | where name == $spans.0
-    | get -i 0.expansion
-
-    let spans = if $expanded_alias != null {
-        $spans
-        | skip 1
-        | prepend ($expanded_alias | split row ' ' | take 1)
-    } else {
-        $spans
-    }
-
-    match $spans.0 {
-        # carapace completions are incorrect for nu
-        nu => $fish_completer
-        # fish completes commits and branch names in a nicer way
-        git => $fish_completer
-        # carapace doesn't have completions for asdf
-        asdf => $fish_completer
-        # carapace doesn't have completions for asdf
-        mise => $fish_completer
-        # carapace doesn't have completions for zola
-        zola => $fish_completer
-        # use zoxide completions for zoxide commands
-        __zoxide_z | __zoxide_zi => $zoxide_completer
-        _ => $carapace_completer
-    } | do $in $spans
-}
-
 # The default config record. This is where much of your global configuration is setup.
 $env.config = {
     show_banner: false # true or false to enable or disable the welcome banner at startup
@@ -218,6 +169,7 @@ $env.config = {
             truncating_suffix: "..." # A suffix used by the 'truncating' methodology
         }
         header_on_separator: false # show header text on separator/border line
+        footer_inheritance: false # render footer in parent table if child is big enough (extended table option)
         # abbreviated_row_count: 10 # limit data rows from top and bottom after reaching a set point
     }
 
@@ -286,10 +238,10 @@ $env.config = {
     color_config: $dark_theme # if you want a more interesting theme, you can replace the empty record with `$dark_theme`, `$light_theme` or another custom record
     footer_mode: 25 # always, never, number_of_rows, auto
     float_precision: 2 # the precision for displaying floats in tables
-    buffer_editor: null # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.EDITOR and $env.VISUAL
+    buffer_editor: null # command that will be used to edit the current line buffer with ctrl+o, if unset fallback to $env.VISUAL and $env.EDITOR
     use_ansi_coloring: true
     bracketed_paste: true # enable bracketed paste, currently useless on windows
-    edit_mode: vi # emacs, vi
+    edit_mode: emacs # emacs, vi
     shell_integration: {
         # osc2 abbreviates the path if in the home_dir, sets the tab/window title, shows the running command in the tab/window title
         osc2: true
@@ -945,53 +897,3 @@ $env.config = {
         }
     ]
 }
-
-# https://www.nushell.sh/book/configuration.html#macos-keeping-usr-bin-open-as-open
-alias nu-open = open
-alias open = ^open
-
-def gemini [arg, string] {
-    shelldon $arg --model gemini-1.5-flash-latest $string
-}
-
-alias nx = npx nx
-use ~/.cache/starship/init.nu
-source ~/.zoxide.nu
-
-def meeting-note [arg?] {
-    let note_dir = "~/Notes/notes/meetings";
-    let file_name = $arg | default (date now | format date "%Y-%m-%d");
-    cd $note_dir
-
-    nvim $"($file_name).md" 
-}
-
-source ~/env.local.nu
-# enable custom completions
-source /Users/ryan/.config/nushell/completions/ack-completions.nu
-source /Users/ryan/.config/nushell/completions/bat-completions.nu
-source /Users/ryan/.config/nushell/completions/cargo-completions.nu
-source /Users/ryan/.config/nushell/completions/cargo-make-completions.nu
-source /Users/ryan/.config/nushell/completions/curl-completions.nu
-source /Users/ryan/.config/nushell/completions/gh-completions.nu
-source /Users/ryan/.config/nushell/completions/glow-completions.nu
-source /Users/ryan/.config/nushell/completions/godoc-completions.nu
-source /Users/ryan/.config/nushell/completions/git-completions.nu
-source /Users/ryan/.config/nushell/completions/just-completions.nu
-source /Users/ryan/.config/nushell/completions/make-completions.nu
-source /Users/ryan/.config/nushell/completions/nx-completions.nu
-source /Users/ryan/.config/nushell/completions/man-completions.nu
-source /Users/ryan/.config/nushell/completions/npm-completions.nu
-source /Users/ryan/.config/nushell/completions/rg-completions.nu
-source /Users/ryan/.config/nushell/completions/rustup-completions.nu
-source /Users/ryan/.config/nushell/completions/zellij-completions.nu
-
-source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
-
-# https://carapace-sh.github.io/carapace-bin/setup.html
-source ~/.cache/carapace/init.nu
-
-source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
-source ~/.config/nushell/settle.nu
-
-use ($nu.default-config-dir | path join mise.nu)

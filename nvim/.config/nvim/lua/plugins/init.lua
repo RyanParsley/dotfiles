@@ -9,7 +9,6 @@ return {
     'tpope/vim-sleuth',
     'nvim-tree/nvim-web-devicons',
     'Canop/nvim-bacon',
-    'nvim-neotest/nvim-nio',
     'mattn/webapi-vim',
     {
         'numToStr/Comment.nvim',
@@ -45,9 +44,5 @@ return {
     {
         'https://github.com/fresh2dev/zellij.vim.git',
         lazy = false,
-    },
-    {
-        'willothy/wezterm.nvim',
-        config = true,
     },
 }

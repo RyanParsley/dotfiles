@@ -1,6 +1,6 @@
 # Nushell Environment Config File
 #
-# version = "0.99.2"
+# version = "0.100.0"
 
 def create_left_prompt [] {
     let dir = match (do --ignore-shell-errors { $env.PWD | path relative-to $nu.home-path }) {
@@ -99,39 +99,3 @@ $env.NU_PLUGIN_DIRS = [
 
 # To load from a custom file you can use:
 # source ($nu.default-config-dir | path join 'custom.nu')
-
-# https://www.nushell.sh/cookbook/external_completers.html#fish-completer
-let fish_completer = {|spans|
-    fish --command $'complete "--do-complete=($spans | str join " ")"'
-    | $"value(char tab)description(char newline)" + $in
-    | from tsv --flexible --no-infer
-}
-
-# To add entries to PATH (on Windows you might use Path), you can use the following pattern:
-# $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
-
-
-$env.PATH = ($env.PATH | split row (char esep) |
-    prepend '~/.local/share/bob/nvim-bin' |
-    prepend '~/.local/bin' |
-    prepend '~/.bin' |
-    prepend '~/bin' |
-    prepend '~/bin/google-cloud-sdk/bin' |
-    prepend '/usr/local/bin' |
-    append  '/opt/homebrew/bin' |
-    prepend '~/.cargo/bin')
-
-$env.DYLD_LIBRARY_PATH = '/opt/homebrew/lib'
-
-$env.EDITOR = 'nvim'
-
-mkdir ~/.cache/starship
-starship init nu | save -f ~/.cache/starship/init.nu
-
-# https://carapace-sh.github.io/carapace-bin/
-$env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
-mkdir ~/.cache/carapace
-carapace _carapace nushell | save --force ~/.cache/carapace/init.nu
-
-let mise_path = $nu.default-config-dir | path join mise.nu
-^mise activate nu | save $mise_path --force
