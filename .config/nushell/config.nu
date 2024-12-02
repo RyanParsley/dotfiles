@@ -154,8 +154,8 @@ let carapace_completer = {|spans: list<string>|
 # https://www.nushell.sh/cookbook/external_completers.html#fish-completer
 let fish_completer = {|spans|
     fish --command $'complete "--do-complete=($spans | str join " ")"'
-    | $"value(char tab)description(char newline)" + $in
-    | from tsv --flexible --no-infer
+    | from tsv --flexible --noheaders --no-infer
+    | rename value description
 }
 
 # https://www.nushell.sh/cookbook/external_completers.html#zoxide-completer
@@ -184,10 +184,11 @@ let external_completer = {|spans|
         git => $fish_completer
         # carapace doesn't have completions for asdf
         asdf => $fish_completer
-        # carapace doesn't have completions for asdf
         mise => $fish_completer
         # carapace doesn't have completions for zola
         zola => $fish_completer
+        # carapace doesn't have completions for nx
+        nx => $fish_completer
         # use zoxide completions for zoxide commands
         __zoxide_z | __zoxide_zi => $zoxide_completer
         _ => $carapace_completer
@@ -267,7 +268,7 @@ $env.config = {
         external: {
             enable: true # set to false to prevent nushell looking into $env.PATH to find more suggestions, `false` recommended for WSL users as this look up may be very slow
             max_results: 100 # setting it lower can improve completion performance at the cost of omitting some options
-            completer: null # check 'carapace_completer' above as an example
+            completer: $external_completer # check 'carapace_completer' above as an example
         }
         use_ls_colors: true # set this to true to enable file/path/directory completions using LS_COLORS
     }
@@ -954,7 +955,6 @@ def gemini [arg, string] {
     shelldon $arg --model gemini-1.5-flash-latest $string
 }
 
-alias nx = npx nx
 use ~/.cache/starship/init.nu
 source ~/.zoxide.nu
 
@@ -979,7 +979,7 @@ source /Users/ryan/.config/nushell/completions/godoc-completions.nu
 source /Users/ryan/.config/nushell/completions/git-completions.nu
 source /Users/ryan/.config/nushell/completions/just-completions.nu
 source /Users/ryan/.config/nushell/completions/make-completions.nu
-source /Users/ryan/.config/nushell/completions/nx-completions.nu
+# source /Users/ryan/.config/nushell/completions/nx-completions.nu
 source /Users/ryan/.config/nushell/completions/man-completions.nu
 source /Users/ryan/.config/nushell/completions/npm-completions.nu
 source /Users/ryan/.config/nushell/completions/rg-completions.nu

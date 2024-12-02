@@ -15,22 +15,22 @@ def --env add-hook [field: cell-path new_hook: any] {
 }
 
 def "parse vars" [] {
-  $in | lines | parse "{op},{name},{value}"
+  $in | from csv --noheaders --no-infer | rename 'op' 'name' 'value'
 }
 
-export def --wrapped main [command?: string, --help, ...rest: string] {
-  let commands = ["shell", "deactivate"]
+export def --env --wrapped main [command?: string, --help, ...rest: string] {
+  let commands = ["deactivate", "shell", "sh"]
 
   if ($command == null) {
-    ^"/usr/local/bin/mise"
+    ^"/opt/homebrew/bin/mise"
   } else if ($command == "activate") {
     $env.MISE_SHELL = "nu"
   } else if ($command in $commands) {
-    ^"/usr/local/bin/mise" $command ...$rest
+    ^"/opt/homebrew/bin/mise" $command ...$rest
     | parse vars
     | update-env
   } else {
-    ^"/usr/local/bin/mise" $command ...$rest
+    ^"/opt/homebrew/bin/mise" $command ...$rest
   }
 }
 
@@ -45,7 +45,7 @@ def --env "update-env" [] {
 }
 
 def --env mise_hook [] {
-  ^"/usr/local/bin/mise" hook-env -s nu
+  ^"/opt/homebrew/bin/mise" hook-env -s nu
     | parse vars
     | update-env
 }
