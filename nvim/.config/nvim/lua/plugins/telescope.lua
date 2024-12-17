@@ -12,6 +12,7 @@ return {
         dependencies = {
             'nvim-lua/plenary.nvim',
             'nvim-lua/popup.nvim',
+            'nvim-telescope/telescope-fzf-native.nvim',
             'nvim-telescope/telescope-media-files.nvim',
         },
         config = function()
