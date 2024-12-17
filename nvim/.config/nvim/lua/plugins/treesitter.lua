@@ -1,12 +1,12 @@
 -- Highlight, edit, and navigate code
 return {
-    'nushell/tree-sitter-nu',
-    'MDeiml/tree-sitter-markdown',
     {
         'nvim-treesitter/nvim-treesitter',
         dependencies = {
             'nvim-treesitter/nvim-treesitter-textobjects',
             'nvim-treesitter/nvim-treesitter-refactor',
+            'nushell/tree-sitter-nu',
+            'MDeiml/tree-sitter-markdown',
         },
         build = ':TSUpdate',
         config = function()
