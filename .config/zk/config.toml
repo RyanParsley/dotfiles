@@ -54,11 +54,18 @@ filename = "{{format-date now 'journal/daily/%Y/%m-%B/%Y-%m-%d'}}"
 template = "daily.md"
 
 [group.meeting]
-paths = ["Notes/meetings"]
+paths = ["Meetings"]
 
 [group.meeting.note]
-filename = "Notes/meetings/{{format-date now '%Y-%m-%d'}}"
+filename = "Meetings/{{format-date now '%Y-%m-%d'}}"
 template = "meeting.md"
+
+[group.person]
+paths = ["People"]
+
+[group.person.note]
+filename = "People/{{title}}"
+template = "person.md"
 
 # MARKDOWN SETTINGS
 [format.markdown]
@@ -91,6 +98,7 @@ recents = "--sort created- --created-after 'last two weeks'"
 [alias]
 daily = "zk new --group daily"
 meeting = "zk new --group meeting"
+person = 'zk new --group person --title "$*"'
 daily-work = "zk new --group daily --template daily-work.md"
 
 # Edit the last modified note.
