@@ -3,7 +3,7 @@
 # version = "0.99.2"
 
 def create_left_prompt [] {
-    let dir = match (do --ignore-shell-errors { $env.PWD | path relative-to $nu.home-path }) {
+    let dir = match (do --ignore-errors { $env.PWD | path relative-to $nu.home-path }) {
         null => $env.PWD
         '' => '~'
         $relative_pwd => ([~ $relative_pwd] | path join)
@@ -112,14 +112,16 @@ let fish_completer = {|spans|
 
 
 $env.PATH = ($env.PATH | split row (char esep) |
+    prepend '~/.cargo/bin' |
     prepend '~/.local/share/bob/nvim-bin' |
     prepend '~/.local/bin' |
     prepend '~/.bin' |
     prepend '~/bin' |
     prepend '~/bin/google-cloud-sdk/bin' |
     prepend '/usr/local/bin' |
-    append  '/opt/homebrew/bin' |
-    prepend '~/.cargo/bin')
+    prepend  '/opt/homebrew/bin' |
+    prepend '/opt/homebrew/sbin' 
+)
 
 $env.DYLD_LIBRARY_PATH = '/opt/homebrew/lib'
 
