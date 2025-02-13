@@ -166,7 +166,7 @@ return {
             }
             lspconfig.ts_ls.setup {
                 capabilities = capabilities,
-                on_attach = function(client, bufnr)
+                on_attach = function(client)
                     if client.server_capabilities.inlayHintProvider then
                         vim.lsp.inlay_hint.enable(true)
                     end
@@ -177,7 +177,12 @@ return {
                         inlayHints = {
                             includeInlayParameterNameHints = 'all',
                             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                            includeInlayFunctionParameterTypeHints = true,
+                            -- I used to have this, then it seemed to cause an
+                            -- issue. I don't know if it is depricated/buggy or
+                            -- simply exposing a different issue. I _may_ want
+                            -- this in the future. I need to understand this
+                            -- error better
+                            --includeInlayFunctionParameterTypeHints = true,
                             includeInlayVariableTypeHints = true,
                             includeInlayVariableTypeHintsWhenTypeMatchesName = true,
                             includeInlayPropertyDeclarationTypeHints = true,
