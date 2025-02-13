@@ -107,5 +107,21 @@ return {
         -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
         ---@module 'render-markdown'
         ---@type render.md.UserConfig
+        opts = {
+            html = {
+                -- Turn on / off all HTML rendering
+                enabled = false,
+                -- Additional modes to render HTML
+                render_modes = false,
+                comment = {
+                    -- Turn on / off HTML comment concealing
+                    conceal = true,
+                    -- Optional text to inline before the concealed comment
+                    text = nil,
+                    -- Highlight for the inlined text
+                    highlight = 'RenderMarkdownHtmlComment',
+                },
+            },
+        },
     },
 }
