@@ -68,11 +68,11 @@ return {
                 --
                 -- You can use a sub-list to tell conform to run *until* a formatter
                 -- is found.
-                java = { { 'prettierd', 'prettier' } },
-                javascript = { { 'prettierd', 'prettier' } },
-                typescript = { { 'prettierd', 'prettier' } },
-                ['markdown'] = { { 'prettierd', 'prettier' }, 'markdownlint-cli2', 'markdown-toc' },
-                ['markdown.mdx'] = { { 'prettierd', 'prettier' }, 'markdownlint-cli2', 'markdown-toc' },
+                java = { { 'prettierd', 'prettier', stop_after_first = true } },
+                javascript = { 'prettierd', 'prettier', stop_after_first = true },
+                typescript = { 'prettierd', 'prettier', stop_after_first = true },
+                ['markdown'] = { 'prettierd', 'prettier', stop_after_first = true },
+                ['markdown.mdx'] = { 'prettierd', 'prettier', stop_after_first = true },
             },
         },
     },
