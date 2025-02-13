@@ -16,6 +16,7 @@ return {
         opts = {
             -- "ueberzug" or "kitty"
             backend = 'kitty',
+            processor = 'magick_cli', -- or "magick_rock"
             integrations = {
                 markdown = {
                     only_render_image_at_cursor = true,

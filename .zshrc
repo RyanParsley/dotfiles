@@ -119,9 +119,7 @@ source ~/.bin/smug.zsh
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-export DYLD_LIBRARY_PATH="$(brew --prefix)/lib:$DYLD_LIBRARY_PATH"
 export MAGICK_HOME=$(brew --prefix)
-export WAND_MAGICK_LIBRARY_SUFFIX="-7.Q16HDRI;-6.Q16HDRI"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -143,12 +141,7 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
 
-# Golang environment variables
-export GOROOT=/usr/local/bin/go
-export GOPATH=$HOME/go
-
-# Update PATH to include GOPATH and GOROOT binaries
-export PATH=$GOPATH/bin:$GOROOT/bin:$HOME/.local/bin:$PATH
+export EDITOR=nvim
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
@@ -159,3 +152,4 @@ if [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/googl
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'; fi
 . "$HOME/.cargo/env"
+export PATH="/opt/homebrew/sbin:$PATH"
