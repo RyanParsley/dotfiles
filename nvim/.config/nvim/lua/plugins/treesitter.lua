@@ -29,7 +29,6 @@ return {
                     'markdown_inline',
                     'nu',
                     'norg',
-                    'org',
                     'python',
                     'rust',
                     'scss',

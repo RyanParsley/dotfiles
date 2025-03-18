@@ -132,7 +132,6 @@ export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 export LDFLAGS="-L$(brew --prefix)/opt/libffi/lib"
 export CPPFLAGS="-I$(brew --prefix)/opt/libffi/include"
 export PKG_CONFIG_PATH="$(brew --prefix)/opt/libffi/lib/pkgconfig"
-eval "$($(brew --prefix)/bin/mise activate zsh)"
 export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3
 export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$(brew --prefix qt@5)
 export PATH=$PATH:$(brew --prefix qt@5)/bin
@@ -140,8 +139,13 @@ fpath=(${HOME}/.zsh_completion.d $fpath)
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
+export PATH="$PATH:$HOME/go/bin"
+
 
 export EDITOR=nvim
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/ryan/.lmstudio/bin"
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
