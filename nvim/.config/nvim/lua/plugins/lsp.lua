@@ -28,7 +28,7 @@ return {
 
             -- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
             -- used for completion, annotations and signatures of Neovim apis
-            { 'folke/neodev.nvim', opts = {} },
+            { 'folke/lazydev.nvim', opts = {} },
         },
         opts = {
             inlay_hints = { enabled = true },
@@ -89,7 +89,6 @@ return {
                 end,
             }
 
-            require('neodev').setup()
             require('lspconfig').jdtls.setup {}
             require('lspconfig').astro.setup {
                 capabilities = capabilities,
