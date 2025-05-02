@@ -129,7 +129,7 @@ export PATH="$HOME/.bin:$PATH"
 export PATH="$HOME/local/bin:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 
-export LDFLAGS="-L$(brew --prefix)/opt/libffi/lib"
+#export LDFLAGS="-L$(brew --prefix)/opt/libffi/lib"
 export CPPFLAGS="-I$(brew --prefix)/opt/libffi/include"
 export PKG_CONFIG_PATH="$(brew --prefix)/opt/libffi/lib/pkgconfig"
 export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3
@@ -143,7 +143,10 @@ export PATH="$PATH:$HOME/go/bin"
 export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 eval "$(/opt/homebrew/bin/mise activate zsh)"
+export OLLAMA_API_BASE=http://127.0.0.1:11434
+
 export EDITOR=nvim
+export AIDER_EDITOR=nvim
 
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/ryan/.lmstudio/bin"
@@ -158,3 +161,10 @@ if [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/googl
 if [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'; fi
 . "$HOME/.cargo/env"
 . "$HOME/.local/bin/env"
+export PATH="/opt/homebrew/sbin:$PATH"
+eval "$(/Users/ryan/.local/bin/mise activate zsh)"
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/ryan/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
