@@ -1,5 +1,6 @@
 -- debug.lua
 return {
+    { 'mxsdev/nvim-dap-vscode-js', dependencies = { 'mfussenegger/nvim-dap' } },
     'nvim-neotest/nvim-nio',
     {
         'mfussenegger/nvim-dap',
@@ -21,7 +22,7 @@ return {
             require('mason-nvim-dap').setup {
                 -- Makes a best effort to setup the various debuggers with
                 -- reasonable debug configurations
-                automatic_setup = true,
+                automatic_installation = true,
 
                 -- You can provide additional configuration to the handlers,
                 -- see mason-nvim-dap README for more information
@@ -32,6 +33,9 @@ return {
                 ensure_installed = {
                     -- Update this to ensure that you have the debuggers for the langs you want
                     'delve',
+                    'js',
+                    'firefox',
+                    'chrome',
                 },
             }
             -- Basic debugging keymaps, feel free to change to your liking!
@@ -39,10 +43,58 @@ return {
             vim.keymap.set('n', '<F1>', dap.step_into, { desc = 'Debug: Step Into' })
             vim.keymap.set('n', '<F2>', dap.step_over, { desc = 'Debug: Step Over' })
             vim.keymap.set('n', '<F3>', dap.step_out, { desc = 'Debug: Step Out' })
-            vim.keymap.set('n', '<leader>b', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
+            vim.keymap.set('n', '<leader>db', dap.toggle_breakpoint, { desc = 'Debug: Toggle Breakpoint' })
             vim.keymap.set('n', '<leader>B', function()
                 dap.set_breakpoint(vim.fn.input 'Breakpoint condition: ')
             end, { desc = 'Debug: Set Breakpoint' })
+
+            dap.adapters['pwa-node'] = {
+                type = 'server',
+                host = '127.0.0.1',
+                port = 8123,
+                executable = {
+                    command = 'js-debug-adapter',
+                },
+            }
+
+            for _, language in ipairs { 'typescript', 'javascript' } do
+                dap.configurations[language] = {
+                    {
+                        type = 'pwa-node',
+                        request = 'launch',
+                        name = 'Launch file',
+                        program = '${file}',
+                        cwd = '${workspaceFolder}',
+                        runtimeExecutable = 'node',
+                    },
+                }
+            end
+
+            local codelldb_path = require('mason-registry').get_package('codelldb'):get_install_path() .. '/extension'
+            local codelldb_bin = codelldb_path .. '/adapter/codelldb'
+
+            dap.adapters.codelldb = {
+                type = 'server',
+                port = '${port}',
+                executable = {
+                    -- Change this to your path!
+                    command = codelldb_bin,
+                    args = { '--port', '${port}' },
+                },
+            }
+
+            dap.configurations.rust = {
+                {
+                    name = 'Launch file',
+                    type = 'codelldb',
+                    request = 'launch',
+                    program = function()
+                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/target/debug/', 'file')
+                    end,
+                    cwd = '${workspaceFolder}',
+                    stopOnEntry = false,
+                },
+            }
 
             -- Dap UI setup
             -- For more information, see |:help nvim-dap-ui|
