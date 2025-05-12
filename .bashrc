@@ -9,3 +9,5 @@ export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3
 
 export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$(brew --prefix qt@5)
 export PATH=$PATH:$(brew --prefix qt@5)/bin
+
+. "$HOME/.local/bin/env"
