@@ -3,3 +3,7 @@ usage = "latest"
 python = "3.13.0"
 java = "22"
 ruby = "3.2.1"
+node = "23.11.0"
+
+[settings]
+idiomatic_version_file_enable_tools = ["node"]
