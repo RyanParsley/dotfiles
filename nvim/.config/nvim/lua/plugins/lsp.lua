@@ -7,7 +7,13 @@ return {
         config = function()
             require('mason').setup()
         end,
-        opts = { ensure_installed = { 'java-debug-adapter', 'java-test' } },
+        opts = {
+            ensure_installed = {
+                'java-debug-adapter',
+                'java-test',
+                'js-debug-adapter',
+            },
+        },
     },
     {
         'williamboman/mason-lspconfig.nvim',
