@@ -140,8 +140,9 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
 export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
 export PATH="$PATH:$HOME/go/bin"
-
-
+export PATH="/opt/homebrew/sbin:$PATH"
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+eval "$(/opt/homebrew/bin/mise activate zsh)"
 export EDITOR=nvim
 
 # Added by LM Studio CLI (lms)
@@ -156,4 +157,4 @@ if [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/googl
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'; fi
 . "$HOME/.cargo/env"
-export PATH="/opt/homebrew/sbin:$PATH"
+. "$HOME/.local/bin/env"
