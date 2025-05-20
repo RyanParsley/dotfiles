@@ -1,6 +1,5 @@
 return {
     'joeveiga/ng.nvim',
-    'nvim-java/nvim-java',
     {
         'williamboman/mason.nvim',
         lazy = false,
@@ -9,8 +8,6 @@ return {
         end,
         opts = {
             ensure_installed = {
-                'java-debug-adapter',
-                'java-test',
                 'js-debug-adapter',
             },
         },
@@ -18,7 +15,7 @@ return {
     {
         'williamboman/mason-lspconfig.nvim',
         lazy = false,
-        opts = { auto_install = true },
+        opts = { auto_install = true, automatic_enable = true },
     },
     {
         'neovim/nvim-lspconfig',
@@ -38,14 +35,6 @@ return {
         },
         opts = {
             inlay_hints = { enabled = true },
-            servers = {
-                jdtls = {},
-            },
-            setup = {
-                jdtls = function()
-                    return true -- avoid duplicate servers
-                end,
-            },
         },
         config = function()
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -69,10 +58,7 @@ return {
             }
             require('mason-tool-installer').setup {
                 -- Install these linters, formatters, debuggers automatically
-                ensure_installed = {
-                    'java-debug-adapter',
-                    'java-test',
-                },
+                ensure_installed = {},
             }
             -- There is an issue with mason-tools-installer running with VeryLazy, since it triggers on VimEnter which has already occurred prior to this plugin loading so we need to call install explicitly
             -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/issues/39
@@ -83,19 +69,6 @@ return {
                 -- Create your keybindings here...
             end
 
-            require('mason-lspconfig').setup_handlers {
-                function(server_name)
-                    -- Don't call setup for JDTLS Java LSP because it will be setup from a separate config
-                    if server_name ~= 'jdtls' then
-                        lspconfig[server_name].setup {
-                            on_attach = lsp_attach,
-                            capabilities = lsp_capabilities,
-                        }
-                    end
-                end,
-            }
-
-            require('lspconfig').jdtls.setup {}
             require('lspconfig').astro.setup {
                 capabilities = capabilities,
                 init_options = {},
@@ -177,17 +150,12 @@ return {
                     end
                 end,
                 settings = {
-                    implicitProjectConfiguration = { checkJs = true },
                     typescript = {
+                        tsdk = vim.fn.stdpath('data') .. '/mason/packages/typescript/lib', -- Path to TypeScript SDK
                         inlayHints = {
                             includeInlayParameterNameHints = 'all',
                             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                            -- I used to have this, then it seemed to cause an
-                            -- issue. I don't know if it is depricated/buggy or
-                            -- simply exposing a different issue. I _may_ want
-                            -- this in the future. I need to understand this
-                            -- error better
-                            --includeInlayFunctionParameterTypeHints = true,
+                            includeInlayFunctionParameterTypeHints = true,
                             includeInlayVariableTypeHints = true,
                             includeInlayVariableTypeHintsWhenTypeMatchesName = true,
                             includeInlayPropertyDeclarationTypeHints = true,
