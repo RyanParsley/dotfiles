@@ -1,6 +1,9 @@
 local ls = require 'luasnip'
 local fmt = require('luasnip.extras.fmt').fmt
-local d = require('luasnip.extras').d
+
+local function date(format_str)
+    return os.date(format_str)
+end
 
 return {
     ls.sn(
@@ -12,7 +15,7 @@ aliases: []
 tags: []
 ---
 
-# {date("%Y-%m-%d")}
+# {}
 
 ## Attendees
 
@@ -28,7 +31,9 @@ tags: []
 
 ## Notes
 ]],
-            { date = os.date }
+            {
+                date("%Y-%m-%d"),
+            }
         )
     ),
 }

@@ -2,39 +2,39 @@ local ls = require 'luasnip'
 local fmt = require('luasnip.extras.fmt').fmt
 local d = require('luasnip.extras').d
 
+local today = os.date("%Y-%m-%d")
+local yesterday = os.date("%Y/%Y-%m-%d", os.time() - 86400)
+local tomorrow = os.date("%Y/%Y-%m-%d", os.time() + 86400)
+
 return {
     ls.sn(
         { trig = 'daily', dscr = 'Create a daily note template' },
         fmt(
             [[
 ---
-title: {date("%Y-%m-%d")}
-created: {date("%Y-%m-%d")}
+title: {}
+created: {}
 clarinet: false
 tkd: false
 meditate: false
 tags:
   - daily
 ---
-# {date("%Y-%m-%d")}
+# {}
 
 ## Navigation
-[Yesterday]({{date("%Y/%Y-%m-%d", "yesterday")}}) <-> [Tomorrow]({{date("%Y/%Y-%m-%d", "tomorrow")}}) 
+[Yesterday]({}) <-> [Tomorrow]({}) 
 
 ## Tasks
 
 ## Notes
 ]],
             {
-                date = function(format_str, offset)
-                    if offset == 'yesterday' then
-                        return os.date(format_str, os.time() - 86400)
-                    elseif offset == 'tomorrow' then
-                        return os.date(format_str, os.time() + 86400)
-                    else
-                        return os.date(format_str)
-                    end
-                end,
+                today,
+                today,
+                today,
+                yesterday,
+                tomorrow,
             }
         )
     ),
