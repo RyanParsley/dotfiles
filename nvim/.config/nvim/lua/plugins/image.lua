@@ -20,7 +20,7 @@ return {
             integrations = {
                 markdown = {
                     only_render_image_at_cursor = true,
-                    download_remote_images = true,
+                    only_render_image_at_cursor_mode = 'inline', -- "popup" or "inline", defaults to "popup"
                 },
             },
         },
