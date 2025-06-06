@@ -1,7 +1,7 @@
 [tools]
 usage = "latest"
 python = "3.13.0"
-java = "22"
+java = "24.0.1"
 ruby = "3.2.1"
 node = "23.11.0"
 
