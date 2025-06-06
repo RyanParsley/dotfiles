@@ -1,5 +1,6 @@
 return {
     'joeveiga/ng.nvim',
+    'mfussenegger/nvim-jdtls',
     {
         'williamboman/mason.nvim',
         lazy = false,
@@ -15,7 +16,22 @@ return {
     {
         'williamboman/mason-lspconfig.nvim',
         lazy = false,
-        opts = { auto_install = true, automatic_enable = true },
+        opts = {
+            auto_install = true,
+            automatic_enable = true,
+            ensure_installed = {
+                'angularls',
+                'bashls',
+                'html',
+                'gradle_ls',
+                'lua_ls',
+                'jdtls',
+                'marksman',
+                'quick_lint_js',
+                'rust_analyzer',
+                'yamlls',
+            },
+        },
     },
     {
         'neovim/nvim-lspconfig',
@@ -35,6 +51,10 @@ return {
         },
         opts = {
             inlay_hints = { enabled = true },
+            servers = {
+                angularls = {},
+            },
+            setup = {},
         },
         config = function()
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -43,19 +63,6 @@ return {
                 didChangeWatchedFiles = { dynamicRegistration = true },
             }
             require('mason').setup()
-            require('mason-lspconfig').setup {
-                -- Install these LSPs automatically
-                ensure_installed = {
-                    'bashls',
-                    'html',
-                    'gradle_ls',
-                    'lua_ls',
-                    'jdtls',
-                    'marksman',
-                    'quick_lint_js',
-                    'yamlls',
-                },
-            }
             require('mason-tool-installer').setup {
                 -- Install these linters, formatters, debuggers automatically
                 ensure_installed = {},
@@ -151,7 +158,7 @@ return {
                 end,
                 settings = {
                     typescript = {
-                        tsdk = vim.fn.stdpath('data') .. '/mason/packages/typescript/lib', -- Path to TypeScript SDK
+                        tsdk = vim.fn.stdpath 'data' .. '/mason/packages/typescript/lib', -- Path to TypeScript SDK
                         inlayHints = {
                             includeInlayParameterNameHints = 'all',
                             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
