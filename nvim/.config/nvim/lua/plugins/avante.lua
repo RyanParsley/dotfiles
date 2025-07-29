@@ -8,10 +8,12 @@ return {
             provider = 'copilot',
         } or {
             provider = 'ollama',
-            ollama = {
-                --model = 'qwq:32b',
-                --model = 'qwen2.5-coder:14b',
-                model = 'qwen2.5-coder:14b',
+            providers = {
+                ollama = {
+                    --model = 'qwq:32b',
+                    --model = 'qwen2.5-coder:14b',
+                    model = 'qwen2.5-coder:14b',
+                },
             },
             web_search_engine = {
                 provider = 'brave', -- tavily, serpapi, searchapi, google or kagi
