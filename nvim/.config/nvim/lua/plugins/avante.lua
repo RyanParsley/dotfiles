@@ -11,7 +11,7 @@ return {
             ollama = {
                 --model = 'qwq:32b',
                 --model = 'qwen2.5-coder:14b',
-                model = 'qwen2.5-coder:32b',
+                model = 'qwen2.5-coder:14b',
             },
             web_search_engine = {
                 provider = 'brave', -- tavily, serpapi, searchapi, google or kagi
