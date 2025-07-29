@@ -142,7 +142,6 @@ export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
 export PATH="$PATH:$HOME/go/bin"
 export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="$HOME/.local/share/mise/shims:$PATH"
-eval "$(/opt/homebrew/bin/mise activate zsh)"
 export OLLAMA_API_BASE=http://127.0.0.1:11434
 
 export EDITOR=nvim
@@ -160,7 +159,6 @@ if [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/googl
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'; fi
 . "$HOME/.cargo/env"
-. "$HOME/.local/bin/env"
 export PATH="/opt/homebrew/sbin:$PATH"
 eval "$(/Users/ryan/.local/bin/mise activate zsh)"
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
