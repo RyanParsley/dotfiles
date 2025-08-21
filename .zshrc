@@ -160,7 +160,7 @@ if [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/googl
 if [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'; fi
 . "$HOME/.cargo/env"
 export PATH="/opt/homebrew/sbin:$PATH"
-eval "$(/Users/ryan/.local/bin/mise activate zsh)"
+eval "$(mise activate zsh)"
 # The following lines have been added by Docker Desktop to enable Docker CLI completions.
 fpath=(/Users/ryan/.docker/completions $fpath)
 autoload -Uz compinit
