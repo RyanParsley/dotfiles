@@ -5,6 +5,7 @@ return {
     'tpope/vim-fugitive',
     'tpope/vim-rhubarb',
     'evanleck/vim-svelte',
+    'wuelnerdotexe/vim-astro',
     'aserowy/tmux.nvim',
     'tpope/vim-sleuth',
     'nvim-tree/nvim-web-devicons',
