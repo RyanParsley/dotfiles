@@ -166,3 +166,6 @@ fpath=(/Users/ryan/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
 # End of Docker CLI completions
+
+# opencode
+export PATH=/Users/ryan/.opencode/bin:$PATH
