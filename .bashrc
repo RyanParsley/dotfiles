@@ -11,3 +11,8 @@ export PATH=$PATH:$(brew --prefix qt@5)/bin
 
 . "$HOME/.local/bin/env"
 . "$HOME/.cargo/env"
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/ryan/.lmstudio/bin"
+# End of LM Studio CLI section
+
