@@ -33,6 +33,8 @@ vim.g.markdown_fenced_languages = {
 }
 vim.opt.conceallevel = 1
 
+vim.g.lazyvim_rust_diagnostics = 'bacon-ls'
+
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
