@@ -19,18 +19,19 @@ return {
         opts = {
             auto_install = true,
             automatic_enable = true,
-            ensure_installed = {
-                'angularls',
-                'bashls',
-                'html',
-                'gradle_ls',
-                'lua_ls',
-                'jdtls',
-                'marksman',
-                'quick_lint_js',
-                'rust_analyzer',
-                'yamlls',
-            },
+             ensure_installed = {
+                 'angularls',
+                 'astro',
+                 'bashls',
+                 'html',
+                 'gradle_ls',
+                 'lua_ls',
+                 'jdtls',
+                 'marksman',
+                 'quick_lint_js',
+                 'rust_analyzer',
+                 'yamlls',
+             },
         },
     },
     {
@@ -56,6 +57,7 @@ return {
             },
             setup = {},
         },
+
         config = function()
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
             local capabilities_oxide = capabilities
@@ -78,23 +80,45 @@ return {
 
             require('lspconfig').astro.setup {
                 capabilities = capabilities,
-                init_options = {},
+                on_attach = function(client, bufnr)
+                    if client.server_capabilities.inlayHintProvider then
+                        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                        -- Refresh inlay hints after a short delay (if available)
+                        vim.defer_fn(function()
+                            if vim.lsp.inlay_hint.refresh then
+                                vim.lsp.inlay_hint.refresh({ bufnr = bufnr })
+                            end
+                        end, 1000)
+                    end
+                end,
                 settings = {
-                    inlay_hints = true, -- enable/disable inlay hints on start
                     typescript = {
                         inlayHints = {
-                            includeInlayParameterNameHints = 'all',
-                            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayVariableTypeHints = true,
-                            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                            includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayEnumMemberValueHints = true,
+                            parameterNames = {
+                                enabled = 'all',
+                            },
+                            parameterTypes = {
+                                enabled = true,
+                            },
+                            variableTypes = {
+                                enabled = true,
+                            },
+                            propertyDeclarationTypes = {
+                                enabled = true,
+                            },
+                            functionLikeReturnTypes = {
+                                enabled = true,
+                            },
+                            enumMemberValues = {
+                                enabled = true,
+                            },
                         },
                     },
                 },
+                filetypes = { 'astro', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+                root_dir = lspconfig.util.root_pattern('astro.config.mjs', 'astro.config.ts', 'astro.config.js', 'package.json'),
             }
+
             lspconfig.eslint.setup { capabilities = capabilities }
             lspconfig.markdown_oxide.setup {
                 on_attach = function(client, bufnr)
@@ -149,41 +173,7 @@ return {
                     vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
                 end,
             }
-            lspconfig.ts_ls.setup {
-                capabilities = capabilities,
-                on_attach = function(client)
-                    if client.server_capabilities.inlayHintProvider then
-                        vim.lsp.inlay_hint.enable(true)
-                    end
-                end,
-                settings = {
-                    typescript = {
-                        tsdk = vim.fn.stdpath 'data' .. '/mason/packages/typescript/lib', -- Path to TypeScript SDK
-                        inlayHints = {
-                            includeInlayParameterNameHints = 'all',
-                            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayVariableTypeHints = true,
-                            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                            includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayEnumMemberValueHints = true,
-                        },
-                    },
-                    javascript = {
-                        inlayHints = {
-                            includeInlayParameterNameHints = 'all',
-                            includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-                            includeInlayFunctionParameterTypeHints = true,
-                            includeInlayVariableTypeHints = true,
-                            includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-                            includeInlayPropertyDeclarationTypeHints = true,
-                            includeInlayFunctionLikeReturnTypeHints = true,
-                            includeInlayEnumMemberValueHints = true,
-                        },
-                    },
-                },
-            }
+
             lspconfig.nushell.setup { capabilities = capabilities }
             lspconfig.html.setup { capabilities = capabilities }
             lspconfig.lua_ls.setup { capabilities = capabilities }
