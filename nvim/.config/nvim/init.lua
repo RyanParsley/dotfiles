@@ -3,16 +3,13 @@ package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share
 package.cpath = package.cpath .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/lib/lua/5.1/?.so'
 -- tell neovim to use mise version of java
 vim.g.java_home = '/Users/ryan/.local/share/mise/installs/java/22.0.2/bin/java'
-vim.cmd 'set expandtab'
-vim.cmd 'set tabstop=2'
-vim.cmd 'set softtabstop=2'
-vim.cmd 'set shiftwidth=2'
-vim.cmd 'set textwidth=80'
-vim.cmd 'set colorcolumn=+1'
--- I almost like this next line. It auto wraps text as you write. It's nice for
--- markdown, but bad for yaml and other things with tags. Perhaps theres a
--- subtly different way to use it?
---vim.cmd 'set fo+=a'
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.textwidth = 80
+vim.opt.colorcolumn = '+1'
+-- Note: Auto-wrap on insert (fo+=a) is disabled as it can interfere with YAML and other structured formats
 --Set <space> as the leader key See `:help mapleader` NOTE: Must happen before
 --plugins are required (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
@@ -51,7 +48,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 vim.opt.relativenumber = true
-vim.opt.rnu = true
 
 local local_config = vim.fn.expand '~/.config/nvim/init-local.lua'
 if vim.fn.filereadable(local_config) == 1 then
@@ -110,10 +106,10 @@ vim.g.astro_typescript = 'enable'
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = 'Move up with line wrapping' })
+vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = 'Move down with line wrapping' })
 
-vim.keymap.set('n', '<leader>b', require('dap').toggle_breakpoint)
+vim.keymap.set('n', '<leader>b', require('dap').toggle_breakpoint, { desc = 'Toggle breakpoint' })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -124,6 +120,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
     group = highlight_group,
     pattern = '*',
+    desc = 'Briefly highlight yanked text',
 })
 
 local format_on_save_ts = vim.api.nvim_create_augroup('fmt-ts', {})
@@ -131,20 +128,28 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     pattern = { '*.tsx', '*.ts', '*.jsx', '*.js' },
     command = 'silent! EslintFixAll',
     group = format_on_save_ts,
+    desc = 'Run ESLint fix on TypeScript/JavaScript files before save',
 })
 vim.lsp.inlay_hint.enable()
 
--- Yes, we're just executing a bunch of Vimscript, but this is the officially
--- endorsed method; see https://github.com/L3MON4D3/LuaSnip#keymaps
-vim.cmd [[
-" Use Tab to expand and jump through snippets
-imap <silent><expr> <Tab> luasnip#expand_or_jumpable() ? '<Plug>luasnip-expand-or-jump' : '<Tab>' 
-smap <silent><expr> <Tab> luasnip#jumpable(1) ? '<Plug>luasnip-jump-next' : '<Tab>'
+-- LuaSnip keymaps using vim.keymap.set for better integration
+vim.keymap.set({'i', 's'}, '<Tab>', function()
+    local luasnip = require('luasnip')
+    if luasnip.expand_or_jumpable() then
+        return '<Plug>luasnip-expand-or-jump'
+    else
+        return '<Tab>'
+    end
+end, { expr = true, silent = true, desc = 'Expand or jump to next snippet position' })
 
-" Use Shift-Tab to jump backwards through snippets
-imap <silent><expr> <S-Tab> luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<S-Tab>'
-smap <silent><expr> <S-Tab> luasnip#jumpable(-1) ? '<Plug>luasnip-jump-prev' : '<S-Tab>'
-]]
+vim.keymap.set({'i', 's'}, '<S-Tab>', function()
+    local luasnip = require('luasnip')
+    if luasnip.jumpable(-1) then
+        return '<Plug>luasnip-jump-prev'
+    else
+        return '<S-Tab>'
+    end
+end, { expr = true, silent = true, desc = 'Jump to previous snippet position' })
 -- Load snippets
 require('luasnip.loaders.from_lua').load { paths = '~/.config/nvim/lua/snippets/' }
 
