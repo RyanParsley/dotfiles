@@ -64,6 +64,39 @@ return {
             capabilities_oxide.workspace = {
                 didChangeWatchedFiles = { dynamicRegistration = true },
             }
+
+            -- Shared on_attach function for common LSP setup
+            local function on_attach(client, bufnr)
+                -- Enable inlay hints if supported
+                if client.server_capabilities.inlayHintProvider then
+                    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                    -- Refresh inlay hints after a short delay
+                    vim.defer_fn(function()
+                        if vim.lsp.inlay_hint.refresh then
+                            vim.lsp.inlay_hint.refresh({ bufnr = bufnr })
+                        end
+                    end, 1000)
+                end
+
+                -- Set up codelens refresh for supported servers
+                if client.server_capabilities.codeLensProvider then
+                    local codelens_group = vim.api.nvim_create_augroup('lsp_codelens_' .. bufnr, { clear = true })
+                    vim.api.nvim_create_autocmd(
+                        { 'TextChanged', 'InsertLeave', 'CursorHold', 'LspAttach', 'BufEnter' },
+                        {
+                            buffer = bufnr,
+                            group = codelens_group,
+                            callback = function()
+                                vim.lsp.codelens.refresh({ bufnr = bufnr })
+                            end,
+                            desc = 'Refresh LSP codelens',
+                        }
+                    )
+                    -- Trigger initial codelens refresh
+                    vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
+                end
+            end
+
             require('mason').setup()
             require('mason-tool-installer').setup {
                 -- Install these linters, formatters, debuggers automatically
@@ -71,7 +104,7 @@ return {
             }
             -- There is an issue with mason-tools-installer running with VeryLazy, since it triggers on VimEnter which has already occurred prior to this plugin loading so we need to call install explicitly
             -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/issues/39
-            vim.api.nvim_command 'MasonToolsInstall'
+            vim.cmd 'MasonToolsInstall'
             local lspconfig = require 'lspconfig'
             local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
             local lsp_attach = function(client, bufnr)
@@ -80,17 +113,7 @@ return {
 
             require('lspconfig').astro.setup {
                 capabilities = capabilities,
-                on_attach = function(client, bufnr)
-                    if client.server_capabilities.inlayHintProvider then
-                        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-                        -- Refresh inlay hints after a short delay (if available)
-                        vim.defer_fn(function()
-                            if vim.lsp.inlay_hint.refresh then
-                                vim.lsp.inlay_hint.refresh({ bufnr = bufnr })
-                            end
-                        end, 1000)
-                    end
-                end,
+                on_attach = on_attach,
                 settings = {
                     typescript = {
                         inlayHints = {
@@ -122,34 +145,13 @@ return {
             lspconfig.eslint.setup { capabilities = capabilities }
             lspconfig.markdown_oxide.setup {
                 on_attach = function(client, bufnr)
-                    local function check_codelens_support()
-                        local clients = vim.lsp.get_active_clients { bufnr = 0 }
-                        for _, c in ipairs(clients) do
-                            if c.server_capabilities.codeLensProvider then
-                                return true
-                            end
-                        end
-                        return false
-                    end
-                    -- refresh codelens on TextChanged and InsertLeave as well
-                    vim.api.nvim_create_autocmd(
-                        { 'TextChanged', 'InsertLeave', 'CursorHold', 'LspAttach', 'BufEnter' },
-                        {
-                            buffer = bufnr,
-                            callback = function()
-                                if check_codelens_support() then
-                                    vim.lsp.codelens.refresh { bufnr = 0 }
-                                end
-                            end,
-                        }
-                    )
-                    -- trigger codelens refresh
-                    vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
+                    -- Use shared on_attach for common setup
+                    on_attach(client, bufnr)
+
                     -- setup Markdown Oxide daily note commands
                     if client.name == 'markdown_oxide' then
                         vim.api.nvim_create_user_command('Daily', function(args)
                             local input = args.args
-
                             vim.lsp.buf.execute_command { command = 'jump', arguments = { input } }
                         end, { desc = 'Open daily note', nargs = '*' })
                     end
@@ -160,18 +162,8 @@ return {
                 cmd = { 'markdown-oxide' },
             }
             lspconfig.angularls.setup {
-                on_attach = function(_, bufnr)
-                    -- refresh codelens on TextChanged and InsertLeave as well
-                    vim.api.nvim_create_autocmd({
-                        'TextChanged',
-                        'InsertLeave',
-                        'CursorHold',
-                        'LspAttach',
-                    }, { buffer = bufnr, callback = vim.lsp.codelens.refresh })
-
-                    -- trigger codelens refresh
-                    vim.api.nvim_exec_autocmds('User', { pattern = 'LspAttached' })
-                end,
+                on_attach = on_attach,
+                capabilities = capabilities,
             }
 
             lspconfig.nushell.setup { capabilities = capabilities }
@@ -186,10 +178,11 @@ return {
                     },
                 },
             }
-            vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
-            vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, {})
-            vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, {})
-            vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, {})
+            -- LSP keymaps
+            vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Show LSP hover information' })
+            vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
+            vim.keymap.set('n', '<leader>gr', vim.lsp.buf.references, { desc = 'Find references' })
+            vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code actions' })
 
             -- Diagnostic keymaps
             vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
