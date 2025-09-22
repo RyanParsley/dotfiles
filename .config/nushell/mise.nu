@@ -1,4 +1,5 @@
 export-env {
+  
   $env.MISE_SHELL = "nu"
   let mise_hook = {
     condition: { "MISE_SHELL" in $env }
@@ -38,7 +39,7 @@ export def --env --wrapped main [command?: string, --help, ...rest: string] {
 def --env "update-env" [] {
   for $var in $in {
     if $var.op == "set" {
-      if $var.name == 'PATH' {
+      if ($var.name | str upcase) == 'PATH' {
         $env.PATH = ($var.value | split row (char esep))
       } else {
         load-env {($var.name): $var.value}
