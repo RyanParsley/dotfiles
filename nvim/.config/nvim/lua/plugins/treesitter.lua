@@ -121,6 +121,17 @@ return {
                     },
                 },
             }
+
+            -- Register Angular filetype for treesitter
+            vim.treesitter.language.register('angular', 'html.angular')
+
+            -- Ensure treesitter starts for HTML and Angular files
+            vim.api.nvim_create_autocmd("FileType", {
+              pattern = { "html", "html.angular" },
+              callback = function()
+                vim.treesitter.start()
+              end,
+            })
         end,
     },
 }

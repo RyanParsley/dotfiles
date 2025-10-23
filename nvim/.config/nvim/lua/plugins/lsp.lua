@@ -162,6 +162,8 @@ return {
                 cmd = { 'markdown-oxide' },
             }
             lspconfig.angularls.setup {
+                filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx', 'html.angular' },
+                root_dir = lspconfig.util.root_pattern('angular.json', 'project.json'),
                 on_attach = on_attach,
                 capabilities = capabilities,
             }
