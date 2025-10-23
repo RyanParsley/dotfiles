@@ -113,14 +113,22 @@ return {
                     vim.g.copilotEnabled and { name = 'copilot' } or {},
                 },
                 sorting = {
-                    -- TODO: Would be cool to add stuff like "See variable names before method names" in rust, or something like that.
                     comparators = {
+                        function(entry1, entry2)
+                            local source1 = entry1.source.name
+                            local source2 = entry2.source.name
+                            
+                            if source1 == 'nvim_lsp' and source2 == 'copilot' then
+                                return true
+                            elseif source1 == 'copilot' and source2 == 'nvim_lsp' then
+                                return false
+                            end
+                        end,
+                        
                         cmp.config.compare.offset,
                         cmp.config.compare.exact,
                         cmp.config.compare.score,
 
-                        -- copied from cmp-under, but I don't think I need the plugin for this.
-                        -- I might add some more of my own.
                         function(entry1, entry2)
                             local _, entry1_under = entry1.completion_item.label:find '^_+'
                             local _, entry2_under = entry2.completion_item.label:find '^_+'
