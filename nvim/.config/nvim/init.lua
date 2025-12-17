@@ -3,6 +3,7 @@ package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share
 package.cpath = package.cpath .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/lib/lua/5.1/?.so'
 -- tell neovim to use mise version of java
 vim.g.java_home = '/Users/ryan/.local/share/mise/installs/java/22.0.2/bin/java'
+
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
@@ -36,7 +37,7 @@ vim.g.lazyvim_rust_diagnostics = 'bacon-ls'
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system {
         'git',
         'clone',
