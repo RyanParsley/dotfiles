@@ -55,11 +55,27 @@ return {
         },
 
         config = function()
+            -- Get default capabilities from nvim-cmp
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
-            local capabilities_oxide = capabilities
-            capabilities_oxide.workspace = {
-                didChangeWatchedFiles = { dynamicRegistration = true },
-            }
+
+            -- Set global default capabilities for all LSP servers
+            -- This is especially important for nvim-java which uses vim.lsp.enable internally
+            vim.lsp.config('*', {
+                capabilities = capabilities,
+            })
+
+            -- Disable vale_ls by preventing it from finding a root directory
+            -- It will only start if .vale.ini exists in the project
+            vim.lsp.config('vale_ls', {
+                root_dir = function(bufnr, on_dir)
+                    -- Check if .vale.ini exists by searching upward
+                    local root = vim.fs.root(bufnr, { '.vale.ini' })
+                    if root then
+                        on_dir(root)
+                    end
+                    -- If no root found, don't call on_dir() - this prevents LSP from starting
+                end,
+            })
 
             -- Shared on_attach function for common LSP setup
             local function on_attach(client, bufnr)
@@ -101,13 +117,9 @@ return {
             -- There is an issue with mason-tools-installer running with VeryLazy, since it triggers on VimEnter which has already occurred prior to this plugin loading so we need to call install explicitly
             -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/issues/39
             vim.cmd 'MasonToolsInstall'
-            local lspconfig = require 'lspconfig'
-            local lsp_capabilities = require('cmp_nvim_lsp').default_capabilities()
-            local lsp_attach = function(client, bufnr)
-                -- Create your keybindings here...
-            end
 
-            require('lspconfig').astro.setup {
+            -- Configure LSP servers using vim.lsp.config (new API)
+            vim.lsp.config('astro', {
                 capabilities = capabilities,
                 on_attach = on_attach,
                 settings = {
@@ -135,16 +147,17 @@ return {
                     },
                 },
                 filetypes = { 'astro', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
-                root_dir = lspconfig.util.root_pattern(
+                root_markers = {
                     'astro.config.mjs',
                     'astro.config.ts',
                     'astro.config.js',
-                    'package.json'
-                ),
-            }
+                    'package.json',
+                },
+            })
 
-            lspconfig.eslint.setup { capabilities = capabilities }
-            lspconfig.markdown_oxide.setup {
+            vim.lsp.config('eslint', { capabilities = capabilities })
+
+            vim.lsp.config('markdown_oxide', {
                 on_attach = function(client, bufnr)
                     -- Use shared on_attach for common setup
                     on_attach(client, bufnr)
@@ -157,22 +170,23 @@ return {
                         end, { desc = 'Open daily note', nargs = '*' })
                     end
                 end,
-                capabilities = capabilities_oxide,
+                capabilities = capabilities,
                 filetypes = { 'markdown' },
-                root_dir = lspconfig.util.root_pattern('.git', '.obsidian', '.moxide.toml'),
+                root_markers = { '.git', '.obsidian', '.moxide.toml' },
                 cmd = { 'markdown-oxide' },
-            }
-            lspconfig.angularls.setup {
+            })
+
+            vim.lsp.config('angularls', {
                 filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx', 'html.angular' },
-                root_dir = lspconfig.util.root_pattern('angular.json', 'project.json'),
+                root_markers = { 'angular.json', 'project.json' },
                 on_attach = on_attach,
                 capabilities = capabilities,
-            }
+            })
 
-            lspconfig.nushell.setup { capabilities = capabilities }
-            lspconfig.html.setup { capabilities = capabilities }
-            lspconfig.lua_ls.setup { capabilities = capabilities }
-            lspconfig.stylelint_lsp.setup {
+            vim.lsp.config('nushell', { capabilities = capabilities })
+            vim.lsp.config('html', { capabilities = capabilities })
+            vim.lsp.config('lua_ls', { capabilities = capabilities })
+            vim.lsp.config('stylelint_lsp', {
                 capabilities = capabilities,
                 settings = {
                     stylelintplus = {
@@ -180,7 +194,8 @@ return {
                         autoFixOnFormat = true,
                     },
                 },
-            }
+            })
+            
             -- LSP keymaps
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Show LSP hover information' })
             vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
