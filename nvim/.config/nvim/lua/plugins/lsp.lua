@@ -26,6 +26,7 @@ return {
                 'marksman',
                 'quick_lint_js',
                 'rust_analyzer',
+                'ts_ls',  -- TypeScript language server
                 'yamlls',
             },
         },
@@ -176,9 +177,73 @@ return {
                 cmd = { 'markdown-oxide' },
             })
 
+            -- TypeScript/JavaScript language server with Nx workspace detection
+            vim.lsp.config('ts_ls', {
+                capabilities = capabilities,
+                on_attach = on_attach,
+                root_dir = function(bufnr, on_dir)
+                    -- Try to find Nx workspace root first (highest priority)
+                    local root = vim.fs.root(bufnr, { 'nx.json' })
+                    if root then
+                        on_dir(root)
+                        return
+                    end
+                    
+                    -- Fallback to Angular workspace
+                    root = vim.fs.root(bufnr, { 'angular.json' })
+                    if root then
+                        on_dir(root)
+                        return
+                    end
+                    
+                    -- Fallback to package.json or tsconfig.json
+                    root = vim.fs.root(bufnr, { 'package.json', 'tsconfig.json', 'jsconfig.json' })
+                    if root then
+                        on_dir(root)
+                    end
+                end,
+                settings = {
+                    typescript = {
+                        inlayHints = {
+                            includeInlayParameterNameHints = 'all',
+                            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                            includeInlayFunctionParameterTypeHints = true,
+                            includeInlayVariableTypeHints = true,
+                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayFunctionLikeReturnTypeHints = true,
+                            includeInlayEnumMemberValueHints = true,
+                        },
+                    },
+                    javascript = {
+                        inlayHints = {
+                            includeInlayParameterNameHints = 'all',
+                            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+                            includeInlayFunctionParameterTypeHints = true,
+                            includeInlayVariableTypeHints = true,
+                            includeInlayPropertyDeclarationTypeHints = true,
+                            includeInlayFunctionLikeReturnTypeHints = true,
+                            includeInlayEnumMemberValueHints = true,
+                        },
+                    },
+                },
+            })
+
             vim.lsp.config('angularls', {
                 filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx', 'html.angular' },
-                root_markers = { 'angular.json', 'project.json' },
+                root_dir = function(bufnr, on_dir)
+                    -- Try to find Nx workspace root first
+                    local root = vim.fs.root(bufnr, { 'nx.json' })
+                    if root then
+                        on_dir(root)
+                        return
+                    end
+                    
+                    -- Fallback to Angular workspace
+                    root = vim.fs.root(bufnr, { 'angular.json', 'project.json' })
+                    if root then
+                        on_dir(root)
+                    end
+                end,
                 on_attach = on_attach,
                 capabilities = capabilities,
             })
