@@ -106,8 +106,18 @@ vim.g.astro_typescript = 'enable'
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, desc = 'Move up with line wrapping' })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, desc = 'Move down with line wrapping' })
+vim.keymap.set(
+    'n',
+    'k',
+    "v:count == 0 ? 'gk' : 'k'",
+    { expr = true, silent = true, desc = 'Move up with line wrapping' }
+)
+vim.keymap.set(
+    'n',
+    'j',
+    "v:count == 0 ? 'gj' : 'j'",
+    { expr = true, silent = true, desc = 'Move down with line wrapping' }
+)
 
 vim.keymap.set('n', '<leader>b', require('dap').toggle_breakpoint, { desc = 'Toggle breakpoint' })
 
@@ -133,8 +143,8 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 vim.lsp.inlay_hint.enable()
 
 -- LuaSnip keymaps using vim.keymap.set for better integration
-vim.keymap.set({'i', 's'}, '<Tab>', function()
-    local luasnip = require('luasnip')
+vim.keymap.set({ 'i', 's' }, '<Tab>', function()
+    local luasnip = require 'luasnip'
     if luasnip.expand_or_jumpable() then
         return '<Plug>luasnip-expand-or-jump'
     else
@@ -142,8 +152,8 @@ vim.keymap.set({'i', 's'}, '<Tab>', function()
     end
 end, { expr = true, silent = true, desc = 'Expand or jump to next snippet position' })
 
-vim.keymap.set({'i', 's'}, '<S-Tab>', function()
-    local luasnip = require('luasnip')
+vim.keymap.set({ 'i', 's' }, '<S-Tab>', function()
+    local luasnip = require 'luasnip'
     if luasnip.jumpable(-1) then
         return '<Plug>luasnip-jump-prev'
     else

@@ -1,6 +1,5 @@
 return {
     'joeveiga/ng.nvim',
-    'mfussenegger/nvim-jdtls',
     {
         'williamboman/mason.nvim',
         lazy = false,
@@ -18,20 +17,17 @@ return {
         lazy = false,
         opts = {
             auto_install = true,
-            automatic_enable = true,
-             ensure_installed = {
-                 'angularls',
-                 'astro',
-                 'bashls',
-                 'html',
-                 'gradle_ls',
-                 'lua_ls',
-                 'jdtls',
-                 'marksman',
-                 'quick_lint_js',
-                 'rust_analyzer',
-                 'yamlls',
-             },
+            ensure_installed = {
+                'angularls',
+                'astro',
+                'bashls',
+                'html',
+                'lua_ls',
+                'marksman',
+                'quick_lint_js',
+                'rust_analyzer',
+                'yamlls',
+            },
         },
     },
     {
@@ -73,7 +69,7 @@ return {
                     -- Refresh inlay hints after a short delay
                     vim.defer_fn(function()
                         if vim.lsp.inlay_hint.refresh then
-                            vim.lsp.inlay_hint.refresh({ bufnr = bufnr })
+                            vim.lsp.inlay_hint.refresh { bufnr = bufnr }
                         end
                     end, 1000)
                 end
@@ -87,7 +83,7 @@ return {
                             buffer = bufnr,
                             group = codelens_group,
                             callback = function()
-                                vim.lsp.codelens.refresh({ bufnr = bufnr })
+                                vim.lsp.codelens.refresh { bufnr = bufnr }
                             end,
                             desc = 'Refresh LSP codelens',
                         }
@@ -139,7 +135,12 @@ return {
                     },
                 },
                 filetypes = { 'astro', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
-                root_dir = lspconfig.util.root_pattern('astro.config.mjs', 'astro.config.ts', 'astro.config.js', 'package.json'),
+                root_dir = lspconfig.util.root_pattern(
+                    'astro.config.mjs',
+                    'astro.config.ts',
+                    'astro.config.js',
+                    'package.json'
+                ),
             }
 
             lspconfig.eslint.setup { capabilities = capabilities }
