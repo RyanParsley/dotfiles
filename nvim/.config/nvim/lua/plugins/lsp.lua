@@ -146,17 +146,17 @@ return {
                             },
                         },
                     },
-                },
-                filetypes = { 'astro', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
-                root_dir = lspconfig.util.root_pattern(
-                    'astro.config.mjs',
-                    'astro.config.ts',
-                    'astro.config.js',
-                    'package.json'
-                ),
-            }
+                 },
+                 filetypes = { 'astro', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+                 root_dir = function(bufnr, on_dir)
+                     local root = vim.fs.root(bufnr, { 'astro.config.mjs', 'astro.config.ts', 'astro.config.js', 'package.json' })
+                     if root then
+                         on_dir(root)
+                     end
+                 end,
+            })
 
-            vim.lsp.config('eslint', { capabilities = capabilities })
+             vim.lsp.config('eslint', { capabilities = capabilities })
 
             vim.lsp.config('markdown_oxide', {
                 on_attach = function(client, bufnr)
@@ -229,6 +229,8 @@ return {
             })
 
             vim.lsp.config('angularls', {
+                on_attach = on_attach,
+                capabilities = capabilities,
                 filetypes = { 'typescript', 'html', 'typescriptreact', 'typescript.tsx', 'html.angular' },
                 root_dir = function(bufnr, on_dir)
                     -- Try to find Nx workspace root first
@@ -237,25 +239,13 @@ return {
                         on_dir(root)
                         return
                     end
-                    
+
                     -- Fallback to Angular workspace
                     root = vim.fs.root(bufnr, { 'angular.json', 'project.json' })
                     if root then
                         on_dir(root)
                     end
                 end,
-                settings = {
-                    markdown_oxide = {
-                        daily_note = {
-                            folder = 'Journal/Daily',
-                            format = '%Y-%m-%d',
-                        },
-                    },
-                },
-            }
-            lspconfig.angularls.setup {
-                on_attach = on_attach,
-                capabilities = capabilities,
             })
 
             vim.lsp.config('nushell', { capabilities = capabilities })
