@@ -23,6 +23,15 @@ return {
                                     enable = true,
                                 },
                             },
+                            procMacro = {
+                                ignored = {
+                                    leptos_macro = {
+                                        -- optional: --
+                                        -- "component",
+                                        'server',
+                                    },
+                                },
+                            },
                         },
                     },
                 },
