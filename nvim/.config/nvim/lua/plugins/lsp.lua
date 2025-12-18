@@ -17,16 +17,29 @@ return {
         lazy = false,
         opts = {
             auto_install = true,
+<<<<<<< HEAD
+=======
+            automatic_enable = true,
+>>>>>>> 9bded3c (feat(neovim): enhance Obsidian integration with dynamic folders, templates, and LSP)
             ensure_installed = {
                 'angularls',
                 'astro',
                 'bashls',
                 'html',
+<<<<<<< HEAD
                 'lua_ls',
                 'marksman',
                 'quick_lint_js',
                 'rust_analyzer',
                 'ts_ls',  -- TypeScript language server
+=======
+                'gradle_ls',
+                'lua_ls',
+                'jdtls',
+                'marksman',
+                'quick_lint_js',
+                'rust_analyzer',
+>>>>>>> 9bded3c (feat(neovim): enhance Obsidian integration with dynamic folders, templates, and LSP)
                 'yamlls',
             },
         },
@@ -148,6 +161,7 @@ return {
                     },
                 },
                 filetypes = { 'astro', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+<<<<<<< HEAD
                 root_markers = {
                     'astro.config.mjs',
                     'astro.config.ts',
@@ -155,6 +169,15 @@ return {
                     'package.json',
                 },
             })
+=======
+                root_dir = lspconfig.util.root_pattern(
+                    'astro.config.mjs',
+                    'astro.config.ts',
+                    'astro.config.js',
+                    'package.json'
+                ),
+            }
+>>>>>>> 9bded3c (feat(neovim): enhance Obsidian integration with dynamic folders, templates, and LSP)
 
             vim.lsp.config('eslint', { capabilities = capabilities })
 
@@ -175,6 +198,7 @@ return {
                 filetypes = { 'markdown' },
                 root_markers = { '.git', '.obsidian', '.moxide.toml' },
                 cmd = { 'markdown-oxide' },
+<<<<<<< HEAD
             })
 
             -- TypeScript/JavaScript language server with Nx workspace detection
@@ -244,6 +268,18 @@ return {
                         on_dir(root)
                     end
                 end,
+=======
+                settings = {
+                    markdown_oxide = {
+                        daily_note = {
+                            folder = 'Journal/Daily',
+                            format = '%Y-%m-%d',
+                        },
+                    },
+                },
+            }
+            lspconfig.angularls.setup {
+>>>>>>> 9bded3c (feat(neovim): enhance Obsidian integration with dynamic folders, templates, and LSP)
                 on_attach = on_attach,
                 capabilities = capabilities,
             })
