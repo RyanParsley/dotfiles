@@ -169,3 +169,4 @@ compinit
 
 # opencode
 export PATH=/Users/ryan/.opencode/bin:$PATH
+source ~/.env
