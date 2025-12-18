@@ -33,6 +33,9 @@ vim.opt.conceallevel = 1
 
 vim.g.lazyvim_rust_diagnostics = 'bacon-ls'
 
+-- Markdown preview image path for Obsidian compatibility
+vim.g.mkdp_images_path = vim.fn.expand('~/Notes/assets/imgs')
+
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info

@@ -24,12 +24,54 @@ return {
             'nvim-lua/plenary.nvim',
         },
         opts = {
-            dir = '~/Notes', -- no need to call 'vim.fn.expand' here
+            dir = vim.fn.expand('~/Notes'), -- expand to full path
             daily_notes = {
                 -- Optional, if you keep daily notes in a separate directory.
-                folder = 'Journal/Daily',
+                folder = function()
+                    return 'Journal/Daily/' .. os.date('%Y') .. '/' .. os.date('%m-%B')
+                end,
+                -- Optional, if you want to automatically insert a template from your template directory like 'Daily Template.md'
+                template = 'Daily Template',
             },
-            templates = { subdir = 'templates' },
+            templates = {
+            subdir = 'templates',
+            date_format = '%Y-%m-%d',
+            time_format = '%H:%M',
+            substitutions = {
+                -- Date components for flexible path construction
+                DATE = function()
+                    return os.date('%Y-%m-%d')
+                end,
+                DATE_YEAR = function()
+                    return os.date('%Y')
+                end,
+                DATE_MONTH = function()
+                    return os.date('%m-%B')
+                end,
+                YESTERDAY = function()
+                    return os.date('%Y-%m-%d', os.time() - 86400)
+                end,
+                YESTERDAY_YEAR = function()
+                    return os.date('%Y', os.time() - 86400)
+                end,
+                YESTERDAY_MONTH = function()
+                    return os.date('%m-%B', os.time() - 86400)
+                end,
+                TOMORROW = function()
+                    return os.date('%Y-%m-%d', os.time() + 86400)
+                end,
+                TOMORROW_YEAR = function()
+                    return os.date('%Y', os.time() + 86400)
+                end,
+                TOMORROW_MONTH = function()
+                    return os.date('%m-%B', os.time() + 86400)
+                end,
+                -- Full header date for title
+                HEADER_DATE = function()
+                    return os.date('%A %Y-%m-%d')
+                end,
+            },
+        },
             use_advanced_uri = true,
             -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
             -- URL it will be ignored but you can customize this behavior here.
@@ -40,6 +82,11 @@ return {
             end,
             ui = {
                 enable = false,
+            },
+            attachments = {
+                -- The default folder to place images in via `:ObsidianPasteImg`.
+                -- If this is a relative path it will be interpreted as relative to the vault root.
+                img_folder = "assets/imgs",
             },
         },
         keys = {
@@ -52,6 +99,11 @@ return {
                 '<leader>nt',
                 '<cmd>ObsidianNewFromTemplate<cr>',
                 desc = 'Obsidian - New From Template',
+            },
+            {
+                '<leader>nd',
+                '<cmd>ObsidianToday<cr>',
+                desc = 'Obsidian - New Daily Note',
             },
             {
                 '<leader>nm',
