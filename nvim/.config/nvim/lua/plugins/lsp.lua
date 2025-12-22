@@ -146,17 +146,18 @@ return {
                             },
                         },
                     },
-                 },
-                 filetypes = { 'astro', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
-                 root_dir = function(bufnr, on_dir)
-                     local root = vim.fs.root(bufnr, { 'astro.config.mjs', 'astro.config.ts', 'astro.config.js', 'package.json' })
-                     if root then
-                         on_dir(root)
-                     end
-                 end,
+                },
+                filetypes = { 'astro', 'typescript', 'typescriptreact', 'javascript', 'javascriptreact' },
+                root_dir = function(bufnr, on_dir)
+                    local root =
+                        vim.fs.root(bufnr, { 'astro.config.mjs', 'astro.config.ts', 'astro.config.js', 'package.json' })
+                    if root then
+                        on_dir(root)
+                    end
+                end,
             })
 
-             vim.lsp.config('eslint', { capabilities = capabilities })
+            vim.lsp.config('eslint', { capabilities = capabilities })
 
             vim.lsp.config('markdown_oxide', {
                 on_attach = function(client, bufnr)
@@ -188,14 +189,14 @@ return {
                         on_dir(root)
                         return
                     end
-                    
+
                     -- Fallback to Angular workspace
                     root = vim.fs.root(bufnr, { 'angular.json' })
                     if root then
                         on_dir(root)
                         return
                     end
-                    
+
                     -- Fallback to package.json or tsconfig.json
                     root = vim.fs.root(bufnr, { 'package.json', 'tsconfig.json', 'jsconfig.json' })
                     if root then
@@ -260,7 +261,7 @@ return {
                     },
                 },
             })
-            
+
             -- LSP keymaps
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Show LSP hover information' })
             vim.keymap.set('n', '<leader>gd', vim.lsp.buf.definition, { desc = 'Go to definition' })
