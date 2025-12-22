@@ -2,7 +2,7 @@ return {
     'nvim-java/nvim-java',
     config = function()
         -- Setup nvim-java (this calls vim.lsp.config('jdtls', ...) internally)
-        require('java').setup({
+        require('java').setup {
             jdk = {
                 auto_install = false,
             },
@@ -19,8 +19,8 @@ return {
                 -- Then fall back to .git
                 '.git',
             },
-        })
-        
+        }
+
         -- Override jdtls root_dir to find closest pom.xml (like ts_ls does with package.json)
         vim.lsp.config('jdtls', {
             root_dir = function(bufnr, on_dir)
@@ -30,14 +30,13 @@ return {
                     on_dir(root)
                     return
                 end
-                
+
                 -- Fallback to Gradle project
                 root = vim.fs.root(bufnr, { 'build.gradle', 'settings.gradle' })
                 if root then
                     on_dir(root)
                     return
                 end
-                
                 -- Final fallback to .git
                 root = vim.fs.root(bufnr, { '.git' })
                 if root then
@@ -45,8 +44,7 @@ return {
                 end
             end,
         })
-        
         -- Enable jdtls as recommended by official nvim-java docs
-        vim.lsp.enable('jdtls')
+        vim.lsp.enable 'jdtls'
     end,
 }
