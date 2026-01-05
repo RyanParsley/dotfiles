@@ -9,7 +9,7 @@ return {
             'jay-babu/mason-nvim-dap.nvim',
             {
                 'williamboman/mason.nvim',
-                opts = { ensure_installed = { 'java-debug-adapter', 'java-test' } },
+                -- Note: java-debug-adapter and java-test are managed by nvim-java
             },
 
             -- Add your own debuggers here
@@ -19,6 +19,20 @@ return {
             local dap = require 'dap'
             local dapui = require 'dapui'
 
+            -- Configure DAP to handle terminal buffers properly
+            -- This prevents the "requires unmodified buffer" error
+            dap.defaults.fallback.force_external_terminal = false
+            
+            -- Set terminal options to avoid buffer modification issues
+            dap.defaults.fallback.terminal_win_cmd = function()
+                -- Create a new scratch buffer for the terminal
+                vim.cmd('belowright 15new')
+                local bufnr = vim.api.nvim_get_current_buf()
+                vim.bo[bufnr].bufhidden = 'wipe'
+                vim.bo[bufnr].buflisted = false
+                return bufnr
+            end
+
             require('mason-nvim-dap').setup {
                 -- Makes a best effort to setup the various debuggers with
                 -- reasonable debug configurations
@@ -26,7 +40,15 @@ return {
 
                 -- You can provide additional configuration to the handlers,
                 -- see mason-nvim-dap README for more information
-                handlers = {},
+                handlers = {
+                    -- Exclude Java - nvim-java-dap handles this
+                    function(config)
+                        -- Default handler for all adapters except Java
+                        if config.name ~= 'java-debug-adapter' and config.name ~= 'java-test' then
+                            require('mason-nvim-dap').default_setup(config)
+                        end
+                    end,
+                },
 
                 -- You'll need to check that you have the required things installed
                 -- online, please don't ask me how to install them :)
