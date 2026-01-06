@@ -2,6 +2,9 @@
   defaultBranch = main
 [push]
   default = current
+  autoSetupRemote = true
+[pull]
+  rebase = true
 [color]
   ui = auto
 [alias]
