@@ -8,6 +8,12 @@ return {
         'mfussenegger/nvim-dap',
     },
     config = function()
+        -- Dynamically set Java home using mise (only runs when opening Java files)
+        local mise_java_path = vim.fn.trim(vim.fn.system('mise where java 2>/dev/null || echo ""'))
+        if mise_java_path ~= "" and vim.fn.isdirectory(mise_java_path) == 1 then
+            vim.g.java_home = mise_java_path .. '/bin/java'
+        end
+        
         -- Setup nvim-java (this calls vim.lsp.config('jdtls', ...) internally)
         require('java').setup {
             jdk = {

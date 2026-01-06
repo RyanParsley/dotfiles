@@ -1,8 +1,6 @@
 package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?/init.lua'
 package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?.lua'
 package.cpath = package.cpath .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/lib/lua/5.1/?.so'
--- tell neovim to use mise version of java
-vim.g.java_home = '/Users/ryan/.local/share/mise/installs/java/22.0.2/bin/java'
 
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
