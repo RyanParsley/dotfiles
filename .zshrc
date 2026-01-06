@@ -123,50 +123,74 @@ export MAGICK_HOME=$(brew --prefix)
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-export PATH="$HOME/bin:$PATH"
-export PATH="$HOME/.bin:$PATH"
-export PATH="$HOME/local/bin:$PATH"
-export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 
+# === PATH Configuration ===
+# Consolidated PATH additions for clarity
+export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+export PATH="$BUN_INSTALL/bin:$PATH"
+export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/local/bin:$PATH"
+export PATH="$HOME/go/bin:$PATH"
+export PATH="/opt/homebrew/sbin:$PATH"
+
+# === Build Tool Configuration ===
 #export LDFLAGS="-L$(brew --prefix)/opt/libffi/lib"
 export CPPFLAGS="-I$(brew --prefix)/opt/libffi/include"
 export PKG_CONFIG_PATH="$(brew --prefix)/opt/libffi/lib/pkgconfig"
 export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3
 export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$(brew --prefix qt@5)
 export PATH=$PATH:$(brew --prefix qt@5)/bin
-fpath=(${HOME}/.zsh_completion.d $fpath)
+
+# === Development Environment Configuration ===
+fpath=($HOME/.zsh_completion.d $fpath)
 export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 export ANDROID_HOME="$HOME/Library/Android/sdk"
-export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
-export PATH="$PATH:$HOME/go/bin"
-export PATH="/opt/homebrew/sbin:$PATH"
-export PATH="$HOME/.local/share/mise/shims:$PATH"
+export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk 2>/dev/null | head -1)"
 export OLLAMA_API_BASE=http://127.0.0.1:11434
 
 export EDITOR=nvim
 export AIDER_EDITOR=nvim
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/ryan/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 
-# Local config
+# === Environment Variable Management ===
+# direnv: automatically load/unload .envrc files per directory
+# Install: brew install direnv (macOS), apt install direnv (Linux)
+if command -v direnv > /dev/null 2>&1; then
+  eval "$(direnv hook zsh)"
+fi
+
+# Machine-specific configuration (not in dotfiles repo)
+# Use this file for: API keys, work vs personal configs, machine-specific paths
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/path.zsh.inc'; fi
+# === Tool Integrations ===
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'; fi
-. "$HOME/.cargo/env"
-export PATH="/opt/homebrew/sbin:$PATH"
+# Google Cloud SDK
+if [ -f "$HOME/google-cloud-sdk/path.zsh.inc" ]; then 
+  . "$HOME/google-cloud-sdk/path.zsh.inc"
+fi
+if [ -f "$HOME/google-cloud-sdk/completion.zsh.inc" ]; then 
+  . "$HOME/google-cloud-sdk/completion.zsh.inc"
+fi
+
+# Cargo (Rust)
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
+# mise (version manager)
 eval "$(mise activate zsh)"
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/ryan/.docker/completions $fpath)
+
+# Docker CLI completions
+fpath=($HOME/.docker/completions $fpath)
 autoload -Uz compinit
 compinit
-# End of Docker CLI completions
 
 # opencode
-export PATH=/Users/ryan/.opencode/bin:$PATH
-source ~/.env
+export PATH=$HOME/.opencode/bin:$PATH
+
+# Global environment file (discouraged - use direnv + .envrc per project instead)
+# Only source if it exists to avoid errors
+[[ -f ~/.env ]] && source ~/.env

@@ -167,7 +167,7 @@ let zoxide_completer = {|spans|
 let external_completer = {|spans|
     let expanded_alias = scope aliases
     | where name == $spans.0
-    | get -i 0.expansion
+    | get -o 0.expansion
 
     let spans = if $expanded_alias != null {
         $spans
@@ -990,4 +990,20 @@ source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
 source ~/.config/nushell/settle.nu
 
 use ($nu.default-config-dir | path join mise.nu)
-source $"($nu.home-path)/.cargo/env.nu"
+
+# Cargo environment
+# Note: nushell's 'source' requires compile-time constant paths and cannot be conditional
+# Uncomment the line below if you have cargo installed and ~/.cargo/env.nu exists
+# source ~/.cargo/env.nu
+
+# === Environment Variable Management ===
+# For project-specific environment variables, use .env files
+# Load with: load-env (open .env | from dotenv)
+# direnv support for nushell is community-maintained and less mature than other shells
+# Consider using .env files or nushell's native overlay system for project configs
+
+# Machine-specific configuration (not in dotfiles repo)
+# Use this file for: API keys, work vs personal configs, machine-specific paths
+# Note: nushell's 'source' cannot be conditional - the file must exist at parse time
+# To use local config, create the file below and uncomment the source line:
+# source ~/.config/nushell/config.local.nu
