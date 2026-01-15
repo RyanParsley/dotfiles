@@ -9,7 +9,9 @@ return {
                 allFeatures = true,
             },
         },
-        dependencies = {},
+        dependencies = {
+            'mfussenegger/nvim-dap',
+        },
         config = function()
             vim.g.rustacean_opts = {
                 server = {
