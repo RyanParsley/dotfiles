@@ -171,3 +171,4 @@ compinit
 export PATH=/Users/ryan/.opencode/bin:$PATH
 source ~/.env
 eval "$(/Users/ryan/.local/bin/mise activate zsh)"
+export PATH="$HOME/.cargo/bin:$PATH"
