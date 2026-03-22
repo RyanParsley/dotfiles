@@ -38,23 +38,27 @@
           "name": "Deepseek Coder Tools (8b)"
         },
         "olmo2": {
-          "name": "OLMo 2",
+          "name": "OLMo 2"
         },
         "qwen3": {
           "name": "Qwen 3"
         },
         "qwen3-coder": {
-          "name": "Qwen 3 Coder",
-        },
+          "name": "Qwen 3 Coder"
+        }
       }
     },
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama (local)",
       "options": {
-        "baseURL": "http://localhost:11434/v1"
+        "baseURL": "http://127.0.0.1:11434/v1"
       },
       "models": {
+        "kimi-k2.5:cloud": {
+          "_launch": true,
+          "name": "kimi-k2.5:cloud"
+        },
         "olmo2": {
           "name": "OLMo 2",
           "tool_call": true
@@ -86,6 +90,11 @@
         },
         "deepseek-r1": {
           "name": "Deepseek r1"
+        },
+        "deepseek-r1:32b": {
+          "name": "deepseek-r1:32b",
+          "reasoning": true,
+          "tools": true
         },
         "deepseek-coder-v2": {
           "name": "Deepseek Coder V2",
@@ -128,6 +137,11 @@
         "qwen3-coder": {
           "name": "Qwen 3 Coder",
           "tool_call": true
+        },
+        "qwen3-coder:latest": {
+          "name": "qwen3-coder:latest",
+          "reasoning": true,
+          "tools": true
         },
         "gemma3": {
           "name": "Gemma 3"
