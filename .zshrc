@@ -2,6 +2,9 @@
 export PATH="/Users/ryan/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
+# Prioritize rustup cargo over Homebrew
+export PATH="$HOME/.cargo/bin:$PATH"
+
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -170,5 +173,17 @@ compinit
 # opencode
 export PATH=/Users/ryan/.opencode/bin:$PATH
 source ~/.env
-eval "$(/Users/ryan/.local/bin/mise activate zsh)"
+# Force use of rustup tools over everything else
 export PATH="$HOME/.cargo/bin:$PATH"
+
+# ESP toolchain for Xtensa (ESP32)
+[ -f ~/export-esp.sh ] && source ~/export-esp.sh
+
+# SDL2 for embedded-graphics-simulator
+export LIBRARY_PATH="/opt/homebrew/opt/sdl2/lib:$LIBRARY_PATH"
+eval "$(/Users/ryan/.local/bin/mise activate zsh)"
+
+# Prevent future Rust conflicts - block Homebrew from installing Rust
+export HOMEBREW_NO_INSTALL_CLEANUP=1
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ENV_HINTS=1
