@@ -1,2 +1,4 @@
 .DS_Store
 .aider*
+.config/fish/conf.d/fish_frozen_key_bindings.fish
+.config/fish/conf.d/fish_frozen_theme.fish
