@@ -181,7 +181,7 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # SDL2 for embedded-graphics-simulator
 export LIBRARY_PATH="/opt/homebrew/opt/sdl2/lib:$LIBRARY_PATH"
-eval "$(/Users/ryan/.local/bin/mise activate zsh)"
+eval "$(mise activate zsh)"
 
 # Prevent future Rust conflicts - block Homebrew from installing Rust
 export HOMEBREW_NO_INSTALL_CLEANUP=1
