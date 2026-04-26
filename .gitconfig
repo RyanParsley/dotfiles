@@ -13,7 +13,7 @@
   pf = push --force-with-lease
   st = status
   unstage = reset HEAD --
-  cleanup = "!git branch --merged | grep  -v '\\*\\|main\\|develop' | xargs -n 1 git branch -d"
+	cleanup = "!git branch --merged | grep -v '\\*\\|main\\|develop' | while read branch; do wt=$(git worktree list | grep \"$branch\"); if [ -n \"$wt\" ]; then dir=$(echo \"$wt\" | awk '{print $1}'); echo \"Removing worktree for $branch at $dir\"; git worktree remove \"$dir\"; fi; git branch -d \"$branch\"; done"
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
