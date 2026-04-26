@@ -1,7 +1,26 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "theme": "nord",
+  "plugin": [
+    "opencode-gemini-auth@latest"
+  ],
   "mcp": {
+    "cerebro": {
+      "type": "local",
+      "command": [
+        "cerebro",
+        "mcp"
+      ],
+      "enabled": true
+    },
+    "adrs": {
+      "type": "local",
+      "command": [
+        "adrs",
+        "mcp",
+        "serve"
+      ],
+      "enabled": true
+    },
     "dokploy-mcp": {
       "type": "local",
       "command": [
@@ -12,7 +31,19 @@
       "environment": {
         "DOKPLOY_URL": "https://dokploy.fretsome.com/api",
         "DOKPLOY_API_KEY": "{env:DOKPLOY_API_KEY}"
-      }
+      },
+      "enabled": false
+    },
+    "firefox-devtools": {
+      "type": "local",
+      "command": [
+        "npx",
+        "-y",
+        "firefox-devtools-mcp@latest",
+        "--headless",
+        "--viewport",
+        "1280x720"
+      ]
     },
     "chrome-devtools": {
       "type": "local",
@@ -24,6 +55,11 @@
     }
   },
   "provider": {
+    "google": {
+      "options": {
+        "projectId": "opencode-493511"
+      }
+    },
     "lmstudio": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "LM Studio (local)",
@@ -94,7 +130,7 @@
         "deepseek-r1:32b": {
           "name": "deepseek-r1:32b",
           "reasoning": true,
-          "tools": true
+          "tool_call": true
         },
         "deepseek-coder-v2": {
           "name": "Deepseek Coder V2",
@@ -141,12 +177,20 @@
         "qwen3-coder:latest": {
           "name": "qwen3-coder:latest",
           "reasoning": true,
-          "tools": true
+          "tool_call": true
         },
         "gemma3": {
           "name": "Gemma 3"
         }
       }
+    }
+  },
+  "permission": {
+    "read": {
+      "~/.config/opencode/get-shit-done/*": "allow"
+    },
+    "external_directory": {
+      "~/.config/opencode/get-shit-done/*": "allow"
     }
   }
 }
