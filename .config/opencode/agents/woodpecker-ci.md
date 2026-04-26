@@ -250,6 +250,106 @@ settings:
     from_secret: my_secret_name
 ```
 
+### CRITICAL: Two Types of Keys for Codeberg/Forgejo
+
+**NEVER confuse these two completely different types of keys:**
+
+#### 1. API Token (from Codeberg Settings → Applications)
+- Generated at **codeberg.org** → Settings → Applications → Create Access Token
+- Used by tools that call the Gitea/Forgejo API (like release-plz)
+- Stored in Woodpecker CI secrets
+- Authentication: `Authorization: token <token>`
+- Example tool: release-plz for creating releases
+
+#### 2. SSH Key (from Codeberg Settings → SSH Keys)
+- Generated locally with `ssh-keygen` or similar
+- Public key uploaded to **codeberg.org** → Settings → SSH Keys
+- Private key stored in Woodpecker CI secrets
+- Used for git operations that require authentication (like git push)
+- Example tool: plugin-codeberg-pages-deploy for deploying docs
+
+**Common confusion:**
+- Pages deploy uses **SSH key** (git push)
+- release-plz uses **API token** (HTTP API calls)
+
+**Correct secret naming:**
+- `release_api_token` - API token for API-based tools (release-plz)
+- `ssh_key` - SSH private key for git-based tools (Pages deployment)
+
+**Error symptoms of wrong key type:**
+- "invalid header field value for Authorization" = API token issue
+- "Permission denied (publickey)" = SSH key issue
+
+**API Token permissions (for release-plz):**
+- `read:repository` - Read repository data
+- `write:repository` - Push tags and create releases
+
+**SSH Key:** No specific permissions - just needs to be added to the repository or account
+
+## release-plz Setup for Codeberg/Gitea
+
+When setting up release-plz for Gitea/Forgejo releases:
+
+### Config Filename (CRITICAL - MOST COMMON MISTAKE)
+
+release-plz looks for config in this order:
+1. `./.release-plz.toml` (DOT + hyphen)
+2. `./release-plz.toml` (hyphen, no dot)
+3. `~/.release-plz.toml` (home directory)
+
+**WRONG:** `release_plz.toml` (underscore - WRONG)
+**CORRECT:** `.release-plz.toml` or `release-plz.toml` (hyphen)
+
+### Example release-plz.toml for Gitea
+
+```toml
+[workspace]
+publish = false
+git_release_enable = true
+
+[gitea]
+repo = "username/repo"
+get_owners = false
+```
+
+**Valid sections only:** `[workspace]`, `[changelog]`, `[[package]]`, `[gitea]`
+**NO** `[git]`, `[crate.setting]`, or other sections - they don't exist!
+
+### Cargo.toml Workspace Settings
+
+Must add `publish = false` to the workspace Cargo.toml:
+```toml
+[workspace]
+members = ["crates/..."]
+resolver = "2"
+publish = false  # REQUIRED - prevents crates.io publish attempts
+```
+
+Without this, release-plz will try to publish to crates.io even with the config file set.
+
+### Environment Variables
+
+- `GIT_TOKEN` - Codeberg API token (NOT GITHUB_TOKEN, not GITEA_TOKEN)
+- `CARGO_REGISTRY_TOKEN` - Only needed if publishing to crates.io (set to empty to disable)
+
+### Common release-plz Errors
+
+| Error | Cause | Fix |
+|-------|-------|-----|
+| "config file not found" | Wrong filename (underscore vs hyphen) | Rename to `.release-plz.toml` |
+| "unknown field `crate`" | Invalid `[crate.setting]` section | Remove - settings go in `[workspace]` |
+| "unknown field `git`" | Invalid `[git]` section | Remove - use `[workspace].git_*` fields |
+| "failed to publish to crates.io" | Missing `publish = false` | Add `publish = false` to `[workspace]` |
+| "no token found" | Missing `GIT_TOKEN` secret | Add Codeberg API token to Woodpecker secrets |
+
+### Valid Config Sections
+
+Only these sections are valid:
+- `[workspace]` - global settings (publish, git_release_enable, etc.)
+- `[gitea]` - Gitea-specific (repo, get_owners)
+- `[changelog]` - changelog customization
+- `[[package]]` - per-package overrides (requires `name` field)
+
 ## Before Making Changes
 
 1. **Validate the YAML structure** mentally or with a YAML parser
