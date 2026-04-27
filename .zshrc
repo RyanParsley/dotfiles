@@ -181,10 +181,12 @@ export PATH="$HOME/.cargo/bin:$PATH"
 
 # SDL2 for embedded-graphics-simulator
 export LIBRARY_PATH="/opt/homebrew/opt/sdl2/lib:$LIBRARY_PATH"
+
+# Ensure mise is in PATH before activation
+export PATH="$HOME/.local/bin:$PATH"
 eval "$(mise activate zsh)"
 
 # Prevent future Rust conflicts - block Homebrew from installing Rust
 export HOMEBREW_NO_INSTALL_CLEANUP=1
 export HOMEBREW_NO_AUTO_UPDATE=1
 export HOMEBREW_NO_ENV_HINTS=1
-export PATH="$HOME/.local/bin:$PATH"
