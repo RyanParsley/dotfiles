@@ -11,44 +11,29 @@ default:
 
 # Restow all dotfiles (fix broken symlinks)
 restow:
-    cd ~/.dotfiles && stow --restow .
+    cd ~/dotfiles && stow --restow .
 
 # Stow specific packages
 stow package:
-    cd ~/.dotfiles && stow --restow {{package}}
+    cd ~/dotfiles && stow --restow {{package}}
 
-# Check stow status (simulate)
+# Check stow status (simulate - ignores non-stow symlinks)
 stow-check:
-    cd ~/.dotfiles && stow --simulate .
-
-# === Agent Skills ===
-
-# Update pi-skills to latest
-update-skills:
-    cd ~/.agents/skills/pi-skills && git pull
-
-# Check for skill updates (dry run)
-check-skills:
-    cd ~/.agents/skills/pi-skills && git fetch --dry-run
-
-# Re-clone skills from scratch
-reclone-skills:
-    rm -rf ~/.agents/skills/pi-skills
-    git clone https://github.com/badlogic/pi-skills ~/.agents/skills/pi-skills
+    cd ~/dotfiles && stow --simulate . 2>&1 | grep -v "not owned by stow"
 
 # === Git maintenance ===
 
 # Show dotfiles status
 status:
-    cd ~/.dotfiles && git status --short
+    cd ~/dotfiles && git status --short
 
 # Show recent commits
 log:
-    cd ~/.dotfiles && git log --oneline -10
+    cd ~/dotfiles && git log --oneline -10
 
 # Push to remote
 push:
-    cd ~/.dotfiles && git push
+    cd ~/dotfiles && git push
 
 # === Link verification ===
 
