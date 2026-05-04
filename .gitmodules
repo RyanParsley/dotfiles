@@ -1,3 +1,0 @@
-[submodule ".agents/skills/pi-skills"]
-	path = .agents/skills/pi-skills
-	url = https://github.com/badlogic/pi-skills
