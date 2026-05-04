@@ -119,95 +119,48 @@
       },
       "models": {
         "kimi-k2.5:cloud": {
-          "_launch": true,
           "name": "kimi-k2.5:cloud"
-        },
-        "olmo2": {
-          "name": "OLMo 2",
-          "tool_call": true
-        },
-        "granite3-dense": {
-          "name": "Granite 3 Dense"
-        },
-        "maryasov/qwen2.5-coder-cline": {
-          "name": "Maryasov Qwen 2.5 Coder Cline"
-        },
-        "ishumilin/deepseek-r1-coder-tools:8b": {
-          "name": "Deepseek Coder Tools (8b)"
-        },
-        "llama2": {
-          "name": "Llama 2"
-        },
-        "llama3.1": {
-          "name": "Llama 3.1"
-        },
-        "llama3.2": {
-          "name": "Llama 3.2"
-        },
-        "mistral": {
-          "name": "Mistral"
-        },
-        "codellama": {
-          "name": "Code Llama",
-          "tool_call": true
-        },
-        "deepseek-r1": {
-          "name": "Deepseek r1"
         },
         "deepseek-r1:32b": {
           "name": "deepseek-r1:32b",
           "reasoning": true,
           "tool_call": true
         },
-        "deepseek-coder-v2": {
-          "name": "Deepseek Coder V2",
+        "devstral:latest": {
+          "name": "devstral:latest",
           "tool_call": true
         },
-        "deepcoder": {
-          "name": "DeepCoder",
+        "devstral-small-2:latest": {
+          "name": "devstral-small-2:latest",
           "tool_call": true
         },
-        "dolphin3": {
-          "name": "Dolphin 3"
+        "rnj-1:8b": {
+          "name": "rnj-1:8b"
         },
-        "dolphin-mixtral": {
-          "name": "Dolphin Mixtral",
+        "ministral-3:8b": {
+          "name": "ministral-3:8b"
+        },
+        "nemotron-3-nano:4b": {
+          "name": "nemotron-3-nano:4b"
+        },
+        "qwen3.6:27b": {
+          "name": "qwen3.6:27b"
+        },
+        "hf.co/unsloth/Qwen3.6-27B-GGUF:Q8_0": {
+          "name": "Qwen3.6-27B-GGUF:Q8_0"
+        },
+        "functiongemma:270m": {
+          "name": "functiongemma:270m"
+        },
+        "gemma4:26b": {
+          "name": "gemma4:26b",
           "tool_call": true
         },
-        "openthinker": {
-          "name": "Open Thinker",
-          "tool_call": true
-        },
-        "mistral-nemo": {
-          "name": "Mistral Nemo",
-          "tool_call": true
-        },
-        "qwen2.5": {
-          "name": "Qwen 2.5"
-        },
-        "qwq": {
-          "name": "Qwq"
-        },
-        "codegemma": {
-          "name": "CodeGemma"
-        },
-        "qwen2.5-coder": {
-          "name": "Qwen 2.5 Coder"
-        },
-        "qwen3": {
-          "name": "Qwen 3"
-        },
-        "qwen3-coder": {
-          "name": "Qwen 3 Coder",
-          "tool_call": true
-        },
-        "qwen3-coder:latest": {
-          "name": "qwen3-coder:latest",
-          "reasoning": true,
-          "tool_call": true
-        },
-        "gemma3": {
-          "name": "Gemma 3"
+        "gpt-oss:latest": {
+          "name": "gpt-oss:latest",
+          "options": {
+            "reasoning_effort": "high"
+          }
         }
       }
     }
