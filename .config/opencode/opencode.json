@@ -41,8 +41,10 @@
       "type": "local",
       "command": [
         "forgejo-mcp",
-        "--transport", "stdio",
-        "--url", "https://codeberg.org"
+        "--transport",
+        "stdio",
+        "--url",
+        "https://codeberg.org"
       ],
       "environment": {
         "FORGEJO_ACCESS_TOKEN": "{env:CODEBERG_ACCESS_TOKEN}"
@@ -53,8 +55,10 @@
       "type": "local",
       "command": [
         "forgejo-mcp",
-        "--transport", "stdio",
-        "--url", "https://forgejo.parsley.familyds.com/"
+        "--transport",
+        "stdio",
+        "--url",
+        "https://forgejo.parsley.familyds.com/"
       ],
       "environment": {
         "FORGEJO_ACCESS_TOKEN": "{env:FORGEJO_ACCESS_TOKEN}"
