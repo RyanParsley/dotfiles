@@ -1,0 +1,23 @@
+{
+  "providers": {
+    "ollama": {
+      "baseUrl": "http://localhost:11434/v1",
+      "api": "openai-completions",
+      "apiKey": "ollama",
+      "models": [
+        {
+          "id": "qwen3.6:27b-gpu"
+        },
+        {
+          "id": "qwen3.6-backup:latest"
+        },
+        {
+          "id": "devstral-small-2:latest"
+        },
+        {
+          "id": "devstral-small-2:24b"
+        }
+      ]
+    }
+  }
+}
