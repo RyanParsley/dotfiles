@@ -1,5 +1,5 @@
 /**
- * Lint Disable Guard Plugin — Blocks disabling of linters
+ * Lint Enforcement Plugin — Blocks disabling of linters
  *
  * Prevents commits that contain inline lint disabling comments like:
  * - eslint-disable
@@ -7,12 +7,12 @@
  * - tslint:disable
  * - disable-next-line
  *
- * Install: Symlink or copy to ~/.config/opencode/plugins/lint-disable-guard.js
- * Enable: Add "~/.config/opencode/plugins/lint-disable-guard.js" to plugins array in ~/.config/opencode/opencode.json
+ * Install: Symlink or copy to ~/.config/opencode/plugins/lint-enforcement.js
+ * Enable: Add "~/.config/opencode/plugins/lint-enforcement.js" to plugins array in ~/.config/opencode/opencode.json
  */
 
 export default {
-  name: 'lint-disable-guard',
+  name: 'lint-enforcement',
   hooks: {
     'git:pre-commit': async (context) => {
       const disablePatterns = [
