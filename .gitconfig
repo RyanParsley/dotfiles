@@ -14,6 +14,7 @@
   st = status
   unstage = reset HEAD --
 	cleanup = !~/bin/git-cleanup
+  wt = "!f(){ branch=\"$1\"; [ -n \"$branch\" ] || { echo 'usage: git wt <branch-name> [path] [base-ref]' >&2; exit 1; }; repo_root=\"$(git rev-parse --show-toplevel)\" || exit 1; repo_name=\"$(basename \"$repo_root\")\"; branch_suffix=\"$(printf '%s' \"$branch\" | tr '/:' '-')\"; worktree_path=\"${2:-$repo_root/../$repo_name-$branch_suffix}\"; base_ref=\"${3:-origin/main}\"; [ ! -e \"$worktree_path\" ] || { echo \"target path already exists: $worktree_path\" >&2; exit 1; }; git fetch origin && git worktree add -b \"$branch\" \"$worktree_path\" \"$base_ref\" && [ -f \"$worktree_path/package.json\" ] && pnpm install --dir \"$worktree_path\"; }; f"
 [core]
   excludesfile = ~/.gitignore
   autocrlf = input
@@ -39,3 +40,9 @@
   keepBackup = false
 [merge]
   tool = vimdiff
+[credential]
+	helper = !az devops auth git
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
+[credential "https://dev.azure.com"]
+	useHttpPath = true
