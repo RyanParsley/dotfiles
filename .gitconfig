@@ -46,3 +46,8 @@
 	helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://dev.azure.com"]
 	useHttpPath = true
+[credential "https://codeberg.org"]
+	provider = generic
+[user]
+	email = RMParsley@gmail.com
+	name = Ryan Parsley
