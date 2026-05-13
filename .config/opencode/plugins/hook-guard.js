@@ -37,7 +37,7 @@ export const HookGuard = async ({ client }) => {
     "tool.execute.before": async (input, output) => {
       if (input.tool !== "bash") return;
 
-      const command = output.args?.command || "";
+      const command = input.args?.command || "";
 
       for (const pattern of BYPASS_PATTERNS) {
         if (pattern.test(command)) {

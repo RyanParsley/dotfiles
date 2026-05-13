@@ -86,7 +86,7 @@ export const TddEnforcementPlugin: Plugin = async ({ client, directory }) => {
 
       // For edit/write operations on source files, check if tests exist
       if (tool === "edit" || tool === "write") {
-        const filePath = output.args?.filePath || ""
+        const filePath = input.args?.filePath || ""
         const testFile = getTestFileForSource(filePath)
 
         if (testFile && !testedFiles.has(filePath)) {

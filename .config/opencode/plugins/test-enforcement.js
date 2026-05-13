@@ -22,8 +22,8 @@ const FRAMEWORKS = [
   {
     name: "rust",
     files: ["Cargo.toml"],
-    run: async ($) => {
-      const result = await $`cargo test 2>&1`.nothrow();
+    run: async ($, dir) => {
+      const result = await $`cargo test 2>&1`.cwd(dir).nothrow();
       return parseCargoOutput(result);
     },
     watchPatterns: [".rs"],
@@ -78,8 +78,8 @@ const FRAMEWORKS = [
 
 function parseCargoOutput(result) {
   const output = stringify(result);
-  const passMatch = output.match(/test result: ok\. (\d+) passed/);
-  const failMatch = output.match(/test result: FAILED\. (\d+) failed/);
+  const passMatch = output.match(/(\d+) passed/);
+  const failMatch = output.match(/(\d+) failed/);
   const totalMatch = output.match(/running (\d+) test/);
   const total = totalMatch ? parseInt(totalMatch[1]) : 0;
   const passed = passMatch ? parseInt(passMatch[1]) : 0;
