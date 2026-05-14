@@ -1,10 +1,5 @@
 ---
 description: Archive accumulated phase directories from completed milestones
-tools:
-  read: true
-  write: true
-  bash: true
-  question: true
 ---
 <objective>
 Archive phase directories from completed milestones into `.planning/milestones/v{X.Y}-phases/`.

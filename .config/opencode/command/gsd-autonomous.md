@@ -1,6 +1,6 @@
 ---
 description: Run all remaining phases autonomously — discuss→plan→execute per phase
-argument-hint: "[--from N] [--to N] [--only N] [--interactive]"
+argument-hint: "[--from N]"
 tools:
   read: true
   write: true
@@ -29,11 +29,7 @@ Uses ROADMAP.md phase discovery and Skill() flat invocations for each phase comm
 </execution_context>
 
 <context>
-Optional flags:
-- `--from N` — start from phase N instead of the first incomplete phase.
-- `--to N` — stop after phase N completes (halt instead of advancing to next phase).
-- `--only N` — execute only phase N (single-phase mode).
-- `--interactive` — run discuss inline with questions (not auto-answered), then dispatch plan→execute as background agents. Keeps the main context lean while preserving user input on decisions.
+Optional flag: `--from N` — start from phase N instead of the first incomplete phase.
 
 Project context, phase list, and state are resolved inside the workflow using init commands (`gsd-tools.cjs init milestone-op`, `gsd-tools.cjs roadmap analyze`). No upfront context loading needed.
 </context>

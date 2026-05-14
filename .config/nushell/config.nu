@@ -981,12 +981,12 @@ source /Users/ryan/.config/nushell/completions/rg-completions.nu
 source /Users/ryan/.config/nushell/completions/rustup-completions.nu
 source /Users/ryan/.config/nushell/completions/zellij-completions.nu
 
-source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
+source "/Users/ryan/dotfiles/.config/nushell/mise.nu"
 
 # https://carapace-sh.github.io/carapace-bin/setup.html
 source ~/.cache/carapace/init.nu
 
-source "/Users/ryan/.dotfiles/.config/nushell/mise.nu"
+source "/Users/ryan/dotfiles/.config/nushell/mise.nu"
 source ~/.config/nushell/settle.nu
 
 use ($nu.default-config-dir | path join mise.nu)

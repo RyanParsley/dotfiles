@@ -1,6 +1,6 @@
 ---
-description: Gather phase context through adaptive questioning before planning. Use --auto to skip interactive questions (the agent picks recommended defaults). Use --chain for interactive discuss followed by automatic plan+execute. Use --power for bulk question generation into a file-based UI (answer at your own pace).
-argument-hint: "<phase> [--auto] [--chain] [--batch] [--analyze] [--text] [--power]"
+description: Gather phase context through adaptive questioning before planning. Use --auto to skip interactive questions (the agent picks recommended defaults).
+argument-hint: "<phase> [--auto] [--batch] [--analyze] [--text]"
 tools:
   read: true
   write: true
@@ -30,13 +30,8 @@ Extract implementation decisions that downstream agents need — researcher and 
 <execution_context>
 @$HOME/.config/opencode/get-shit-done/workflows/discuss-phase.md
 @$HOME/.config/opencode/get-shit-done/workflows/discuss-phase-assumptions.md
-@$HOME/.config/opencode/get-shit-done/workflows/discuss-phase-power.md
 @$HOME/.config/opencode/get-shit-done/templates/context.md
 </execution_context>
-
-<runtime_note>
-**Copilot (VS Code):** Use `vscode_askquestions` wherever this workflow calls `question`. They are equivalent — `vscode_askquestions` is the VS Code Copilot implementation of the same interactive question API.
-</runtime_note>
 
 <context>
 Phase number: $ARGUMENTS (required)

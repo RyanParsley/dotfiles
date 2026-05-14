@@ -4,7 +4,6 @@ tools:
   read: true
   write: true
   bash: true
-  question: true
 ---
 
 <objective>
