@@ -4,18 +4,83 @@
       "baseUrl": "http://localhost:11434/v1",
       "api": "openai-completions",
       "apiKey": "ollama",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "repetition_penalty": 1.1
+      },
       "models": [
         {
-          "id": "qwen3.6:27b-gpu"
+          "id": "gemma4:e4b",
+          "name": "Gemma 4 4B (e4b)",
+          "reasoning": true,
+          "contextWindow": 8192
         },
         {
-          "id": "qwen3.6-backup:latest"
+          "id": "gemma4:e2b",
+          "name": "Gemma 4 2B (e2b)",
+          "reasoning": true,
+          "contextWindow": 8192
         },
         {
-          "id": "devstral-small-2:latest"
+          "id": "gemma4:31b",
+          "name": "Gemma 4 31B",
+          "reasoning": true,
+          "contextWindow": 32768
         },
         {
-          "id": "devstral-small-2:24b"
+          "id": "gemma4:26b",
+          "name": "Gemma 4 26B",
+          "reasoning": true,
+          "contextWindow": 65536
+        },
+        {
+          "id": "devstral-small-2:latest",
+          "name": "Devstral Small 2",
+          "contextWindow": 32768
+        },
+        {
+          "id": "devstral:latest",
+          "name": "Devstral",
+          "contextWindow": 32768
+        },
+        {
+          "id": "nemotron-3-nano:4b",
+          "name": "Nemotron 3 Nano 4B",
+          "contextWindow": 4096
+        },
+        {
+          "id": "rnj-1:8b",
+          "name": "RNJ-1 8B",
+          "contextWindow": 8192
+        },
+        {
+          "id": "ministral-3:8b",
+          "name": "Ministral 3 8B",
+          "contextWindow": 128000
+        },
+        {
+          "id": "functiongemma:270m",
+          "name": "FunctionGemma 270M",
+          "contextWindow": 4096
+        },
+        {
+          "id": "qwen3.6:27b",
+          "name": "Qwen 3.6 27B",
+          "reasoning": true,
+          "contextWindow": 32768
+        },
+        {
+          "id": "kimi-k2.5:cloud",
+          "name": "Kimi K2.5 (Cloud)",
+          "reasoning": true,
+          "contextWindow": 262144
+        },
+        {
+          "id": "deepseek-r1:32b",
+          "name": "DeepSeek R1 32B",
+          "reasoning": true,
+          "contextWindow": 64000
         }
       ]
     }

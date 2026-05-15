@@ -1,5 +1,6 @@
 {
-  "lastChangelogVersion": "0.72.1",
+  "lastChangelogVersion": "0.74.0",
   "defaultProvider": "ollama",
-  "defaultModel": "gemma4:26b"
+  "defaultModel": "gemma4:26b",
+  "defaultThinkingLevel": "medium"
 }
