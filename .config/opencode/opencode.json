@@ -5,7 +5,8 @@
     "~/.config/opencode/plugins/hook-guard.js",
     "~/.config/opencode/plugins/test-enforcement.js",
     "~/.config/opencode/plugins/lint-enforcement.js",
-    "~/.config/opencode/plugins/tdd-enforcement.ts"
+    "~/.config/opencode/plugins/tdd-enforcement.ts",
+    "~/.config/opencode/plugins/file-size-guard.js"
   ],
   "mcp": {
     "cerebro": {
