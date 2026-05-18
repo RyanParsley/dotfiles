@@ -6,6 +6,7 @@
   "plugin": [
     "opencode-gemini-auth@latest",
     "~/.config/opencode/plugins/hook-guard.js",
+    "~/.config/opencode/plugins/main-branch-guard.js",
     "~/.config/opencode/plugins/test-enforcement.js",
     "~/.config/opencode/plugins/lint-enforcement.js",
     "~/.config/opencode/plugins/tdd-enforcement.ts"

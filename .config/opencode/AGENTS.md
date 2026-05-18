@@ -1,3 +1,28 @@
+# Evidence-First Principle
+
+**Ground all technical claims in evidence.** Never infer, assume, or extrapolate beyond what documentation, source code, or tool output explicitly states. If the docs don't cover something, say "the docs don't cover this" — don't guess. When uncertain, look it up before answering. Cite the specific file, line, or doc section that supports each claim.
+
+---
+
+# Warnings Are Never "Fine"
+
+**Every warning, error, or diagnostic is a legitimate problem to fix.** Never dismiss warnings as "known quirks," "harmless," "cosmetic," or "noise." Never say "this is expected" without verifying the root cause.
+
+The pattern to break:
+1. A tool outputs a warning
+2. You rationalize it as acceptable
+3. You move on without fixing it
+
+The correct pattern:
+1. A tool outputs a warning
+2. You investigate why it happens
+3. You fix the root cause
+4. You verify the warning is gone
+
+**Do not commit code that produces warnings.** If a warning exists, fix it before proceeding. If you can't fix it immediately, explain why and track it — but never normalize it.
+
+---
+
 # Default Forge Context: Codeberg/Forgejo
 
 **This system defaults to Codeberg (codeberg.org) and Forgejo instances.** Assume Codeberg/Forgejo unless the git remote points elsewhere.

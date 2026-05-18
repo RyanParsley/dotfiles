@@ -10,3 +10,4 @@
 ^ghostty$
 ^yazi$
 ^node_modules$
+^\.agents$
