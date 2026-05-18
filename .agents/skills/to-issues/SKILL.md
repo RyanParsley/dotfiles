@@ -7,7 +7,7 @@ description: Break a plan, spec, or PRD into independently-grabbable issues on t
 
 Break a plan into independently-grabbable issues using vertical slices (tracer bullets).
 
-The issue tracker and triage label vocabulary should have been provided to you — run `/setup-matt-pocock-skills` if not.
+The issue tracker and triage label vocabulary should have been provided to you.
 
 ## Process
 
@@ -81,3 +81,10 @@ Or "None - can start immediately" if no blockers.
 </issue-template>
 
 Do NOT close or modify any parent issue.
+
+## Gotchas
+
+- Slices with circular dependencies signal the breakdown is wrong — restructure so dependencies flow one direction
+- If a slice touches more than 3-4 modules, it's too thick — split it
+- HITL slices should be limited to genuine decision points (architecture, design, API contracts), not implementation uncertainty
+- When publishing issues, dependency order matters: blockers first so you can reference real issue numbers in "Blocked by" fields

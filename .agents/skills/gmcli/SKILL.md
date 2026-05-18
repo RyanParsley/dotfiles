@@ -56,3 +56,11 @@ Common operations:
 - `~/.gmcli/credentials.json` - OAuth client credentials
 - `~/.gmcli/accounts.json` - Account tokens
 - `~/.gmcli/attachments/` - Downloaded attachments
+
+## Gotchas
+
+- Gmail search uses Gmail's query syntax, not regex — `from:`, `subject:`, `has:attachment`, `after:`, `before:`
+- Thread IDs are different from message IDs — a thread contains multiple messages
+- Large attachments may be Google Drive links, not inline files
+- Search is limited to ~500 results — use more specific queries for large mailboxes
+- OAuth tokens expire — if commands fail with auth errors, re-run `gmcli accounts add <email>`

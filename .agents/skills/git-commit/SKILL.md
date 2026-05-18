@@ -1,6 +1,6 @@
 ---
 name: git-commit
-description: Create Cerebro commits. Use when committing changes, creating PRs, or preparing code for review.
+description: Create git commits. Use when committing changes, creating PRs, or preparing code for review.
 ---
 
 # Commits

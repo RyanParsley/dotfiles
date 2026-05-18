@@ -62,3 +62,11 @@ Use `primary` as calendarId for the main calendar.
 
 - `~/.gccli/credentials.json` - OAuth client credentials
 - `~/.gccli/accounts.json` - Account tokens
+
+## Gotchas
+
+- All-day events use `YYYY-MM-DD` format with `--all-day` flag, not `T00:00:00` timestamps
+- `primary` is the calendarId for the user's main calendar, not their email address
+- Timezone: timestamps without `Z` suffix are interpreted as local time, not UTC
+- Recurring events: editing a single instance creates an exception; use the series ID to edit all occurrences
+- Freebusy only shows busy/free blocks, not event details

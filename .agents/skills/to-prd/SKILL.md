@@ -1,11 +1,11 @@
 ---
 name: to-prd
-description: Turn the current conversation context into a PRD and publish it to the project issue tracker. Use when user wants to create a PRD from the current context.
+description: Turn the current conversation context into a Product Requirements Document and publish it to the project issue tracker. Use when the user wants to formalize a feature plan, create a PRD, or document requirements from a discussion.
 ---
 
 This skill takes the current conversation context and codebase understanding and produces a PRD. Do NOT interview the user — just synthesize what you already know.
 
-The issue tracker and triage label vocabulary should have been provided to you — run `/setup-matt-pocock-skills` if not.
+The issue tracker and triage label vocabulary should have been provided to you.
 
 ## Process
 
@@ -74,3 +74,10 @@ A description of the things that are out of scope for this PRD.
 Any further notes about the feature.
 
 </prd-template>
+
+## Gotchas
+
+- Don't create a PRD for trivial changes (single file, obvious fix) — just implement directly
+- If the conversation hasn't clarified the problem yet, ask questions first — don't synthesize ambiguity into a PRD
+- User stories should be from the user's perspective, not the developer's — "As a customer, I want..." not "As the system, I need..."
+- Implementation decisions belong in the PRD, but avoid file paths and code snippets that go stale

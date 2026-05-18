@@ -8,3 +8,9 @@ Interview me relentlessly about every aspect of this plan until we reach a share
 Ask the questions one at a time.
 
 If a question can be answered by exploring the codebase, explore the codebase instead.
+
+## When NOT to Grill
+
+- User asks for a quick opinion or sanity check — give a direct answer instead
+- User says "just tell me what you think" — they want analysis, not interrogation
+- The plan is trivial (one file change, obvious fix) — skip grilling and proceed
