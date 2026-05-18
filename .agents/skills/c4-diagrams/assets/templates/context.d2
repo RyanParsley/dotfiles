@@ -1,0 +1,73 @@
+# C4 Level 1 — System Context Diagram Template
+# Shows: the system, people who use it, external systems it depends on
+# Audience: Everyone (technical and non-technical)
+
+# Title
+title: {
+  shape: text
+  label: "System Context Diagram — [System Name]"
+  style.font-size: 20
+  style.bold: true
+}
+
+direction: right
+
+# ─── People (roles/personas who use the system) ───
+
+customer: "[Person]\n[Role description]" {
+  style.fill: "#08427b"
+  style.font-color: "#ffffff"
+  style.stroke-width: 2
+}
+
+# Add more people as needed:
+# admin: "[Person]\nSystem administrator" { ... }
+
+# ─── The System Being Described ───
+
+system: "[System Name]\n[Software System]\n[Brief description of what it does]" {
+  style.fill: "#1168bd"
+  style.font-color: "#ffffff"
+  style.stroke-width: 3
+}
+
+# ─── External Software Systems ───
+
+external_system_1: "[System Name]\n[Software System]\n[What it provides]" {
+  style.fill: "#999999"
+  style.font-color: "#ffffff"
+}
+
+external_system_2: "[System Name]\n[Software System]\n[What it provides]" {
+  style.fill: "#999999"
+  style.font-color: "#ffffff"
+}
+
+# ─── Relationships ──
+
+customer -> system: "[verb phrase describing interaction]"
+system -> external_system_1: "[verb phrase: e.g., 'gets data from', 'sends email via']"
+system -> external_system_2: "[verb phrase]"
+
+# ─── Legend ───
+
+legend: {
+  style.stroke-dash: 3
+  style.fill: "#fafafa"
+
+  person_ex: "[Person]" {
+    style.fill: "#08427b"
+    style.font-color: "#ffffff"
+  }
+  system_ex: "[Software System]" {
+    style.fill: "#1168bd"
+    style.font-color: "#ffffff"
+  }
+  external_ex: "[External System]" {
+    style.fill: "#999999"
+    style.font-color: "#ffffff"
+  }
+  rel_ex: "relationship" {
+    style.stroke-width: 2
+  }
+}

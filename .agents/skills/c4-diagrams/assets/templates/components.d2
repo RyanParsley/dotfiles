@@ -1,0 +1,103 @@
+# C4 Level 3 — Component Diagram Template
+# Shows: internal structure of ONE container from Level 2
+# Audience: Developers working on that container
+
+# Title
+title: {
+  shape: text
+  label: "Component Diagram — [Container Name]"
+  style.font-size: 20
+  style.bold: true
+}
+
+direction: right
+
+# ─── People (same as parent diagrams for context) ───
+
+customer: "[Person]\n[Role description]" {
+  style.fill: "#08427b"
+  style.font-color: "#ffffff"
+  style.stroke-width: 2
+}
+
+# ─── External Systems (same as parent diagrams) ───
+
+external_system: "[System Name]\n[Software System]" {
+  style.fill: "#999999"
+  style.font-color: "#ffffff"
+}
+
+# ─── Other Containers (for context, shown as gray boxes) ───
+
+other_container: "[Container Name]\n[Container: Technology]" {
+  style.fill: "#999999"
+  style.font-color: "#ffffff"
+}
+
+# ─── The Container Being Described (contains components) ───
+
+container: "[Container Name]\n[Container: Technology]" {
+  style.stroke-width: 3
+
+  # Controller/entry point component
+  controller: "[Component Name]\n[Component: Spring MVC REST Controller]\n[Handles specific API endpoints]" {
+    style.fill: "#85bbf0"
+    style.font-color: "#000000"
+  }
+
+  # Service/business logic component
+  service: "[Component Name]\n[Component: Spring Service]\n[Business logic description]" {
+    style.fill: "#85bbf0"
+    style.font-color: "#000000"
+  }
+
+  # Repository/data access component
+  repository: "[Component Name]\n[Component: Spring Data Repository]\n[Data access for specific entity]" {
+    style.fill: "#85bbf0"
+    style.font-color: "#000000"
+  }
+
+  # Facade/adapter component (for external systems)
+  facade: "[Component Name]\n[Component: Facade/Adapter]\n[Adapts to external system]" {
+    style.fill: "#85bbf0"
+    style.font-color: "#000000"
+  }
+
+  # Internal component relationships
+  controller -> service: "delegates to"
+  service -> repository: "reads/writes data via"
+  service -> facade: "calls to access external system"
+}
+
+# ─── External Relationships ───
+
+customer -> container.controller: "[verb phrase: e.g., 'makes HTTPS calls to']"
+container.facade -> external_system: "[verb phrase: e.g., 'makes HTTPS calls to']"
+container.repository -> other_container: "[verb phrase: e.g., 'reads/writes via JDBC']"
+
+# ─── Legend ───
+
+legend: {
+  style.stroke-dash: 3
+  style.fill: "#fafafa"
+
+  person_ex: "[Person]" {
+    style.fill: "#08427b"
+    style.font-color: "#ffffff"
+  }
+  container_ex: "[Container]" {
+    style.fill: "#438dd5"
+    style.font-color: "#ffffff"
+  }
+  component_ex: "[Component]" {
+    style.fill: "#85bbf0"
+    style.font-color: "#000000"
+  }
+  external_ex: "[External]" {
+    style.fill: "#999999"
+    style.font-color: "#ffffff"
+  }
+  rel_ex: "relationship" {
+    style.stroke-width: 2
+  }
+}

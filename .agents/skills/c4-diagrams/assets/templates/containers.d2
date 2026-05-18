@@ -1,0 +1,94 @@
+# C4 Level 2 — Container Diagram Template
+# Shows: people, external systems, and the containers (deployable units) inside the system
+# Audience: Technical (developers, architects, ops)
+
+# Title
+title: {
+  shape: text
+  label: "Container Diagram — [System Name]"
+  style.font-size: 20
+  style.bold: true
+}
+
+direction: right
+
+# ─── People ───
+
+customer: "[Person]\n[Role description]" {
+  style.fill: "#08427b"
+  style.font-color: "#ffffff"
+  style.stroke-width: 2
+}
+
+# ─── External Software Systems ───
+
+external_system: "[System Name]\n[Software System]\n[What it provides]" {
+  style.fill: "#999999"
+  style.font-color: "#ffffff"
+}
+
+# ─── The System (contains containers) ───
+
+system: "[System Name]\n[Software System]" {
+  style.stroke-width: 3
+
+  # Application container
+  web_app: "[App Name]\n[Container: Technology]\n[Responsibility description]" {
+    style.fill: "#438dd5"
+    style.font-color: "#ffffff"
+  }
+
+  # Another application container
+  api_app: "[App Name]\n[Container: Technology]\n[Responsibility description]" {
+    style.fill: "#438dd5"
+    style.font-color: "#ffffff"
+  }
+
+  # Database container (use cylinder shape)
+  database: "[Database Name]\n[Container: PostgreSQL/MySQL/etc]\n[What data it stores]" {
+    shape: cylinder
+    style.fill: "#438dd5"
+    style.font-color: "#ffffff"
+  }
+
+  # Internal container relationships
+  web_app -> api_app: "[verb phrase: e.g., 'makes JSON/HTTP API calls to']"
+  api_app -> database: "[verb phrase: e.g., 'reads/writes data using JDBC']"
+}
+
+# ─── External Relationships ───
+
+customer -> system.web_app: "[verb phrase: e.g., 'uses via web browser']"
+system.api_app -> external_system: "[verb phrase: e.g., 'makes HTTPS calls to']"
+
+# ─── Legend ───
+
+legend: {
+  style.stroke-dash: 3
+  style.fill: "#fafafa"
+
+  person_ex: "[Person]" {
+    style.fill: "#08427b"
+    style.font-color: "#ffffff"
+  }
+  system_ex: "[Software System]" {
+    style.fill: "#1168bd"
+    style.font-color: "#ffffff"
+  }
+  container_ex: "[Container]" {
+    style.fill: "#438dd5"
+    style.font-color: "#ffffff"
+  }
+  db_ex: "[Container: Database]" {
+    shape: cylinder
+    style.fill: "#438dd5"
+    style.font-color: "#ffffff"
+  }
+  external_ex: "[External System]" {
+    style.fill: "#999999"
+    style.font-color: "#ffffff"
+  }
+  rel_ex: "relationship" {
+    style.stroke-width: 2
+  }
+}
