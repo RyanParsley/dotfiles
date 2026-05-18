@@ -1,0 +1,6 @@
+{
+  "extensions": [
+    "~/.pi/agent/extensions/cortex-context.ts",
+    "~/.pi/agent/extensions/test-guard.ts"
+  ]
+}
