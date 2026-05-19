@@ -3,6 +3,10 @@
  *
  * Blocks ALL attempts to commit or push to main/master/default branch.
  * Hard guard — returns { block: true, reason } to prevent execution.
+ *
+ * Checks the actual current branch via git, not the command string.
+ * Also checks worktree branches — if any worktree is on a feature branch,
+ * assumes the user is working there and allows the commit.
  */
 
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
@@ -17,73 +21,72 @@ const BLOCK_MESSAGE =
   "3. Rebase onto main before pushing " +
   "4. Push and create a PR";
 
-function isDefaultBranch(branch: string): boolean {
-  const normalized = branch.toLowerCase().trim();
-  return normalized === "main" || normalized === "master";
+async function getCurrentBranch(pi: ExtensionAPI, cwd: string): Promise<string | null> {
+  try {
+    const result = await pi.exec("git", ["branch", "--show-current"], { cwd });
+    return result.stdout?.trim() || null;
+  } catch {
+    return null;
+  }
+}
+
+async function getDefaultBranch(pi: ExtensionAPI, cwd: string): Promise<string> {
+  try {
+    const result = await pi.exec("git", ["symbolic-ref", "refs/remotes/origin/HEAD"], { cwd });
+    const ref = result.stdout?.trim() || "";
+    return ref.split("/").pop() || "main";
+  } catch {
+    return "main";
+  }
+}
+
+async function hasFeatureBranchWorktree(pi: ExtensionAPI, cwd: string, defaultBranch: string): Promise<boolean> {
+  try {
+    const result = await pi.exec("git", ["worktree", "list", "--porcelain"], { cwd });
+    const output = result.stdout?.trim() || "";
+    const worktrees = output.split("\n\n").filter(Boolean);
+
+    for (const wt of worktrees) {
+      const wtBranch = wt.match(/^branch\s+(.+)$/m)?.[1];
+      if (wtBranch) {
+        const branchName = wtBranch.split("/").slice(3).join("/");
+        if (branchName !== defaultBranch && branchName !== "main" && branchName !== "master") {
+          return true;
+        }
+      }
+    }
+  } catch {
+    // Can't list worktrees
+  }
+  return false;
 }
 
 export default function (pi: ExtensionAPI) {
-  let defaultBranch = "main";
-  let detected = false;
-
-  pi.on("session_start", async (_event, ctx) => {
-    try {
-      const result = await pi.exec("git", [
-        "symbolic-ref",
-        "refs/remotes/origin/HEAD",
-      ], { cwd: ctx.cwd });
-      const ref = result.stdout?.trim() || "";
-      const branch = ref.split("/").pop();
-      if (branch) {
-        defaultBranch = branch;
-        detected = true;
-      }
-    } catch {
-      // Fallback to main
-    }
-  });
-
   pi.on("tool_call", async (event, ctx) => {
     if (!isToolCallEventType("bash", event)) return;
 
     const command = event.input.command || "";
-    const branchesToCheck = [defaultBranch, "main", "master"];
+    const isCommit = /^git\s+commit\b/.test(command);
+    const isPush = /^git\s+push\b/.test(command);
 
-    // Block git commit to default branch
-    for (const branch of branchesToCheck) {
-      if (
-        command.includes(`git commit`) &&
-        (command.includes(`-b ${branch}`) ||
-          command.includes(`-b${branch}`) ||
-          (command.includes(`git commit`) &&
-            !command.includes("git commit --amend") &&
-            !command.includes("--dry-run") &&
-            command.includes(branch)))
-      ) {
-        return { block: true, reason: BLOCK_MESSAGE };
-      }
+    if (!isCommit && !isPush) return;
+
+    const cwd = ctx.cwd || process.cwd();
+    const defaultBranch = await getDefaultBranch(pi, cwd);
+    const currentBranch = await getCurrentBranch(pi, cwd);
+
+    if (!currentBranch) return; // Can't determine, allow
+
+    // If current branch is a feature branch, allow
+    if (currentBranch !== defaultBranch && currentBranch !== "main" && currentBranch !== "master") {
+      return;
     }
 
-    // Block git push to default branch
-    for (const branch of branchesToCheck) {
-      if (
-        command.includes(`git push`) &&
-        (command.includes(` ${branch}`) ||
-          command.includes(` ${branch} `) ||
-          command.endsWith(` ${branch}`))
-      ) {
-        return { block: true, reason: BLOCK_MESSAGE };
-      }
+    // Check worktrees — if any worktree is on a feature branch, allow
+    if (await hasFeatureBranchWorktree(pi, cwd, defaultBranch)) {
+      return;
     }
 
-    // Block checkout -b main/master directly
-    for (const branch of branchesToCheck) {
-      if (
-        command.includes(`git checkout -b ${branch}`) ||
-        command.includes(`git checkout -b${branch}`)
-      ) {
-        return { block: true, reason: BLOCK_MESSAGE };
-      }
-    }
+    return { block: true, reason: BLOCK_MESSAGE };
   });
 }
