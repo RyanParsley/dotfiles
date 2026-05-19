@@ -273,7 +273,7 @@ export const TestEnforcement = async ({ client, directory, $ }) => {
         const { failed, passed, total } = lastResult;
         const msg =
           `Test enforcement: ${failed} test(s) failing (${passed}/${total} passing).\n` +
-          `Fix the failing tests, or run with a bypass flag if you're certain.`;
+          `Fix the failing tests before committing.`;
         throw new Error(msg);
       }
     },

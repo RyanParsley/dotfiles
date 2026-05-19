@@ -1,6 +1,6 @@
 {
   "lastChangelogVersion": "0.75.3",
-  "defaultProvider": "ollama",
-  "defaultModel": "gemma4:26b",
-  "defaultThinkingLevel": "medium"
+  "defaultProvider": "opencode",
+  "defaultModel": "deepseek-v4-flash-free",
+  "defaultThinkingLevel": "high"
 }

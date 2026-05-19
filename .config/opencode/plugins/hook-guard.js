@@ -11,9 +11,7 @@
 const BYPASS_PATTERNS = [
   // --no-verify variants
   /--no-verify/,
-  /--no-verify/,
   // Hooks path overrides
-  /-c\s+core\.hooksPath\s*=/,
   /-c\s+core\.hooksPath\s*=/,
   // Direct git command with hook bypass env
   /GIT_CONFIG_GLOBAL\s*=/,
@@ -25,7 +23,7 @@ const BYPASS_MESSAGE = `\n╔═════════════════
 ╠══════════════════════════════════════════════════════════════════╣
 ║  You are NEVER allowed to bypass git hooks.                      ║
 ║                                                                  ║
-║  Remove --no-verify, --no-verify, or any hook bypass flag        ║
+║  Remove --no-verify or any hook bypass flag                      ║
 ║  and fix the ACTUAL problem instead.                             ║
 ║                                                                  ║
 ║  The lefthook pre-commit/pre-push hooks are there to catch       ║
