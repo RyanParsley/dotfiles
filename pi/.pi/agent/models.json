@@ -35,6 +35,12 @@
           "contextWindow": 65536
         },
         {
+          "id": "gemma4:12b",
+          "name": "Gemma 4 12B",
+          "reasoning": true,
+          "contextWindow": 32768
+        },
+        {
           "id": "devstral-small-2:latest",
           "name": "Devstral Small 2",
           "contextWindow": 32768
