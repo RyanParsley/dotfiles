@@ -156,9 +156,21 @@
         "functiongemma:270m": {
           "name": "functiongemma:270m"
         },
+        "gemma4:e2b": {
+          "name": "gemma4:e2b"
+        },
+        "gemma4:e4b": {
+          "name": "gemma4:e4b"
+        },
+        "gemma4:12b": {
+          "name": "gemma4:12b"
+        },
         "gemma4:26b": {
           "name": "gemma4:26b",
           "tool_call": true
+        },
+        "gemma4:31b": {
+          "name": "gemma4:31b"
         },
         "gpt-oss:latest": {
           "name": "gpt-oss:latest",

@@ -127,3 +127,38 @@ curl -u :$AZURE_DEVOPS_EXT_PAT "https://dev.azure.com/{org}/{project}/_apis/..."
 - Do NOT assume `GITHUB_TOKEN` — check which token env var is set
 - Do NOT assume `main` branch — check the repo's default branch
 - Do NOT assume `actions/checkout@v4` — use the CI system's native checkout method
+
+## MCP Tools First
+
+**For all Codeberg/Forgejo operations, use the `codeberg_*` or `forgejo_*` MCP tools before bash.**
+
+| Task | Use Instead of bash |
+|------|---------------------|
+| Create PR | `codeberg_create_pr` or `fj pr create` |
+| List PRs | `codeberg_list_prs` or `fj pr list` |
+| View PR | `codeberg_get_pull_request_by_index` or `fj pr view <n>` |
+| Merge PR | `forgejo_merge_pull_request` or `fj pr merge <n>` |
+| List issues | `codeberg_list_issues` or `fj issue list` |
+| Create issue | `codeberg_create_issue` or `fj issue create` |
+| Get workflow runs | `forgejo_list_workflow_runs` or `fj run list` |
+| Trigger workflow | `codeberg_dispatch_workflow` |
+
+The only exception: when the MCP tool fails or returns an error you can't interpret. In that case, fall back to `curl` with the appropriate token env var (`CODEBERG_ACCESS_TOKEN` or `FORGEJO_ACCESS_TOKEN`).
+
+## CLI First
+
+**For quick operations, prefer `fj` (forgejo-cli) over MCP tools or curl.**
+
+`fj` is the fastest way to do simple ops and is always available:
+```bash
+fj pr list                          # List open PRs
+fj pr create "Title" --body "Body"  # Create PR
+fj pr create -aA                    # AGit flow (no push needed)
+fj pr view <n>                      # View PR details
+fj pr merge <n>                     # Merge PR
+fj issue list                       # List open issues
+fj run list                         # List recent workflow runs
+fj run view <id>                    # View workflow run details
+```
+
+Install: `brew install forgejo-cli`
