@@ -26,11 +26,8 @@ return {
         opts = {
             dir = vim.fn.expand('~/Notes'), -- expand to full path
             daily_notes = {
-                -- Optional, if you keep daily notes in a separate directory.
-                folder = function()
-                    return 'Journal/Daily/' .. os.date('%Y') .. '/' .. os.date('%m-%B')
-                end,
-                -- Optional, if you want to automatically insert a template from your template directory like 'Daily Template.md'
+                folder = 'Journal/Daily',
+                date_format = '%Y/%m-%B/%Y-%m-%d',
                 template = 'Daily Template',
             },
             templates = {
