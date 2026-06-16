@@ -197,6 +197,54 @@ cerebro todos --project <name> --keyword "fix"
 cerebro projects read <name>
 ```
 
+## Output Format Templates
+
+When summarizing cortex data for the user, use this structure:
+
+**Project Overview:**
+```markdown
+## {project_name}
+
+- **Last updated**: {date}
+- **Status**: {active/inactive}
+- **Cortex path**: {path to generated page}
+
+{generated content excerpt}
+
+{manual notes excerpt if present}
+```
+
+**Daily Journal:**
+```markdown
+## {date}
+
+### Sessions
+{OpenCode sessions for the day}
+
+### Commits
+{commit list for the day}
+
+### Notes
+{any manual notes}
+```
+
+**Intent/Goals:**
+```markdown
+## {period}: {identifier}
+
+{content}
+
+**Status**: {exists/not found}
+```
+
+**TODO Summary:**
+```markdown
+## TODOs: {project or "all projects"}
+
+Found {count} items:
+- **{file}:{line}** — {todo text}
+```
+
 ## Gotchas
 
 - The cortex path defaults to the parent of `config.toml`. If using `-c`, point to the config file, not the directory.

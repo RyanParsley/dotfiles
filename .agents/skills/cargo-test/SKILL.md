@@ -38,14 +38,14 @@ cargo test -- --show-output
 Before declaring a Rust task complete, verify:
 
 1. `cargo build` — compiles and links
-2. `cargo test` — tests pass
+2. `cargo test --workspace` — tests pass
 
 If either fails, fix the root cause and re-run. Do not claim the task is done until both succeed.
 
 ## Gotchas
 
-- Doc tests run separately with `--doc`
-- `--no-fail-fast` runs all tests even after the first failure, useful for seeing the full picture
-- `--lib`, `--bins`, `--tests` filter by target type
-- Release mode (`--release`) may compile optimizations that mask timing bugs
-- Tests in workspace library crates may need dependent crates compiled first
+- **Doc tests** run separately with `--doc`.
+- **`--no-fail-fast`** runs all tests even after the first failure, useful for seeing the full picture.
+- **`--lib`, `--bins`, `--tests`** filter by target type.
+- **Release mode** (`--release`) may compile optimizations that mask timing bugs.
+- **Tests in workspace library crates** may need dependent crates compiled first — run `cargo build` before `cargo test` if you see linking errors.

@@ -38,3 +38,4 @@ If either fails, fix the root cause and re-run. Do not claim the task is done un
 - `cargo check` is faster for type-checking; `cargo build` is needed to verify linking and produce binaries
 - `target/` directory holds build artifacts — safe to delete if corrupted
 - Incremental builds are cached; use `cargo clean` only when chasing phantom errors
+- Release builds use `LTO = true` and `codegen-units = 1` by default in most well-configured workspaces — expect longer compile times

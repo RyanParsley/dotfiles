@@ -29,7 +29,7 @@ cargo check --release
 
 ## Gotchas
 
-- `--workspace` checks all packages; `--all` is deprecated
-- Much faster than `cargo build` (skips codegen) but does not verify linking
-- Use during active editing cycles; switch to `cargo build` before claiming done
-- `--all-targets` includes tests, benches, and examples
+- **`--workspace`** checks all packages; `--all` is deprecated — always use `--workspace`.
+- Much faster than `cargo build` (skips codegen) but does not verify linking.
+- Use during active editing cycles; switch to `cargo build` before claiming done.
+- **`--all-targets`** includes tests, benches, and examples.
