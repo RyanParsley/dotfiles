@@ -1,0 +1,115 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  // Container-specific opencode config.
+  // Used inside dev containers via OPENCODE_CONFIG env var.
+  // - Ollama and LM Studio point at host.docker.internal instead of 127.0.0.1
+  // - JBH internal model endpoints included (URLs are not secrets)
+  // - Home MCPs disabled (browser tools, cerebro, codeberg, forgejo, dokploy)
+  // - Work MCPs disabled (ADO, jds, figma, dynatrace — require host-side tooling)
+
+  "share": "disabled",
+  "autoupdate": false,
+  "model": "github-copilot/claude-sonnet-4.6",
+
+  "provider": {
+    "github-copilot": {
+      // Auth handled by Copilot CLI credential store — no API key needed here
+    },
+
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (host)",
+      "options": {
+        "baseURL": "http://host.docker.internal:11434/v1"
+      },
+      "models": {
+        "gemma4:e2b":              { "name": "Gemma 4 E2B",          "tool_call": true },
+        "gemma4:e4b":              { "name": "Gemma 4 E4B",          "tool_call": true },
+        "gemma4:12b":              { "name": "Gemma 4 12b",          "tool_call": true },
+        "gemma4:26b":              { "name": "Gemma 4 26b",          "tool_call": true },
+        "gemma4:26b-mlx":          { "name": "Gemma 4 26b (MLX)",    "tool_call": true },
+        "gemma4:latest":           { "name": "Gemma 4",              "tool_call": true },
+        "mistral-small3.2:latest": { "name": "Mistral Small 3.2",    "tool_call": true },
+        "devstral-small-2:latest": { "name": "Devstral Small 2",     "tool_call": true },
+        "devstral:24b":            { "name": "Devstral 24b",         "tool_call": true },
+        "ministral-3:14b":         { "name": "Ministral 3 14b" },
+        "ministral-3:latest":      { "name": "Ministral 3" }
+      }
+    },
+
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (host)",
+      "options": {
+        "baseURL": "http://host.docker.internal:1234/v1"
+      },
+      "models": {
+        "google/gemma-3n-e4b":                  { "name": "Gemma 3n-e4b (local)" },
+        "ishumilin/deepseek-r1-coder-tools:8b": { "name": "Deepseek Coder Tools 8b" },
+        "olmo2":                                { "name": "OLMo 2" },
+        "qwen3":                                { "name": "Qwen 3" },
+        "qwen3-coder":                          { "name": "Qwen 3 Coder" }
+      }
+    },
+
+    // JBH internal model endpoints
+    "gemma4-e2b-dev": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Gemma 4 E2B (JBH dev)",
+      "options": {
+        "baseURL": "http://gemma4-e2b-dev.nonprod.jbhunt.com/v1"
+      },
+      "models": {
+        "gemma4:e2b": { "name": "Gemma 4 E2B (dev)", "tool_call": true }
+      }
+    },
+
+    "gemma4-e2b-vllm-dev": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Gemma 4 E2B vLLM (JBH dev)",
+      "options": {
+        "baseURL": "http://gemma4-e2b-vllm-dev.nonprod.jbhunt.com/v1"
+      },
+      "models": {
+        "google/gemma-4-E2B-it": { "name": "Gemma 4 E2B vLLM (dev)", "tool_call": true }
+      }
+    },
+
+    "gemma4-e4b-vllm-dev": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Gemma 4 E4B vLLM (JBH dev)",
+      "options": {
+        "baseURL": "http://gemma4-e4b-vllm-dev.nonprod.jbhunt.com/v1"
+      },
+      "models": {
+        "google/gemma-4-E4B-it": { "name": "Gemma 4 E4B vLLM (dev)", "tool_call": true }
+      }
+    },
+
+    "mistral-nemo-dev": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Mistral NeMo (JBH dev)",
+      "options": {
+        "baseURL": "http://mistral-nemo-dev.nonprod.jbhunt.com/v1"
+      },
+      "models": {
+        "mistral-nemo:12b": { "name": "Mistral NeMo (dev)" }
+      }
+    },
+
+    "gemma4-26b-dev": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Gemma 4 26B (JBH dev)",
+      "options": {
+        "baseURL": "http://gemma4-26b-dev.nonprod.jbhunt.com/v1"
+      },
+      "models": {
+        "gemma4:26b": { "name": "Gemma 4 26B (dev)", "tool_call": true }
+      }
+    }
+  },
+
+  // No MCPs in container context — host-side tooling not available
+  "mcp": {}
+}
