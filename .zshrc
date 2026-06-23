@@ -1,100 +1,32 @@
 ### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-export PATH="/Users/ryan/.rd/bin:$PATH"
+[[ "$(uname)" == "Darwin" ]] && export PATH="/Users/ryan/.rd/bin:$PATH"
 ### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 # Prioritize rustup cargo over Homebrew
-export PATH="$HOME/.cargo/bin:$PATH"
-
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+[[ "$(uname)" == "Darwin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
 
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="robbyrussell"
+zstyle ':omz:update' mode auto
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+# Plugins — only load what exists in the current environment
+# Base plugins (available everywhere oh-my-zsh is installed)
+plugins=(git)
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-
-# Bundled Plugins
-plugins=(git zoxide rust pm2 ng kubectl golang gcloud fzf)
-
-# Custom Plugins
-plugins+=(nx-completion zsh-autosuggestions)
+if [[ "$(uname)" == "Darwin" ]]; then
+  # macOS-only plugins
+  plugins+=(zoxide rust pm2 ng kubectl golang gcloud fzf nx-completion zsh-autosuggestions)
+fi
 
 source $ZSH/oh-my-zsh.sh
 
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-
-
-# Example aliases
 alias zshconfig="nvim ~/.zshrc"
 alias ohmyzsh="nvim ~/.oh-my-zsh"
 
-# gnuplot kitty integration purr the docs
-# https://sw.kovidgoyal.net/kitty/integrations/
-
-function iplot {
+# gnuplot kitty integration — macOS only
+if [[ "$(uname)" == "Darwin" ]]; then
+  function iplot {
     cat <<EOF | gnuplot
     set terminal pngcairo enhanced font 'Fira Sans,10'
     set autoscale
@@ -104,7 +36,8 @@ function iplot {
     plot $@
     set output '/dev/null'
 EOF
-}
+  }
+fi
 
 function nx() {
   npx nx "$@"
@@ -114,15 +47,30 @@ function ng() {
   npx ng "$@"
 }
 
-eval "$(starship init zsh)"
-source ~/.bin/smug.zsh
+# Prompt
+if command -v starship &>/dev/null; then
+  eval "$(starship init zsh)"
+fi
 
+# smug tmux session manager completions
+[[ -f ~/.bin/smug.zsh ]] && source ~/.bin/smug.zsh
+
+# fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-export MAGICK_HOME=$(brew --prefix)
+# macOS-only: Homebrew-dependent paths and tools
+if [[ "$(uname)" == "Darwin" ]]; then
+  export MAGICK_HOME=$(brew --prefix)
+  export CPPFLAGS="-I$(brew --prefix)/opt/libffi/include"
+  export PKG_CONFIG_PATH="$(brew --prefix)/opt/libffi/lib/pkgconfig"
+  export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3
+  export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$(brew --prefix qt@5)
+  export PATH=$PATH:$(brew --prefix qt@5)/bin
+  export PATH="/opt/homebrew/sbin:$PATH"
+fi
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -132,61 +80,72 @@ export PATH="$HOME/.bin:$PATH"
 export PATH="$HOME/local/bin:$PATH"
 export PATH="$HOME/.local/share/bob/nvim-bin:$PATH"
 
-#export LDFLAGS="-L$(brew --prefix)/opt/libffi/lib"
-export CPPFLAGS="-I$(brew --prefix)/opt/libffi/include"
-export PKG_CONFIG_PATH="$(brew --prefix)/opt/libffi/lib/pkgconfig"
-export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3
-export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$(brew --prefix qt@5)
-export PATH=$PATH:$(brew --prefix qt@5)/bin
 fpath=(${HOME}/.zsh_completion.d $fpath)
-export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
-export ANDROID_HOME="$HOME/Library/Android/sdk"
-export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk)"
+
+# macOS-only: Android / Java
+if [[ "$(uname)" == "Darwin" ]]; then
+  export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+  export ANDROID_HOME="$HOME/Library/Android/sdk"
+  if [[ -d "$ANDROID_HOME/ndk" ]]; then
+    export NDK_HOME="$ANDROID_HOME/ndk/$(ls -1 $ANDROID_HOME/ndk | head -1)"
+  fi
+fi
+
 export PATH="$PATH:$HOME/go/bin"
-export PATH="/opt/homebrew/sbin:$PATH"
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 export OLLAMA_API_BASE=http://127.0.0.1:11434
 
 export EDITOR=nvim
 export AIDER_EDITOR=nvim
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/ryan/.lmstudio/bin"
+# macOS-only: LM Studio
+[[ "$(uname)" == "Darwin" ]] && export PATH="$PATH:/Users/ryan/.lmstudio/bin"
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
 
-# The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/path.zsh.inc'; fi
+# Google Cloud SDK — macOS paths
+if [[ "$(uname)" == "Darwin" ]]; then
+  [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ] && . '/Users/ryan/google-cloud-sdk/path.zsh.inc'
+  [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ] && . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'
+fi
 
-# The next line enables shell command completion for gcloud.
-if [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'; fi
-. "$HOME/.cargo/env"
-export PATH="/opt/homebrew/sbin:$PATH"
+# Cargo env
+[[ "$(uname)" == "Darwin" ]] && [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/ryan/.docker/completions $fpath)
+# Docker CLI completions — macOS only
+if [[ "$(uname)" == "Darwin" ]]; then
+  fpath=(/Users/ryan/.docker/completions $fpath)
+fi
 autoload -Uz compinit
 compinit
-# End of Docker CLI completions
 
 # opencode
 export PATH=/Users/ryan/.opencode/bin:$PATH
-source ~/.env
-# Force use of rustup tools over everything else
-export PATH="$HOME/.cargo/bin:$PATH"
 
-# ESP toolchain for Xtensa (ESP32)
-[ -f ~/export-esp.sh ] && source ~/export-esp.sh
+# Secrets — macOS Keychain-backed env vars
+if [[ "$(uname)" == "Darwin" ]]; then
+  [[ -f ~/.env ]] && source ~/.env
+fi
 
-# SDL2 for embedded-graphics-simulator
-export LIBRARY_PATH="/opt/homebrew/opt/sdl2/lib:$LIBRARY_PATH"
+# Force use of rustup tools over everything else — macOS only
+[[ "$(uname)" == "Darwin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
 
-# Ensure mise is in PATH before activation
+# ESP toolchain for Xtensa (ESP32) — macOS only
+[[ "$(uname)" == "Darwin" ]] && [ -f ~/export-esp.sh ] && source ~/export-esp.sh
+
+# SDL2 for embedded-graphics-simulator — macOS only
+[[ "$(uname)" == "Darwin" ]] && export LIBRARY_PATH="/opt/homebrew/opt/sdl2/lib:$LIBRARY_PATH"
+
+# mise version manager
 export PATH="$HOME/.local/bin:$PATH"
-eval "$(mise activate zsh)"
+if command -v mise &>/dev/null; then
+  eval "$(mise activate zsh)"
+fi
 
-# Prevent future Rust conflicts - block Homebrew from installing Rust
-export HOMEBREW_NO_INSTALL_CLEANUP=1
-export HOMEBREW_NO_AUTO_UPDATE=1
-export HOMEBREW_NO_ENV_HINTS=1
+# Homebrew settings — macOS only
+if [[ "$(uname)" == "Darwin" ]]; then
+  export HOMEBREW_NO_INSTALL_CLEANUP=1
+  export HOMEBREW_NO_AUTO_UPDATE=1
+  export HOMEBREW_NO_ENV_HINTS=1
+fi

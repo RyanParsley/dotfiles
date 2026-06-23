@@ -2,4 +2,5 @@
 
 export GOPATH=$HOME/go
 export PATH=$GOPATH/bin:$PATH
-. "$HOME/.cargo/env"
+
+[[ "$(uname)" == "Darwin" ]] && . "$HOME/.cargo/env"
