@@ -12,6 +12,7 @@
   "autoupdate": true,
   "share": "disabled",
   "model": "github-copilot/claude-sonnet-4.6",
+  "theme": "nord",
 
   // Only these provider IDs appear in the model menu.
   // All other providers (anthropic, openai, gemini, etc.) are suppressed.
