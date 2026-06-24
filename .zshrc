@@ -5,8 +5,13 @@
 # Prioritize rustup cargo over Homebrew
 [[ "$(uname)" == "Darwin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
 
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# Path to oh-my-zsh — macOS uses ~/.oh-my-zsh, Nix uses the profile share path
+if [[ "$(uname)" == "Darwin" ]]; then
+  export ZSH="$HOME/.oh-my-zsh"
+else
+  # Nix installs oh-my-zsh to the profile share directory
+  export ZSH="${ZSH:-/root/.nix-profile/share/oh-my-zsh}"
+fi
 
 zstyle ':omz:update' mode auto
 
@@ -52,8 +57,10 @@ if command -v starship &>/dev/null; then
   eval "$(starship init zsh)"
 fi
 
-# smug tmux session manager completions
-[[ -f ~/.bin/smug.zsh ]] && source ~/.bin/smug.zsh
+# smug tmux session manager completions — macOS only
+# (smug is not available in the container; compdef requires compinit which
+# hasn't run yet at this point in a non-login shell)
+[[ "$(uname)" == "Darwin" ]] && [[ -f ~/.bin/smug.zsh ]] && source ~/.bin/smug.zsh
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
