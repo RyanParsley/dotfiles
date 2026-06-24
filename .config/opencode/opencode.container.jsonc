@@ -3,14 +3,27 @@
 
   // Container-specific opencode config.
   // Used inside dev containers via OPENCODE_CONFIG env var.
+  // - share disabled, autoupdate on
+  // - enabled_providers whitelist: only these show in the model menu
   // - Ollama and LM Studio point at host.docker.internal instead of 127.0.0.1
   // - JBH internal model endpoints included (URLs are not secrets)
-  // - Home MCPs disabled (browser tools, cerebro, codeberg, forgejo, dokploy)
-  // - Work MCPs disabled (ADO, jds, figma, dynatrace — require host-side tooling)
+  // - No MCPs — host-side tooling not available inside the container
 
+  "autoupdate": true,
   "share": "disabled",
-  "autoupdate": false,
   "model": "github-copilot/claude-sonnet-4.6",
+
+  // Only these provider IDs appear in the model menu.
+  // All other providers (anthropic, openai, gemini, etc.) are suppressed.
+  "enabled_providers": [
+    "github-copilot",
+    "ollama",
+    "gemma4-e2b-dev",
+    "gemma4-e2b-vllm-dev",
+    "gemma4-e4b-vllm-dev",
+    "gemma4-26b-dev",
+    "mistral-nemo-dev"
+  ],
 
   "provider": {
     "github-copilot": {
@@ -38,22 +51,7 @@
       }
     },
 
-    "lmstudio": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "LM Studio (host)",
-      "options": {
-        "baseURL": "http://host.docker.internal:1234/v1"
-      },
-      "models": {
-        "google/gemma-3n-e4b":                  { "name": "Gemma 3n-e4b (local)" },
-        "ishumilin/deepseek-r1-coder-tools:8b": { "name": "Deepseek Coder Tools 8b" },
-        "olmo2":                                { "name": "OLMo 2" },
-        "qwen3":                                { "name": "Qwen 3" },
-        "qwen3-coder":                          { "name": "Qwen 3 Coder" }
-      }
-    },
-
-    // JBH internal model endpoints
+    // JBH GCP-hosted model endpoints
     "gemma4-e2b-dev": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Gemma 4 E2B (JBH dev)",
