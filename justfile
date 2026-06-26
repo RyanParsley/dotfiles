@@ -16,9 +16,9 @@
 #   ~/.agents/skills/ is populated from two sources via --no-folding:
 #     - ~/dotfiles/.agents/skills/     (public skills)
 #     - ~/.dotfiles-local/.agents/skills/ (work-only skills, e.g. ado-build-logs)
-#   Stow invocation targets ~/.agents directly (not ~/.agents/skills):
-#     cd ~/dotfiles/.agents && stow --no-folding --ignore=node_modules --target=~/.agents --stow skills
-#     cd ~/.dotfiles-local/.agents && stow --no-folding --ignore=node_modules --target=~/.agents --stow skills
+#   Stow invocation targets ~/.agents/skills:
+#     cd ~/dotfiles/.agents && stow --no-folding --ignore=node_modules --target=$HOME/.agents/skills --stow skills
+#     cd ~/.dotfiles-local/.agents && stow --no-folding --ignore=node_modules --target=$HOME/.agents/skills --stow skills
 #
 # Pi models strategy:
 #   ~/.pi/agent/models.json    -> symlink to ~/dotfiles/.pi/agent/models.json (public/local providers)
@@ -36,12 +36,12 @@ default:
 # Restow public dotfiles (fix broken symlinks)
 restow:
     cd ~/dotfiles && stow --restow .
-    cd ~/dotfiles/.agents && stow --no-folding --ignore='node_modules' --target=$$HOME/.agents --restow skills
+    cd ~/dotfiles/.agents && stow --no-folding --ignore='node_modules' --target=$HOME/.agents/skills --restow skills
 
 # Restow work-local dotfiles (run on work machine only)
 restow-local:
     cd ~/.dotfiles-local && stow --restow .
-    cd ~/.dotfiles-local/.agents && stow --no-folding --ignore='node_modules' --target=$$HOME/.agents --restow skills
+    cd ~/.dotfiles-local/.agents && stow --no-folding --ignore='node_modules' --target=$HOME/.agents/skills --restow skills
 
 # Restow both repos (work machine only)
 restow-all: restow restow-local
