@@ -12,50 +12,32 @@
   "mcp": {
     "chrome-devtools": {
       "type": "local",
-      "command": [
-        "npx",
-        "chrome-devtools-mcp@latest"
-      ],
+      "command": ["npx", "chrome-devtools-mcp@latest"],
       "enabled": true,
       "timeout": 50000
     },
     "firefox-devtools": {
       "type": "local",
       "command": [
-        "npx",
-        "-y",
-        "firefox-devtools-mcp@latest",
-        "--headless",
-        "--viewport",
-        "1280x720"
+        "npx", "-y", "firefox-devtools-mcp@latest",
+        "--headless", "--viewport", "1280x720"
       ],
       "enabled": true
     },
     "cerebro": {
       "type": "local",
-      "command": [
-        "cerebro",
-        "mcp"
-      ],
+      "command": ["cerebro", "mcp"],
       "enabled": true
     },
     "adrs": {
       "type": "local",
-      "command": [
-        "adrs",
-        "mcp",
-        "serve"
-      ],
+      "command": ["adrs", "mcp", "serve"],
       "enabled": true
     },
     "codeberg": {
       "type": "local",
       "command": [
-        "forgejo-mcp",
-        "--transport",
-        "stdio",
-        "--url",
-        "https://codeberg.org"
+        "forgejo-mcp", "--transport", "stdio", "--url", "https://codeberg.org"
       ],
       "environment": {
         "FORGEJO_ACCESS_TOKEN": "{env:CODEBERG_ACCESS_TOKEN}"
@@ -65,11 +47,8 @@
     "forgejo": {
       "type": "local",
       "command": [
-        "forgejo-mcp",
-        "--transport",
-        "stdio",
-        "--url",
-        "https://forgejo.parsley.familyds.com/"
+        "forgejo-mcp", "--transport", "stdio",
+        "--url", "https://forgejo.parsley.familyds.com/"
       ],
       "environment": {
         "FORGEJO_ACCESS_TOKEN": "{env:FORGEJO_ACCESS_TOKEN}"
@@ -78,11 +57,7 @@
     },
     "dokploy-mcp": {
       "type": "local",
-      "command": [
-        "npx",
-        "-y",
-        "@ahdev/dokploy-mcp"
-      ],
+      "command": ["npx", "-y", "@ahdev/dokploy-mcp"],
       "environment": {
         "DOKPLOY_URL": "https://dokploy.fretsome.com/api",
         "DOKPLOY_API_KEY": "{env:DOKPLOY_API_KEY}"
@@ -98,21 +73,11 @@
         "baseURL": "http://127.0.0.1:1234/v1"
       },
       "models": {
-        "google/gemma-3n-e4b": {
-          "name": "Gemma 3n-e4b (local)"
-        },
-        "ishumilin/deepseek-r1-coder-tools:8b": {
-          "name": "Deepseek Coder Tools (8b)"
-        },
-        "olmo2": {
-          "name": "OLMo 2"
-        },
-        "qwen3": {
-          "name": "Qwen 3"
-        },
-        "qwen3-coder": {
-          "name": "Qwen 3 Coder"
-        }
+        "google/gemma-3n-e4b":                   { "name": "Gemma 3n-e4b (local)" },
+        "ishumilin/deepseek-r1-coder-tools:8b":  { "name": "Deepseek Coder Tools (8b)" },
+        "olmo2":                                  { "name": "OLMo 2" },
+        "qwen3":                                  { "name": "Qwen 3" },
+        "qwen3-coder":                            { "name": "Qwen 3 Coder" }
       }
     },
     "ollama": {
@@ -122,62 +87,20 @@
         "baseURL": "http://127.0.0.1:11434/v1"
       },
       "models": {
-        "kimi-k2.5:cloud": {
-          "name": "kimi-k2.5:cloud"
-        },
-        "deepseek-r1:32b": {
-          "name": "deepseek-r1:32b",
-          "reasoning": true,
-          "tool_call": true
-        },
-        "devstral:latest": {
-          "name": "devstral:latest",
-          "tool_call": true
-        },
-        "devstral-small-2:latest": {
-          "name": "devstral-small-2:latest",
-          "tool_call": true
-        },
-        "rnj-1:8b": {
-          "name": "rnj-1:8b"
-        },
-        "ministral-3:8b": {
-          "name": "ministral-3:8b"
-        },
-        "nemotron-3-nano:4b": {
-          "name": "nemotron-3-nano:4b"
-        },
-        "qwen3.6:27b": {
-          "name": "qwen3.6:27b"
-        },
-        "hf.co/unsloth/Qwen3.6-27B-GGUF:Q8_0": {
-          "name": "Qwen3.6-27B-GGUF:Q8_0"
-        },
-        "functiongemma:270m": {
-          "name": "functiongemma:270m"
-        },
-        "gemma4:e2b": {
-          "name": "gemma4:e2b"
-        },
-        "gemma4:e4b": {
-          "name": "gemma4:e4b"
-        },
-        "gemma4:12b": {
-          "name": "gemma4:12b"
-        },
-        "gemma4:26b": {
-          "name": "gemma4:26b",
-          "tool_call": true
-        },
-        "gemma4:31b": {
-          "name": "gemma4:31b"
-        },
-        "gpt-oss:latest": {
-          "name": "gpt-oss:latest",
-          "options": {
-            "reasoning_effort": "high"
-          }
-        }
+        "devstral-small-2:latest": { "name": "Devstral Small 2",    "tool_call": true },
+        "devstral:24b":            { "name": "Devstral 24b",        "tool_call": true },
+        "gemma4:e2b":              { "name": "Gemma 4 E2B",         "tool_call": true },
+        "gemma4:e4b":              { "name": "Gemma 4 E4B",         "tool_call": true },
+        "gemma4:12b":              { "name": "Gemma 4 12b",         "tool_call": true },
+        "gemma4:26b":              { "name": "Gemma 4 26b",         "tool_call": true },
+        "gemma4:26b-mlx":          { "name": "Gemma 4 26b (MLX)",   "tool_call": true },
+        "gemma4:31b":              { "name": "Gemma 4 31b",         "tool_call": true },
+        "gemma4:latest":           { "name": "Gemma 4",             "tool_call": true },
+        "gpt-oss:latest":          { "name": "GPT-OSS", "options": { "reasoning_effort": "high" } },
+        "ministral-3:14b":         { "name": "Ministral 3 14b" },
+        "ministral-3:latest":      { "name": "Ministral 3" },
+        "mistral-small3.2:latest": { "name": "Mistral Small 3.2",   "tool_call": true },
+        "llama3.2:latest":         { "name": "Llama 3.2" }
       }
     }
   },
