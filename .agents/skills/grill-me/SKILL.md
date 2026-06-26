@@ -14,3 +14,8 @@ If a question can be answered by exploring the codebase, explore the codebase in
 - User asks for a quick opinion or sanity check — give a direct answer instead
 - User says "just tell me what you think" — they want analysis, not interrogation
 - The plan is trivial (one file change, obvious fix) — skip grilling and proceed
+
+## Gotchas
+
+- **Ask one question at a time.** Dumping a list of questions kills the interview feel and overwhelms the user. One question, wait for the answer, then continue.
+- **Provide your recommended answer with each question.** The goal is shared understanding, not a quiz — your recommendation gives the user something concrete to react to.

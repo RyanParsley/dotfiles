@@ -1,0 +1,35 @@
+{
+  "skill_name": "cerebro-cli",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "What projects have I been working on recently?",
+      "expected_output": "A list of the user's recent projects pulled from the cerebro cortex, with names and any available context like last active date or description.",
+      "assertions": [
+        "Output lists at least one project name",
+        "Output is sourced from cerebro CLI output, not hallucinated",
+        "Output does not fabricate project names or dates"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Show me my latest journal entry.",
+      "expected_output": "The content of the most recent journal entry from the cortex, with its date.",
+      "assertions": [
+        "Output includes a date for the journal entry",
+        "Output includes the entry content (not just metadata)",
+        "Output uses the cerebro CLI rather than reading files directly"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Are there any open TODOs across my projects?",
+      "expected_output": "A list of TODO items found across the cortex, attributed to their respective projects.",
+      "assertions": [
+        "Output lists TODO items with project attribution",
+        "Output is sourced from cerebro CLI, not a manual file scan",
+        "Output does not fabricate TODOs"
+      ]
+    }
+  ]
+}

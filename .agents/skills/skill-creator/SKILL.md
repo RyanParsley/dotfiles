@@ -137,6 +137,14 @@ Check against the specification:
 - File references use relative paths from skill root
 - SKILL.md is under 500 lines
 
+## Gotchas
+
+- **The description field carries the entire burden of triggering.** A skill that never activates has no value no matter how good the body is. Write the description first, not last.
+- **`{baseDir}` is not substituted by OpenCode.** If the skill includes bash scripts, the agent infers the full path from the "Base directory" context injected at load time. This is fragile — use `scripts/` and tell the agent to construct the path from the base directory, or document it explicitly.
+- **Scripts at the skill root (not in `scripts/`) work but violate convention.** Put executables in `scripts/` and reference material in `references/`.
+- **`license`, `compatibility`, and `metadata` are valid optional frontmatter fields in OpenCode** — don't treat them as spec violations. Avoid fields beyond these recognized ones.
+- **A skill that the agent handles well without instructions adds overhead, not value.** Test without the skill first; if output is already good, the skill is net-negative context cost.
+
 ## Anti-Patterns to Avoid
 
 1. **Vague procedures**: "handle errors appropriately" — says nothing actionable

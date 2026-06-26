@@ -283,3 +283,10 @@ Use vim-like navigation by default:
 ## Reference Files
 
 - [Widgets, text system, testing, and dependencies](references/widgets-and-testing.md) — load when you need widget details, text styling, test patterns, or typical dependency versions.
+
+## Gotchas
+
+- **Multiple semver-incompatible `crossterm` versions cause compilation failure.** There must be exactly one version in the dependency tree. If builds fail with crossterm type errors, run `cargo tree -d crossterm` to find duplicates.
+- **`ratatui::run()` is v0.30+ only.** Don't use it in projects pinned to older Ratatui versions — use the manual terminal setup instead.
+- **Immediate mode means no persistent widget state between frames.** Widget objects are created fresh every draw call. If you find yourself storing a widget struct across frames, that's a design error.
+- **Prefer `stderr` for the terminal backend** (see Ratatui FAQ). Using `stdout` breaks pipe-based workflows.

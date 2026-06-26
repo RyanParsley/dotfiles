@@ -1,0 +1,37 @@
+{
+  "skill_name": "git-commit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I've added a new `--verbose` flag to the CLI. Commit this change.",
+      "expected_output": "A git commit with a concise imperative subject line (e.g. 'Add --verbose flag to CLI') and no unnecessary body.",
+      "assertions": [
+        "Commit subject line uses imperative mood (Add/Fix/Update/Remove, not Added/Fixed)",
+        "Subject line is under 72 characters",
+        "Only relevant files are staged before committing",
+        "git status is checked before committing"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I fixed a bug where the login form wasn't clearing the password field after a failed attempt. Please commit.",
+      "expected_output": "A git commit with a subject line like 'Fix login form not clearing password on failed attempt'.",
+      "assertions": [
+        "Commit subject line uses imperative mood",
+        "Subject line accurately describes the bug fix",
+        "No secrets or unrelated files are staged"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Commit everything that's changed. I've been refactoring the auth module.",
+      "expected_output": "The agent checks git status and git diff, then stages and commits only the auth-related changes with an appropriate message. It does not blindly stage all files without review.",
+      "assertions": [
+        "git status is inspected before staging",
+        "git diff is reviewed before committing",
+        "Commit message reflects the refactor scope",
+        "Agent does not use 'git add .' without reviewing what would be staged"
+      ]
+    }
+  ]
+}

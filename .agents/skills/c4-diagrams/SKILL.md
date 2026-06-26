@@ -180,3 +180,10 @@ d2 --watch input.d2 output.svg
 
 - [write-a-skill](../write-a-skill/SKILL.md) — For creating this skill's templates
 - [zoom-out](../zoom-out/SKILL.md) — For understanding codebase before diagramming
+
+## Gotchas
+
+- **Level 4 (Code) diagrams should almost never be drawn manually** — they go stale immediately. The skill explicitly marks them "DO NOT draw — automate." Resist any request to diagram individual classes.
+- **D2 must be installed before rendering**: `brew install d2`. If `d2 --help` fails, D2 is not installed.
+- **Missing title or legend are the most common Simon Brown violations.** Every diagram must have both. A diagram without a title is ambiguous; one without a legend forces readers to guess what the shapes mean.
+- **Cross-references to other skill files (`../write-a-skill/SKILL.md`) are path references** — only load them if the skill loader resolves relative paths from the skill root.

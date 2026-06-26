@@ -115,3 +115,10 @@ After drafting, verify:
 - [ ] Consistent terminology
 - [ ] Concrete examples included
 - [ ] References one level deep
+
+## Gotchas
+
+- **The `name` field must match the directory name exactly.** A common mismatch when renaming a skill after creation — the directory name and frontmatter `name` must always stay in sync.
+- **`{baseDir}` is not substituted by OpenCode.** If the skill includes bash scripts, the agent must infer the full path from the "Base directory" context injected at load time. Use `scripts/` and document how to resolve the path.
+- **Don't create a skill for something the agent already handles well.** Test without the skill first — if output is already good, a skill adds context cost with no benefit.
+- **Gotchas are the highest-value content.** Don't skip them. They're the corrections you'd make if you watched someone use the skill for the first time.

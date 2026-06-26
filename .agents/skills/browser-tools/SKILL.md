@@ -12,15 +12,15 @@ Chrome DevTools Protocol tools for agent-assisted web automation. These tools co
 Run once before first use:
 
 ```bash
-cd {baseDir}/browser-tools
+cd <base-dir>/scripts   # base-dir shown at the bottom of this skill
 npm install
 ```
 
 ## Start Chrome
 
 ```bash
-{baseDir}/browser-start.js              # Fresh profile
-{baseDir}/browser-start.js --profile    # Copy user's profile (cookies, logins)
+node <base-dir>/scripts/browser-start.js              # Fresh profile
+node <base-dir>/scripts/browser-start.js --profile    # Copy user's profile (cookies, logins)
 ```
 
 Launch Chrome with remote debugging on `:9222`. Use `--profile` to preserve user's authentication state.
@@ -28,8 +28,8 @@ Launch Chrome with remote debugging on `:9222`. Use `--profile` to preserve user
 ## Navigate
 
 ```bash
-{baseDir}/browser-nav.js https://example.com
-{baseDir}/browser-nav.js https://example.com --new
+node <base-dir>/scripts/browser-nav.js https://example.com
+node <base-dir>/scripts/browser-nav.js https://example.com --new
 ```
 
 Navigate to URLs. Use `--new` flag to open in a new tab instead of reusing current tab.
@@ -37,8 +37,8 @@ Navigate to URLs. Use `--new` flag to open in a new tab instead of reusing curre
 ## Evaluate JavaScript
 
 ```bash
-{baseDir}/browser-eval.js 'document.title'
-{baseDir}/browser-eval.js 'document.querySelectorAll("a").length'
+node <base-dir>/scripts/browser-eval.js 'document.title'
+node <base-dir>/scripts/browser-eval.js 'document.querySelectorAll("a").length'
 ```
 
 Execute JavaScript in the active tab. Code runs in async context. Use this to extract data, inspect page state, or perform DOM operations programmatically.
@@ -46,7 +46,7 @@ Execute JavaScript in the active tab. Code runs in async context. Use this to ex
 ## Screenshot
 
 ```bash
-{baseDir}/browser-screenshot.js
+node <base-dir>/scripts/browser-screenshot.js
 ```
 
 Capture current viewport and return temporary file path. Use this to visually inspect page state or verify UI changes.
@@ -54,7 +54,7 @@ Capture current viewport and return temporary file path. Use this to visually in
 ## Pick Elements
 
 ```bash
-{baseDir}/browser-pick.js "Click the submit button"
+node <base-dir>/scripts/browser-pick.js "Click the submit button"
 ```
 
 **IMPORTANT**: Use this tool when the user wants to select specific DOM elements on the page. This launches an interactive picker that lets the user click elements to select them. The user can select multiple elements (Cmd/Ctrl+Click) and press Enter when done. The tool returns CSS selectors for the selected elements.
@@ -67,7 +67,7 @@ Common use cases:
 ## Cookies
 
 ```bash
-{baseDir}/browser-cookies.js
+node <base-dir>/scripts/browser-cookies.js
 ```
 
 Display all cookies for the current tab including domain, path, httpOnly, and secure flags. Use this to debug authentication issues or inspect session state.
@@ -75,7 +75,7 @@ Display all cookies for the current tab including domain, path, httpOnly, and se
 ## Extract Page Content
 
 ```bash
-{baseDir}/browser-content.js https://example.com
+node <base-dir>/scripts/browser-content.js https://example.com
 ```
 
 Navigate to a URL and extract readable content as markdown. Uses Mozilla Readability for article extraction and Turndown for HTML-to-markdown conversion. Works on pages with JavaScript content (waits for page to load).
@@ -174,7 +174,7 @@ Extract structured state in one call:
 If DOM updates after actions, add a small delay with bash:
 
 ```bash
-sleep 0.5 && {baseDir}/browser-eval.js '...'
+sleep 0.5 && node <base-dir>/scripts/browser-eval.js '...'
 ```
 
 ### Investigate Before Interacting
@@ -194,3 +194,11 @@ Always start by understanding the page structure:
 ```
 
 Then target specific elements based on what you find.
+
+## Gotchas
+
+- **`{baseDir}` is not substituted by OpenCode.** Construct the full script path using the "Base directory" value injected at the bottom of this skill.
+- **Chrome must be running with `--remote-debugging-port=9222` before any scripts work.** If scripts fail silently or with connection errors, check Chrome is running with remote debugging enabled.
+- **`browser-pick.js` is interactive** — it requires a human at the keyboard to click elements. Never invoke it autonomously without the user present.
+- **`browser-content.js` waits for page load before extracting.** Very slow or JS-heavy pages may time out. Check the page loaded before trusting empty output.
+- **Run `npm install` in the skill directory before first use.** Missing `node_modules` causes silent failures with unhelpful "module not found" errors.

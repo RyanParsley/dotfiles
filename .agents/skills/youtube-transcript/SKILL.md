@@ -10,14 +10,14 @@ Fetch transcripts from YouTube videos.
 ## Setup
 
 ```bash
-cd {baseDir}
+cd <base-dir>/scripts   # base-dir shown at the bottom of this skill
 npm install
 ```
 
 ## Usage
 
 ```bash
-{baseDir}/transcript.js <video-id-or-url>
+node <base-dir>/scripts/transcript.js <video-id-or-url>
 ```
 
 Accepts video ID or full URL:
@@ -39,3 +39,10 @@ Timestamped transcript entries:
 
 - Requires the video to have captions/transcripts available
 - Works with auto-generated and manual transcripts
+
+## Gotchas
+
+- **`{baseDir}` is not substituted by OpenCode.** Construct the full script path using the "Base directory" value injected at the bottom of this skill.
+- **Not all videos have transcripts.** The script will fail if transcripts are disabled by the uploader or the video is private. Check manually on YouTube first if uncertain.
+- **Auto-generated transcripts have lower accuracy** for technical terms, proper nouns, and non-English words. Review these manually.
+- **Run `npm install` in the skill directory before first use.** Missing `node_modules` causes a "module not found" error.

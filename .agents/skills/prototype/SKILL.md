@@ -11,8 +11,13 @@ A prototype is **throwaway code that answers a question**. The question decides 
 
 Identify which question is being answered — from the user's prompt, the surrounding code, or by asking if the user is around:
 
-- **"Does this logic / state model feel right?"** → [LOGIC.md](LOGIC.md). Build a tiny interactive terminal app that pushes the state machine through cases that are hard to reason about on paper.
-- **"What should this look like?"** → [UI.md](UI.md). Generate several radically different UI variations on a single route, switchable via a URL search param and a floating bottom bar.
+- **"Does this logic / state model feel right?"** → Read [references/LOGIC.md](references/LOGIC.md). Build a tiny interactive terminal app that pushes the state machine through cases that are hard to reason about on paper.
+- **"What should this look like?"** → Read [references/UI.md](references/UI.md). Generate several radically different UI variations on a single route, switchable via a URL search param and a floating bottom bar.
+
+## Reference Files
+
+- Read `references/LOGIC.md` when the prototype answers a state/business-logic question.
+- Read `references/UI.md` when the prototype answers a UI/visual question.
 
 The two branches produce very different artifacts — getting this wrong wastes the whole prototype. If the question is genuinely ambiguous and the user isn't reachable, default to whichever branch better matches the surrounding code (a backend module → logic; a page or component → UI) and state the assumption at the top of the prototype.
 
@@ -28,3 +33,9 @@ The two branches produce very different artifacts — getting this wrong wastes 
 ## When done
 
 The _answer_ is the only thing worth keeping from a prototype. Capture it somewhere durable (commit message, ADR, issue, or a `NOTES.md` next to the prototype) along with the question it was answering. If the user is around, that capture is a quick conversation; if not, leave the placeholder so they (or you, on the next pass) can fill in the verdict before deleting the prototype.
+
+## Gotchas
+
+- **Pick the branch first — logic vs UI.** Getting this wrong wastes the whole prototype. When the question is ambiguous and the user is unreachable, default based on surrounding code type (backend module → logic; page or component → UI) and state the assumption explicitly.
+- **No persistence by default.** If the prototype needs a database, use a clearly-named scratch DB or file (e.g., `PROTOTYPE-scratch.db`). Never touch production data.
+- **Capture the answer before deleting.** A prototype that answers a question but leaves no record is wasted. The answer must be committed somewhere durable before the prototype code is removed.

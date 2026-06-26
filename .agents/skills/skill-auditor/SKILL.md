@@ -112,6 +112,14 @@ Produce a structured report for each skill audited:
 - **FLAG**: Minor issue or improvement opportunity. Not blocking but worth addressing.
 - **FAIL**: Violates the requirement. Should be fixed before shipping.
 
+## Gotchas
+
+- **OpenCode recognizes `license`, `compatibility`, and `metadata` as valid optional frontmatter fields.** The agentskills.io spec doesn't list them, but OpenCode's implementation explicitly supports them. Don't flag them as violations.
+- **The spec is early and volatile.** Rules change without announcement. Always re-fetch the live docs before auditing — cached knowledge goes stale fast.
+- **`{baseDir}` is not substituted by OpenCode.** If a skill uses `{baseDir}` in bash commands, the agent must infer the path from the "Base directory" context injected at skill load time. Flag it as fragile, not broken.
+- **Directory name must match `name` field exactly** — a common mismatch when a skill is renamed after creation.
+- **A description that lists correct keywords but buries them in vague prose will still miss triggers.** Test with realistic casual prompts, not just formal ones.
+
 ## Common Findings
 
 ### Description Issues

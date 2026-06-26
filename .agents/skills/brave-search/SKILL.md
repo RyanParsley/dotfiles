@@ -20,20 +20,20 @@ Requires a Brave Search API account with a free subscription. A credit card is r
    ```
 5. Install dependencies (run once):
    ```bash
-   cd {baseDir}
+   cd <base-dir>/scripts   # base-dir shown at the bottom of this skill
    npm install
    ```
 
 ## Search
 
 ```bash
-{baseDir}/search.js "query"                         # Basic search (5 results)
-{baseDir}/search.js "query" -n 10                   # More results (max 20)
-{baseDir}/search.js "query" --content               # Include page content as markdown
-{baseDir}/search.js "query" --freshness pw          # Results from last week
-{baseDir}/search.js "query" --freshness 2024-01-01to2024-06-30  # Date range
-{baseDir}/search.js "query" --country DE            # Results from Germany
-{baseDir}/search.js "query" -n 3 --content          # Combined options
+node <base-dir>/scripts/search.js "query"                         # Basic search (5 results)
+node <base-dir>/scripts/search.js "query" -n 10                   # More results (max 20)
+node <base-dir>/scripts/search.js "query" --content               # Include page content as markdown
+node <base-dir>/scripts/search.js "query" --freshness pw          # Results from last week
+node <base-dir>/scripts/search.js "query" --freshness 2024-01-01to2024-06-30  # Date range
+node <base-dir>/scripts/search.js "query" --country DE            # Results from Germany
+node <base-dir>/scripts/search.js "query" -n 3 --content          # Combined options
 ```
 
 ### Options
@@ -51,7 +51,7 @@ Requires a Brave Search API account with a free subscription. A credit card is r
 ## Extract Page Content
 
 ```bash
-{baseDir}/content.js https://example.com/article
+node <base-dir>/scripts/content.js https://example.com/article
 ```
 
 Fetches a URL and extracts readable content as markdown.
@@ -77,3 +77,10 @@ Content: (if --content flag used)
 - Looking up facts or current information
 - Fetching content from specific URLs
 - Any task requiring web search without interactive browsing
+
+## Gotchas
+
+- **`{baseDir}` is not substituted by OpenCode.** Construct the full path using the "Base directory" value injected at the bottom of this skill.
+- **The "Free AI" subscription requires a credit card** despite being free. This surprises users during setup — guide them through it if they hesitate.
+- **`--content` fetches and parses each result URL** — it's significantly slower than a plain search. Don't use it when snippets are sufficient.
+- **API keys are per-subscription, not per-account.** If auth returns 401, verify the key belongs to the correct subscription type ("Free AI", not "Data for Search").

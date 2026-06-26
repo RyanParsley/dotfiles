@@ -13,7 +13,15 @@ description: Test-driven development with red-green-refactor loop. Use when user
 
 **Bad tests** are coupled to implementation. They mock internal collaborators, test private methods, or verify through external means (like querying a database directly instead of using the interface). The warning sign: your test breaks when you refactor, but behavior hasn't changed. If you rename an internal function and tests fail, those tests were testing implementation, not behavior.
 
-See [tests.md](tests.md) for examples and [mocking.md](mocking.md) for mocking guidelines.
+Read `references/tests.md` for examples and `references/mocking.md` for mocking guidelines.
+
+## Reference Files
+
+- Read `references/tests.md` for concrete examples of good vs bad test structure.
+- Read `references/mocking.md` for guidance on when and how to use mocks.
+- Read `references/refactoring.md` during the REFACTOR phase for candidate patterns.
+- Read `references/interface-design.md` when the refactor involves reshaping module interfaces.
+- Read `references/deep-modules.md` for guidance on module depth and shallow vs deep design.
 
 ## Anti-Pattern: Horizontal Slices
 
@@ -88,7 +96,7 @@ Rules:
 
 ### 4. Refactor
 
-After all tests pass, look for [refactor candidates](refactoring.md):
+After all tests pass, look for refactor candidates (read `references/refactoring.md`):
 
 - [ ] Extract duplication
 - [ ] Deepen modules (move complexity behind simple interfaces)
@@ -107,3 +115,9 @@ After all tests pass, look for [refactor candidates](refactoring.md):
 [ ] Code is minimal for this test
 [ ] No speculative features added
 ```
+
+## Gotchas
+
+- **Horizontal slicing is the #1 anti-pattern** — writing all tests then all implementation. Always vertical slices: one test → one implementation → repeat.
+- **If renaming an internal function breaks a test, the test is wrong.** Tests that fail on internal refactors without behavior changes are testing implementation, not behavior.
+- **Never refactor while RED.** Get to GREEN first, then refactor. Changing both structure and tests simultaneously means you lose your safety net.

@@ -1,0 +1,36 @@
+{
+  "skill_name": "transcribe",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Transcribe the audio file at ~/Downloads/meeting.m4a",
+      "expected_output": "Plain text transcription of the audio file with punctuation and capitalization.",
+      "assertions": [
+        "Output is plain text, not JSON or structured data",
+        "Agent checks GROQ_API_KEY is set before running",
+        "Agent uses the transcribe.sh script, not a raw curl call",
+        "Output contains actual transcribed text, not just confirmation that the script ran"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "I need to transcribe this voice memo: /tmp/voice-note.webm",
+      "expected_output": "Plain text transcription of the webm audio file.",
+      "assertions": [
+        "Agent recognizes .webm as a supported format",
+        "Agent runs the transcription without asking for format confirmation",
+        "Output is the transcribed text"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Transcribe /tmp/lecture.mp3 — it's about 200MB",
+      "expected_output": "The agent should warn the user that the file exceeds the 25MB limit and cannot be transcribed as-is, suggesting they split or compress it.",
+      "assertions": [
+        "Agent checks or warns about the 25MB file size limit",
+        "Agent does not silently attempt to upload an oversized file",
+        "Agent suggests a workaround (split/compress) rather than just failing"
+      ]
+    }
+  ]
+}

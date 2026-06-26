@@ -1,0 +1,35 @@
+{
+  "skill_name": "brave-search",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "What's the latest stable version of Rust? Just the version number.",
+      "expected_output": "A version number like '1.x.x' for the current stable Rust release, sourced from search results.",
+      "assertions": [
+        "Output contains a Rust version number in the format 1.x or 1.x.x",
+        "Output cites a source or search result",
+        "Output does not require a browser or interactive session"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Search for how to configure a custom DNS resolver in systemd-resolved on Ubuntu. Give me the key config file and the directive to use.",
+      "expected_output": "The path to /etc/systemd/resolved.conf and the DNS= directive, with a brief explanation.",
+      "assertions": [
+        "Output mentions /etc/systemd/resolved.conf or a relevant drop-in path",
+        "Output mentions the DNS= directive",
+        "Output is grounded in search results, not hallucinated"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Find documentation for the Ratatui `Table` widget. I need to know what method sets the column widths.",
+      "expected_output": "The method name for setting column widths on a Ratatui Table widget (widths()), with a link or reference to docs.rs.",
+      "assertions": [
+        "Output names a specific method (widths or similar)",
+        "Output references docs.rs or the Ratatui documentation",
+        "Output does not require the user to open a browser"
+      ]
+    }
+  ]
+}

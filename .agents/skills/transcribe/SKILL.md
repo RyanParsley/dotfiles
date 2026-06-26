@@ -26,7 +26,8 @@ If not set, guide the user through setup:
 ## Usage
 
 ```bash
-{baseDir}/transcribe.sh <audio-file>
+bash <base-dir>/scripts/transcribe.sh <audio-file>
+# <base-dir> is shown at the bottom of this skill
 ```
 
 ## Supported Formats
@@ -37,3 +38,10 @@ If not set, guide the user through setup:
 ## Output
 
 Returns plain text transcription with punctuation and proper capitalization to stdout.
+
+## Gotchas
+
+- **`{baseDir}` is not substituted by OpenCode.** Construct the full script path using the "Base directory" value injected at the bottom of this skill.
+- **Max file size is 25MB.** Files larger than this are rejected with a 413 error — split or compress the audio first.
+- **`GROQ_API_KEY` must be in the current shell's environment.** Running from a new terminal session may not have it if only added to `.zshrc` without sourcing. Check with `echo $GROQ_API_KEY`.
+- **Technical terms, acronyms, and proper nouns have lower accuracy** in auto-generated transcription. Review these manually.

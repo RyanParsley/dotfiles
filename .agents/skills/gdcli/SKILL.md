@@ -99,3 +99,9 @@ Ref: https://developers.google.com/drive/api/guides/ref-search-terms
 - `~/.gdcli/credentials.json` - OAuth client credentials
 - `~/.gdcli/accounts.json` - Account tokens
 - `~/.gdcli/downloads/` - Default download location
+
+## Gotchas
+
+- **`search` and `ls --query` are completely different commands.** `search` searches inside file contents (fullText); `ls --query` filters by metadata (name, type, date). For filename searches, always use `ls --query "name contains '...'"`.
+- **Test users must be explicitly added** in Google Cloud Console > OAuth > Audience. Without this step, OAuth fails with "Access blocked: this app hasn't been authorized."
+- **Apps in "Testing" mode expire after 7 days** — tokens become invalid and users must re-authenticate. Publish the app (internal use only is fine) to avoid repeated re-auth.

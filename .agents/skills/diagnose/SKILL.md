@@ -115,3 +115,10 @@ Required before declaring done:
 - [ ] The hypothesis that turned out correct is stated in the commit / PR message — so the next debugger learns
 
 **Then ask: what would have prevented this bug?** If the answer involves architectural change (no good test seam, tangled callers, hidden coupling) hand off to the `/improve-codebase-architecture` skill with the specifics. Make the recommendation **after** the fix is in, not before — you have more information now than when you started.
+
+## Gotchas
+
+- **Phase 1 is the whole skill.** Don't skip to Phase 3 because you have a hypothesis — without a fast, deterministic feedback loop, hypothesis testing is just guessing.
+- **"Log everything and grep" is explicitly forbidden.** Tag every debug log with a unique prefix (e.g. `[DEBUG-a4f2]`) so cleanup is a single grep. Untagged logs survive; tagged logs die.
+- **Non-deterministic bugs still need a loop** — aim for a high reproduction rate (50%+), not a clean repro. A 1%-flake bug is not debuggable; keep raising the rate.
+- **Wrong bug = wrong fix.** Confirm the loop produces the failure the *user* described, not a nearby failure that happens to trigger at the same time.
