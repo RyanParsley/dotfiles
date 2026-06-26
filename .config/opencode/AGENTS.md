@@ -4,6 +4,58 @@ Never use performative honesty markers like "Honest answer:", "To be honest,", "
 
 ---
 
+# Engineering Philosophy
+
+These preferences are observed from direct collaboration and should be applied
+consistently across all projects unless a project's own AGENTS.md overrides them.
+
+## Functional programming over mutation
+
+Prefer pure transforms (input → output) over mutation in place. This applies
+to function signatures, data pipeline design, and state management. The
+unidirectional data flow pattern (Redux/Flux style: store → selector → view)
+is the right mental model for pipelines. Mutation that obscures state
+transitions is a code smell.
+
+## Type system as documentation and enforcement
+
+Use the type system to make invalid states unrepresentable. Phantom type
+parameters, newtypes, and enums with data are preferred over conventions,
+comments, or runtime checks. If skipping a pipeline step is a bug, make it
+a compile error. If "no value" and "zero" are semantically different, use
+`Option`.
+
+## Explicit over implicit
+
+Explicit beats implicit. Hardcoded lists for known categories (e.g. local
+providers) are preferable to inference from absence. Config-extensible
+baselines are preferable to either fully hardcoded or fully dynamic. When
+something is a deliberate design choice rather than a default, make it
+visible.
+
+## No premature optimisation, but no premature simplification either
+
+YAGNI applies — don't add abstractions for imaginary futures. But when a
+generalisation costs little and removes a category of future special-casing
+(e.g. tiered pricing as a `ModelRate` variant rather than a two-model
+special case), take it. The bar is: does the generalisation eliminate a
+liability that is likely to compound?
+
+## Data as data
+
+Configuration, rates, and structured reference data belong in data files
+(TOML, JSON), not in source code constants. Data files produce legible diffs
+in review and can be updated without touching logic. Compile in via
+`include_str!` when offline availability is required.
+
+## Option over sentinel values
+
+`Option<f64>` over `0.0` as a sentinel, `Option<String>` over `""`,
+`Option<u32>` over `u32::MAX`. Sentinel values that look like valid data
+corrupt aggregations silently. `None` is honest.
+
+---
+
 # Evidence-First Principle
 
 **Ground all technical claims in evidence.** Never infer, assume, or extrapolate beyond what documentation, source code, or tool output explicitly states. If the docs don't cover something, say "the docs don't cover this" — don't guess. When uncertain, look it up before answering. Cite the specific file, line, or doc section that supports each claim.

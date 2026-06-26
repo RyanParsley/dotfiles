@@ -1,6 +1,3 @@
-### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
-[[ "$(uname)" == "Darwin" ]] && export PATH="/Users/ryan/.rd/bin:$PATH"
-### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
 
 # Prioritize rustup cargo over Homebrew
 [[ "$(uname)" == "Darwin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
