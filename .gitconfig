@@ -4,6 +4,7 @@
   rebase = true
 [push]
   default = current
+  autoSetupRemote = true
 [color]
   ui = auto
 [alias]
@@ -21,27 +22,56 @@
   excludesfile = ~/.gitignore
   autocrlf = input
   editor = nvim
+  pager = delta
+  fsmonitor = true
+  untrackedCache = true
 [commit]
   template = ~/.gitmessage
 [fetch]
   prune = true
+[log]
+  abbrevCommit = true
+  follow = true
+[branch]
+  sort = -committerdate
+[tag]
+  sort = version:refname
+[status]
+  showUntrackedFiles = all
+[stash]
+  showPatch = true
+[help]
+  autocorrect = prompt
 [rebase]
   autosquash = true
+  updateRefs = true
+  missingCommitsCheck = warn
 [include]
   path = ~/.gitconfig.local
 [diff]
   tool = vimdiff
   keepBackup = false
+  algorithm = histogram
+  colorMoved = default
+  renames = copies
 [mergetool "nvim"]
   cmd = nvim -f -c \"Gdiff\" \"$MERGED\"
 [mergetool "vimdiff"]
   cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
 [rerere]
   enabled = 1
+[delta]
+  navigate = true
+  side-by-side = true
+  line-numbers = true
+[interactive]
+  diffFilter = delta --color-only
 [mergetool]
   keepBackup = false
 [merge]
   tool = vimdiff
+  conflictstyle = zdiff3
+  log = true
 [credential]
 	helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://codeberg.org"]
