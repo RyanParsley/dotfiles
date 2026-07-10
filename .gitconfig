@@ -64,6 +64,28 @@
   navigate = true
   side-by-side = true
   line-numbers = true
+  dark = true
+  # Nord palette diff colors
+  # Backgrounds: nord1 (#3b4252) for removed, nord2 (#434c5e) for added — subtle polar night tints
+  # Emph backgrounds: nord11 red / nord14 green for inline changed words
+  minus-style                   = "#d8dee9" "#3b4252"
+  minus-emph-style              = "#d8dee9" "#bf616a"
+  plus-style                    = "#d8dee9" "#434c5e"
+  plus-emph-style               = "#2e3440" "#a3be8c"
+  # Hunk header — nord3 bg, nord8 cyan fg
+  hunk-header-style             = "#88c0d0" "#3b4252" bold
+  hunk-header-decoration-style  = "#4c566a" box
+  hunk-header-file-style        = "#88c0d0" bold
+  hunk-header-line-number-style = "#81a1c1"
+  # File header — nord8 cyan fg, nord1 bg
+  file-style                    = "#88c0d0" "#3b4252" bold
+  file-decoration-style         = "#4c566a" ul
+  # Line numbers — nord11/nord14 for +/-, nord3 for unchanged
+  line-numbers-minus-style      = "#bf616a" "#3b4252"
+  line-numbers-plus-style       = "#a3be8c" "#434c5e"
+  line-numbers-left-style       = "#4c566a" "#3b4252"
+  line-numbers-right-style      = "#4c566a" "#434c5e"
+  line-numbers-zero-style       = "#4c566a"
 [interactive]
   diffFilter = delta --color-only
 [mergetool]
