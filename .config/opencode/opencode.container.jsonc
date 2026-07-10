@@ -1,0 +1,66 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "autoupdate": false,
+  "share": "disabled",
+
+  // ── Providers ─────────────────────────────────────────────────────────────
+  // Copilot auth uses the gh CLI credential store (no API key needed).
+  // Local providers use host.docker.internal to reach the host machine.
+  "provider": {
+    "github": {
+      "api": "github",
+      "name": "GitHub Copilot",
+      "models": {
+        "claude-sonnet-4-5":          { "name": "Claude Sonnet 4.5 (Copilot)" },
+        "claude-sonnet-4-5-thinking": { "name": "Claude Sonnet 4.5 Thinking (Copilot)" },
+        "gpt-4.1":                    { "name": "GPT-4.1 (Copilot)" },
+        "gpt-4o":                     { "name": "GPT-4o (Copilot)" },
+        "o3":                         { "name": "o3 (Copilot)" },
+        "o4-mini":                    { "name": "o4-mini (Copilot)" },
+        "gemini-2.0-flash":           { "name": "Gemini 2.0 Flash (Copilot)" },
+        "gemini-2.5-pro":             { "name": "Gemini 2.5 Pro (Copilot)" }
+      }
+    },
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (via host)",
+      "options": {
+        "baseURL": "http://host.docker.internal:11434/v1"
+      },
+      "models": {
+        "devstral-small-2:latest": { "name": "Devstral Small 2",    "tool_call": true },
+        "devstral:24b":            { "name": "Devstral 24b",        "tool_call": true },
+        "gemma4:e2b":              { "name": "Gemma 4 E2B",         "tool_call": true },
+        "gemma4:e4b":              { "name": "Gemma 4 E4B",         "tool_call": true },
+        "gemma4:12b":              { "name": "Gemma 4 12b",         "tool_call": true },
+        "gemma4:26b":              { "name": "Gemma 4 26b",         "tool_call": true },
+        "gemma4:26b-mlx":          { "name": "Gemma 4 26b (MLX)",   "tool_call": true },
+        "gemma4:31b":              { "name": "Gemma 4 31b",         "tool_call": true },
+        "gemma4:latest":           { "name": "Gemma 4",             "tool_call": true },
+        "gpt-oss:latest":          { "name": "GPT-OSS" },
+        "mistral-small3.2:latest": { "name": "Mistral Small 3.2",   "tool_call": true },
+        "llama3.2:latest":         { "name": "Llama 3.2" }
+      }
+    },
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (via host)",
+      "options": {
+        "baseURL": "http://host.docker.internal:1234/v1"
+      },
+      "models": {
+        "google/gemma-3n-e4b":                  { "name": "Gemma 3n-e4b (local)" },
+        "ishumilin/deepseek-r1-coder-tools:8b": { "name": "Deepseek Coder Tools (8b)" },
+        "qwen3":                                { "name": "Qwen 3" },
+        "qwen3-coder":                          { "name": "Qwen 3 Coder" }
+      }
+    }
+  },
+
+  // ── Permissions ───────────────────────────────────────────────────────────
+  "permission": {
+    "read": {
+      "/workspaces/*": "allow"
+    }
+  }
+}
