@@ -116,7 +116,6 @@
     k3d
     kubeconform
     skaffold
-    coder
 
     # ── Dev: infra / cloud ────────────────────────────────────────────────────
     azure-cli
