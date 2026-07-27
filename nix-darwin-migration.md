@@ -83,12 +83,12 @@ Minimal `darwin/configuration.nix`:
   # If using Determinate Nix installer, add this to prevent conflict:
   # nix.enable = false;
 
-  environment.systemPackages = [
-    pkgs.stow
-    pkgs.git
+  environment.systemPackages = with pkgs; [
+    git
+    stow
   ];
 
-  system.stateVersion = 7;  # current max for new installs as of July 2026
+  system.stateVersion = 7;
 }
 ```
 
@@ -225,7 +225,7 @@ Minimal `darwin/configuration.nix`:
 - [ ] `coder` → `pkgs.coder`
 
 ### Infra / Cloud
-- [ ] `terraform` → `pkgs.terraform`
+- [ ] `terraform` → **drop** — no `.tf` files in Projects, no dependents, dead install
 - [ ] `azure-cli` → `pkgs.azure-cli`
 - [ ] `google-cloud-sdk` (cask) → `pkgs.google-cloud-sdk`
 
