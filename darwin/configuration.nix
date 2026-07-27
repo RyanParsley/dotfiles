@@ -155,7 +155,7 @@
       "openlens"
       "basictex"
       "copilot-cli"
-      "obs"
+      # "obs"  # has untrusted tap dependency (yakitrak/yakitrak); install manually if needed
     ];
     onActivation.cleanup = "zap";
   };
