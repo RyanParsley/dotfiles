@@ -94,10 +94,11 @@
   tool = vimdiff
   conflictstyle = zdiff3
   log = true
-[credential]
-	helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://codeberg.org"]
 	provider = generic
 [user]
 	email = RMParsley@gmail.com
 	name = Ryan Parsley
+[credential]
+	helper = 
+	helper = /usr/local/share/gcm-core/git-credential-manager
