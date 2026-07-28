@@ -347,7 +347,7 @@ transitive deps — they will not appear in your nix config.
 | `sonarqube` | **Drop** | Server process — you point at remote `sonarqube-prd.jbhunt.com`, not self-hosted |
 | `sonar-scanner` | **Drop global** — per-project devShell for `loads_ui` | Work-specific; points at remote corporate instance |
 | `mongocli` | **Drop** | No dependents, no project configs, no shell references. Not in nixpkgs anyway. |
-- [ ] `obs` → ~~`pkgs.obs-studio`~~ keep as `homebrew.casks` — Linux-only package
+- [x] `obs` → ~~`pkgs.obs-studio`~~ keep as `homebrew.casks` — Linux-only package
 | `qemu` / `virt-manager` / `libvirt` | **Drop** | No VMs defined, no virt-manager data, empty libvirt config — dead stack. Colima uses macOS Virtualization Framework, not QEMU. |
 | `llvm@21` | **Drop** | No dependents. Redundant alongside current `llvm` — likely an upgrade artifact. |
 | `ffmpeg@6` | **Drop** | Only depended on by `spice-gtk` (virt-manager stack, also dropped). |

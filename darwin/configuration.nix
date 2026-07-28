@@ -130,6 +130,31 @@
     opencode
     promptfoo
 
+    # ── Cargo tools (migrated from cargo install) ─────────────────────────────
+    agg
+    just
+    mdbook
+    cargo-llvm-cov
+    gitui
+    bacon
+    cargo-nextest
+    cargo-watch
+    dprint
+    presenterm
+    mprocs
+    wiki-tui
+    mdcat
+    sccache
+    cocogitto
+    cargo-audit
+    cargo-deny
+    trunk
+    leptosfmt
+    dioxus-cli
+    cargo-edit
+    cargo-update
+    cargo-crev
+
   ];
 
   # ── Fonts ──────────────────────────────────────────────────────────────────
@@ -155,7 +180,7 @@
       "openlens"
       "basictex"
       "copilot-cli"
-      # "obs"  # has untrusted tap dependency (yakitrak/yakitrak); install manually if needed
+      "obs"
     ];
     onActivation.cleanup = "zap";
   };
