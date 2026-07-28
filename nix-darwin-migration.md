@@ -41,7 +41,7 @@
   ```
 - [x] Verify `darwin-rebuild` is now on PATH: `which darwin-rebuild`
 - [x] Subsequent runs: `sudo darwin-rebuild switch --flake ~/dotfiles`
-- [ ] Add `switch` recipe to `justfile`
+- [x] Add `switch` recipe to `justfile`
 
 ---
 
