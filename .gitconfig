@@ -23,8 +23,6 @@
   autocrlf = input
   editor = nvim
   pager = delta
-  fsmonitor = true
-  untrackedCache = true
 [commit]
   template = ~/.gitmessage
 [fetch]
@@ -99,6 +97,3 @@
 [user]
 	email = RMParsley@gmail.com
 	name = Ryan Parsley
-[credential]
-	helper = 
-	helper = /usr/local/share/gcm-core/git-credential-manager
