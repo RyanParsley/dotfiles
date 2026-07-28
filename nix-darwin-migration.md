@@ -289,7 +289,7 @@ fonts.packages = with pkgs; [
 - [ ] `wezterm` → `pkgs.wezterm` *(not installed — add if needed)*
 - [ ] `rio` → `pkgs.rio` *(not installed — add if needed)*
 - [ ] `neovide` → `pkgs.neovide` *(not installed — add if needed)*
-- [ ] `inkscape` → `pkgs.inkscape` *(not installed — add if needed)*
+- [x] `inkscape` → `pkgs.inkscape`
 - [x] `obs` → ~~`pkgs.obs-studio`~~ **keep as `homebrew.casks`** — `pkgs.obs-studio` is Linux-only (`meta.platforms` excludes Darwin)
 - [ ] `qownnotes` → `pkgs.qownnotes` *(not installed — add if needed)*
 - [x] `zettlr` → **drop** — uninstalled, not needed

@@ -130,7 +130,8 @@
     opencode
     promptfoo
 
-    # ── Cargo tools (migrated from cargo install) ─────────────────────────────
+    # ── GUI apps ──────────────────────────────────────────────────────────────
+    inkscape
     agg
     just
     mdbook
