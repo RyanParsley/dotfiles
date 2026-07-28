@@ -307,7 +307,7 @@ homebrew = {
 - [x] `openlens`
 - [x] `basictex` (or switch to `pkgs.texlive`)
 - [x] `copilot-cli`
-- [x] `obs` — `pkgs.obs-studio` is Linux-only; must stay as cask
+- [x] `obs` — `pkgs.obs-studio` is Linux-only; tap has trust issues on every switch. Install manually if needed.
 
 ---
 
@@ -320,7 +320,7 @@ homebrew.brews = [ "aoe" "zentime" ];
 - [x] `aoe`
 - [x] `repeater` — **drop**: no decks, no config, never set up
 - [x] `shelldon` — **drop**: redundant with opencode for AI shell commands
-- [x] `zentime` → keep in `homebrew.brews` — config in dotfiles, integrated into zellij layout
+- [x] `zentime` — **drop from brew**: unmaintained project, trust issues with untrusted tap on every switch. Install via `cargo install zentime-rs` if needed.
 
 Note: `libcuefile`, `libreplaygain`, `libusrsctp`, `latex2rtf`, `aklomp-base64` are
 transitive deps — they will not appear in your nix config.

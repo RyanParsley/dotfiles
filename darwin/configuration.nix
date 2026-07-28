@@ -4,6 +4,9 @@
   # Required for options that apply to the primary user (e.g. homebrew)
   system.primaryUser = "ryan";
 
+  # Allow ryan to use restricted nix settings (needed for devenv)
+  nix.settings.trusted-users = [ "root" "ryan" ];
+
   environment.systemPackages = with pkgs; [
 
     # ── Terminal / Shell ──────────────────────────────────────────────────────
@@ -171,9 +174,9 @@
   # ── Homebrew: residual (not in nixpkgs or macOS-only) ─────────────────────
   homebrew = {
     enable = true;
+    taps = [];
     brews = [
       "aoe"
-      "zentime"
     ];
     casks = [
       "ghostty"
