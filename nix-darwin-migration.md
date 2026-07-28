@@ -376,11 +376,11 @@ Fish config has been audited. It is clean — no hardcoded `/opt/homebrew/bin`, 
 
 ## Phase 9: Cleanup
 
-- [ ] `brew uninstall` each package as its nix equivalent is confirmed working
-- [ ] `brew autoremove` to clear orphaned transitive deps
-- [ ] Audit `brew list` until it matches only `homebrew.brews` / `homebrew.casks`
-- [ ] Update `README.md` with new bootstrap instructions (replace `brew install stow` note)
-- [ ] Add `switch` recipe to `justfile`:
+- [x] `brew uninstall` each package as its nix equivalent is confirmed working
+- [x] `brew autoremove` to clear orphaned transitive deps
+- [x] Audit `brew list` until it matches only `homebrew.brews` / `homebrew.casks`
+- [x] Update `README.md` with new bootstrap instructions (replace `brew install stow` note)
+- [x] Add `switch` recipe to `justfile`:
   ```just
   # Apply nix-darwin configuration
   switch:

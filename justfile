@@ -31,6 +31,12 @@ set shell := ["zsh", "-c"]
 default:
     @just --list
 
+# === Nix-darwin ===
+
+# Apply nix-darwin configuration
+switch:
+    sudo darwin-rebuild switch --flake ~/dotfiles
+
 # === Stow management ===
 
 # Restow public dotfiles (fix broken symlinks)
