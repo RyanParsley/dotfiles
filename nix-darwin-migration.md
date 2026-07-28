@@ -130,7 +130,7 @@ Minimal `darwin/configuration.nix`:
 
 ### Editors / LSP
 - [x] `neovim` → ~~`pkgs.neovim`~~ **skip** — managed by `bob-nvim` (9 versions installed, actively switching). Keep bob as cargo install.
-- [ ] `emacs` → `pkgs.emacs`
+- [ ] `emacs` → `pkgs.emacs` *(not currently installed — add if needed)*
 - [x] `lua-language-server` → ~~`pkgs.lua-language-server`~~ **drop global** — Mason owns it
 - [x] `typescript-language-server` → ~~`pkgs.typescript-language-server`~~ **drop global** — Mason owns it
 - [x] `jdtls` → ~~`pkgs.jdt-language-server`~~ **drop global** — nvim-java plugin manages it
@@ -179,8 +179,8 @@ Minimal `darwin/configuration.nix`:
 - [x] `caddy` → `pkgs.caddy` *(used by spin-up for multi-worktree reverse proxying)*
 - [x] `ttyd` → `pkgs.ttyd`
 - [x] `nginx` → ~~`pkgs.nginx`~~ **drop global** — per-project devShell only
-- [ ] `gnupg` → `pkgs.gnupg`
-- [ ] `pinentry` → `pkgs.pinentry`
+- [ ] `gnupg` → `pkgs.gnupg` *(not currently installed — add if needed)*
+- [ ] `pinentry` → `pkgs.pinentry` *(not currently installed — add if needed)*
 
 ### Media
 - [x] `ffmpeg` → `pkgs.ffmpeg`
@@ -222,7 +222,7 @@ Minimal `darwin/configuration.nix`:
 - [x] `k3d` → `pkgs.k3d`
 - [x] `kubeconform` → `pkgs.kubeconform`
 - [x] `skaffold` → `pkgs.skaffold`
-- [ ] `coder` → `pkgs.coder`
+- [ ] `coder` → `pkgs.coder` *(not currently installed — add if needed)*
 
 ### Infra / Cloud
 - [x] `terraform` → **drop** — no `.tf` files in Projects, no dependents, dead install
@@ -248,7 +248,7 @@ All build tools have been audited. None are used globally:
 - [x] `node` / `node@24` → ⚠️ **drop globals, use mise**
 
 ### Python
-- [ ] `pipx` → `pkgs.pipx`
+- [ ] `pipx` → `pkgs.pipx` *(not currently installed — add if needed)*
 - [x] `python@3.12/3.13/3.14` → ⚠️ **drop globals, use mise**
 - [x] `pyenv` → ⚠️ **drop, use mise**
 
@@ -283,15 +283,15 @@ fonts.packages = with pkgs; [
 ## Phase 5: GUI Apps
 
 ### Via `environment.systemPackages` (in nixpkgs)
-- [ ] `alacritty` → `pkgs.alacritty`
+- [ ] `alacritty` → `pkgs.alacritty` *(not installed — add if needed)*
 - [x] `ghostty` → `pkgs.ghostty` *(macOS-only; keeping as homebrew.casks — Linux-only in nixpkgs)*
-- [ ] `kitty` → `pkgs.kitty`
-- [ ] `wezterm` → `pkgs.wezterm`
-- [ ] `rio` → `pkgs.rio`
-- [ ] `neovide` → `pkgs.neovide`
-- [ ] `inkscape` → `pkgs.inkscape`
+- [ ] `kitty` → `pkgs.kitty` *(not installed — add if needed)*
+- [ ] `wezterm` → `pkgs.wezterm` *(not installed — add if needed)*
+- [ ] `rio` → `pkgs.rio` *(not installed — add if needed)*
+- [ ] `neovide` → `pkgs.neovide` *(not installed — add if needed)*
+- [ ] `inkscape` → `pkgs.inkscape` *(not installed — add if needed)*
 - [x] `obs` → ~~`pkgs.obs-studio`~~ **keep as `homebrew.casks`** — `pkgs.obs-studio` is Linux-only (`meta.platforms` excludes Darwin)
-- [ ] `qownnotes` → `pkgs.qownnotes`
+- [ ] `qownnotes` → `pkgs.qownnotes` *(not installed — add if needed)*
 - [x] `zettlr` → **drop** — uninstalled, not needed
 
 ### Via `homebrew.casks` (not in nixpkgs or macOS-incompatible)
