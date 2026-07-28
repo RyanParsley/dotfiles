@@ -1,7 +1,6 @@
 { pkgs, ... }: {
   # Apple Silicon
   nixpkgs.hostPlatform = "aarch64-darwin";
-
   # Required for options that apply to the primary user (e.g. homebrew)
   system.primaryUser = "ryan";
 
@@ -150,6 +149,7 @@
       "zentime"
     ];
     casks = [
+      "ghostty"
       "amethyst"
       "hiddenbar"
       "openlens"
