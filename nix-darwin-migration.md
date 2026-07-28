@@ -20,8 +20,8 @@
 
 > Sources: [nix-darwin README](https://github.com/nix-darwin/nix-darwin), [Determinate + nix-darwin guide](https://docs.determinate.systems/guides/nix-darwin/) — verified July 2026.
 
-- [ ] Create branch `feature/nix-darwin`
-- [ ] Install Nix. Two options — pick one:
+- [x] Create branch `feature/nix-darwin`
+- [x] Install Nix. Two options — pick one:
 
   **Option A: Lix installer** *(recommended by nix-darwin README)*
   ```bash
@@ -31,16 +31,16 @@
   **Option B: Determinate Nix** *(macOS pkg installer — download from docs.determinate.systems)*
   > If using Determinate, you must set `nix.enable = false` in `configuration.nix` to prevent conflict with nix-darwin's Nix config management (see Phase 1 note).
 
-- [ ] Verify `/nix/store` exists and `nix --version` works
-- [ ] Get your hostname: `scutil --get LocalHostName`
-- [ ] Create `flake.nix` at dotfiles root (see Phase 1)
-- [ ] Create `darwin/configuration.nix` (see Phase 1)
-- [ ] Bootstrap nix-darwin (first run only — `darwin-rebuild` not on PATH yet):
+- [x] Verify `/nix/store` exists and `nix --version` works
+- [x] Get your hostname: `scutil --get LocalHostName`
+- [x] Create `flake.nix` at dotfiles root (see Phase 1)
+- [x] Create `darwin/configuration.nix` (see Phase 1)
+- [x] Bootstrap nix-darwin (first run only — `darwin-rebuild` not on PATH yet):
   ```bash
   sudo nix run nix-darwin/master#darwin-rebuild -- switch --flake ~/dotfiles
   ```
-- [ ] Verify `darwin-rebuild` is now on PATH: `which darwin-rebuild`
-- [ ] Subsequent runs: `sudo darwin-rebuild switch --flake ~/dotfiles`
+- [x] Verify `darwin-rebuild` is now on PATH: `which darwin-rebuild`
+- [x] Subsequent runs: `sudo darwin-rebuild switch --flake ~/dotfiles`
 - [ ] Add `switch` recipe to `justfile`
 
 ---
@@ -97,166 +97,166 @@ Minimal `darwin/configuration.nix`:
 ## Phase 2: Daily-Driver CLI Tools → `environment.systemPackages`
 
 ### Terminal / Shell
-- [ ] `fish` → `pkgs.fish`
-- [ ] `nushell` → `pkgs.nushell`
-- [ ] `starship` → `pkgs.starship`
-- [ ] `tmux` → `pkgs.tmux`
-- [ ] `zellij` → `pkgs.zellij`
-- [ ] `smug` → `pkgs.smug`
-- [ ] `screen` → `pkgs.screen`
+- [x] `fish` → `pkgs.fish`
+- [x] `nushell` → `pkgs.nushell`
+- [x] `starship` → `pkgs.starship`
+- [x] `tmux` → `pkgs.tmux`
+- [x] `zellij` → `pkgs.zellij`
+- [x] `smug` → `pkgs.smug`
+- [x] `screen` → `pkgs.screen`
 
 ### File / Navigation
-- [ ] `eza` → `pkgs.eza`
-- [ ] `fd` → `pkgs.fd`
-- [ ] `fzf` → `pkgs.fzf`
-- [ ] `ripgrep` → `pkgs.ripgrep`
-- [ ] `bat` → `pkgs.bat`
-- [ ] `bat-extras` → `pkgs.bat-extras`
-- [ ] `lsd` → `pkgs.lsd`
-- [ ] `yazi` → `pkgs.yazi`
-- [ ] `zoxide` → `pkgs.zoxide`
-- [ ] `sd` → `pkgs.sd`
-- [ ] `tree` → `pkgs.tree`
-- [ ] `stow` → `pkgs.stow`
+- [x] `eza` → `pkgs.eza`
+- [x] `fd` → `pkgs.fd`
+- [x] `fzf` → `pkgs.fzf`
+- [x] `ripgrep` → `pkgs.ripgrep`
+- [x] `bat` → `pkgs.bat`
+- [x] `bat-extras` → `pkgs.bat-extras`
+- [x] `lsd` → `pkgs.lsd`
+- [x] `yazi` → `pkgs.yazi`
+- [x] `zoxide` → `pkgs.zoxide`
+- [x] `sd` → `pkgs.sd`
+- [x] `tree` → `pkgs.tree`
+- [x] `stow` → `pkgs.stow`
 
 ### Git
-- [ ] `git` → `pkgs.git`
-- [ ] `git-delta` → `pkgs.delta` *(nixpkgs name differs)*
-- [ ] `git-cliff` → `pkgs.git-cliff`
-- [ ] `lazygit` → `pkgs.lazygit`
-- [ ] `gitleaks` → `pkgs.gitleaks`
-- [ ] `tig` → `pkgs.tig`
-- [ ] `lefthook` → `pkgs.lefthook`
+- [x] `git` → `pkgs.git`
+- [x] `git-delta` → `pkgs.delta` *(nixpkgs name differs)*
+- [x] `git-cliff` → `pkgs.git-cliff`
+- [x] `lazygit` → `pkgs.lazygit`
+- [x] `gitleaks` → `pkgs.gitleaks`
+- [x] `tig` → `pkgs.tig`
+- [x] `lefthook` → `pkgs.lefthook`
 
 ### Editors / LSP
-- [ ] `neovim` → ~~`pkgs.neovim`~~ **skip** — managed by `bob-nvim` (9 versions installed, actively switching). Keep bob as cargo install.
+- [x] `neovim` → ~~`pkgs.neovim`~~ **skip** — managed by `bob-nvim` (9 versions installed, actively switching). Keep bob as cargo install.
 - [ ] `emacs` → `pkgs.emacs`
-- [ ] `lua-language-server` → ~~`pkgs.lua-language-server`~~ **drop global** — Mason owns it
-- [ ] `typescript-language-server` → ~~`pkgs.typescript-language-server`~~ **drop global** — Mason owns it
-- [ ] `jdtls` → ~~`pkgs.jdt-language-server`~~ **drop global** — nvim-java plugin manages it
-- [ ] `stylua` → ~~`pkgs.stylua`~~ **drop global** — Mason owns it; not used in lefthook or CI
-- [ ] `markdownlint-cli2` → ~~`pkgs.markdownlint-cli2`~~ **drop global** — Mason owns it; not used in lefthook or CI
-- [ ] `vale` → ~~`pkgs.vale`~~ **drop global** — Mason owns it; not used in lefthook or CI
-- [ ] `rumdl` → ~~`pkgs.rumdl`~~ **drop global** — Mason owns it; not used in lefthook or CI
+- [x] `lua-language-server` → ~~`pkgs.lua-language-server`~~ **drop global** — Mason owns it
+- [x] `typescript-language-server` → ~~`pkgs.typescript-language-server`~~ **drop global** — Mason owns it
+- [x] `jdtls` → ~~`pkgs.jdt-language-server`~~ **drop global** — nvim-java plugin manages it
+- [x] `stylua` → ~~`pkgs.stylua`~~ **drop global** — Mason owns it; not used in lefthook or CI
+- [x] `markdownlint-cli2` → ~~`pkgs.markdownlint-cli2`~~ **drop global** — Mason owns it; not used in lefthook or CI
+- [x] `vale` → ~~`pkgs.vale`~~ **drop global** — Mason owns it; not used in lefthook or CI
+- [x] `rumdl` → ~~`pkgs.rumdl`~~ **drop global** — Mason owns it; not used in lefthook or CI
 
 ### Productivity / TUI
-- [ ] `htop` → `pkgs.htop`
-- [ ] `jq` → `pkgs.jq`
-- [ ] `yq` → `pkgs.yq-go` *(nixpkgs name differs)*
-- [ ] `frogmouth` → `pkgs.frogmouth`
-- [ ] `glow` → `pkgs.glow`
-- [ ] `nap` → `pkgs.nap`
-- [ ] `nb` → `pkgs.nb`
-- [ ] `task` → `pkgs.taskwarrior3` *(nixpkgs name differs)*
-- [ ] `taskwarrior-tui` → `pkgs.taskwarrior-tui`
-- [ ] `vit` → `pkgs.vit` *(note: nixpkgs `vit` has a hard dependency on `taskwarrior2`, not `taskwarrior3` — basic use works but may use wrong task binary; verify after install)*
-- [ ] `tldr` → `pkgs.tldr`
-- [ ] `w3m` → `pkgs.w3m`
-- [ ] `rich-cli` → `pkgs.rich-cli`
-- [ ] `chafa` → `pkgs.chafa`
-- [ ] `viu` → `pkgs.viu`
-- [ ] `ueberzugpp` → `pkgs.ueberzugpp`
+- [x] `htop` → `pkgs.htop`
+- [x] `jq` → `pkgs.jq`
+- [x] `yq` → `pkgs.yq-go` *(nixpkgs name differs)*
+- [x] `frogmouth` → `pkgs.frogmouth`
+- [x] `glow` → `pkgs.glow`
+- [x] `nap` → `pkgs.nap`
+- [x] `nb` → `pkgs.nb`
+- [x] `task` → `pkgs.taskwarrior3` *(nixpkgs name differs)*
+- [x] `taskwarrior-tui` → `pkgs.taskwarrior-tui`
+- [x] `vit` → `pkgs.vit` *(note: nixpkgs `vit` has a hard dependency on `taskwarrior2`, not `taskwarrior3` — basic use works but may use wrong task binary; verify after install)*
+- [x] `tldr` → `pkgs.tldr`
+- [x] `w3m` → `pkgs.w3m`
+- [x] `rich-cli` → `pkgs.rich-cli`
+- [x] `chafa` → `pkgs.chafa`
+- [x] `viu` → `pkgs.viu`
+- [x] `ueberzugpp` → `pkgs.ueberzugpp`
 
 ### Docs / Diagramming
-- [ ] `ack` → `pkgs.ack`
-- [ ] `cloc` → `pkgs.cloc`
-- [ ] `tokei` → `pkgs.tokei`
-- [ ] `d2` → `pkgs.d2`
-- [ ] `graphviz` → `pkgs.graphviz`
-- [ ] `gnuplot` → `pkgs.gnuplot`
-- [ ] `pandoc` → `pkgs.pandoc`
-- [ ] `mdbook` → `pkgs.mdbook`
-- [ ] `hugo` → `pkgs.hugo`
-- [ ] `zola` → `pkgs.zola`
-- [ ] `zk` → `pkgs.zk`
-- [ ] `marp-cli` → `pkgs.marp-cli`
+- [x] `ack` → `pkgs.ack`
+- [x] `cloc` → `pkgs.cloc`
+- [x] `tokei` → `pkgs.tokei`
+- [x] `d2` → `pkgs.d2`
+- [x] `graphviz` → `pkgs.graphviz`
+- [x] `gnuplot` → `pkgs.gnuplot`
+- [x] `pandoc` → `pkgs.pandoc`
+- [x] `mdbook` → `pkgs.mdbook`
+- [x] `hugo` → `pkgs.hugo`
+- [x] `zola` → `pkgs.zola`
+- [x] `zk` → `pkgs.zk`
+- [x] `marp-cli` → `pkgs.marp-cli`
 
 ### Network / Security
-- [ ] `curl` → `pkgs.curl`
-- [ ] `wget` → `pkgs.wget`
-- [ ] `nmap` → `pkgs.nmap`
-- [ ] `sq` → `pkgs.sq`
-- [ ] `caddy` → `pkgs.caddy` *(used by spin-up for multi-worktree reverse proxying)*
-- [ ] `ttyd` → `pkgs.ttyd`
-- [ ] `nginx` → ~~`pkgs.nginx`~~ **drop global** — per-project devShell only
+- [x] `curl` → `pkgs.curl`
+- [x] `wget` → `pkgs.wget`
+- [x] `nmap` → `pkgs.nmap`
+- [x] `sq` → `pkgs.sq`
+- [x] `caddy` → `pkgs.caddy` *(used by spin-up for multi-worktree reverse proxying)*
+- [x] `ttyd` → `pkgs.ttyd`
+- [x] `nginx` → ~~`pkgs.nginx`~~ **drop global** — per-project devShell only
 - [ ] `gnupg` → `pkgs.gnupg`
 - [ ] `pinentry` → `pkgs.pinentry`
 
 ### Media
-- [ ] `ffmpeg` → `pkgs.ffmpeg`
-- [ ] `imagemagick` → `pkgs.imagemagick`
-- [ ] `yt-dlp` → `pkgs.yt-dlp`
-- [ ] `vhs` → `pkgs.vhs`
-- [ ] `agg` → `pkgs.agg`
-- [ ] `asciinema` → `pkgs.asciinema`
+- [x] `ffmpeg` → `pkgs.ffmpeg`
+- [x] `imagemagick` → `pkgs.imagemagick`
+- [x] `yt-dlp` → `pkgs.yt-dlp`
+- [x] `vhs` → `pkgs.vhs`
+- [x] `agg` → `pkgs.agg`
+- [x] `asciinema` → `pkgs.asciinema`
 
 ### PDF / Viewer
-- [ ] `zathura` → `pkgs.zathura`
-- [ ] `zathura-pdf-poppler` → `pkgs.zathura-pdf-poppler`
-- [ ] `zathura-ps` → `pkgs.zathura-ps`
-- [ ] `ghostscript` → `pkgs.ghostscript`
+- [x] `zathura` → `pkgs.zathura`
+- [x] `zathura-pdf-poppler` → `pkgs.zathura-pdf-poppler`
+- [x] `zathura-ps` → `pkgs.zathura-ps`
+- [x] `ghostscript` → `pkgs.ghostscript`
 
 ---
 
 ## Phase 3: Dev Infrastructure → `environment.systemPackages`
 
 ### Cross-project tools
-- [ ] `mise` → `pkgs.mise`
-- [ ] `just` → `pkgs.just`
-- [ ] `cocogitto` → `pkgs.cocogitto` *(provides `cog`; used in lefthook commit-msg hooks — not currently in brew, add to nix)*
-- [ ] `watchexec` → `pkgs.watchexec`
-- [ ] `scriptisto` → `pkgs.scriptisto`
-- [ ] `gh` → `pkgs.gh`
-- [ ] `carapace` → `pkgs.carapace`
-- [ ] `pngpaste` → `pkgs.pngpaste`
+- [x] `mise` → `pkgs.mise`
+- [x] `just` → `pkgs.just`
+- [x] `cocogitto` → `pkgs.cocogitto` *(provides `cog`; used in lefthook commit-msg hooks — not currently in brew, add to nix)*
+- [x] `watchexec` → `pkgs.watchexec`
+- [x] `scriptisto` → `pkgs.scriptisto`
+- [x] `gh` → `pkgs.gh`
+- [x] `carapace` → `pkgs.carapace`
+- [x] `pngpaste` → `pkgs.pngpaste`
 
 ### Containers / Kubernetes
-- [ ] `docker` → `pkgs.docker`
-- [ ] `docker-compose` → `pkgs.docker-compose`
-- [ ] `docker-credential-helper` → `pkgs.docker-credential-helpers`
-- [ ] `colima` → `pkgs.colima`
-- [ ] `lima` → `pkgs.lima`
-- [ ] `kubernetes-cli` → `pkgs.kubectl`
-- [ ] `helm` → `pkgs.kubernetes-helm`
-- [ ] `k9s` → `pkgs.k9s`
-- [ ] `k3d` → `pkgs.k3d`
-- [ ] `kubeconform` → `pkgs.kubeconform`
-- [ ] `skaffold` → `pkgs.skaffold`
+- [x] `docker` → `pkgs.docker`
+- [x] `docker-compose` → `pkgs.docker-compose`
+- [x] `docker-credential-helper` → `pkgs.docker-credential-helpers`
+- [x] `colima` → `pkgs.colima`
+- [x] `lima` → `pkgs.lima`
+- [x] `kubernetes-cli` → `pkgs.kubectl`
+- [x] `helm` → `pkgs.kubernetes-helm`
+- [x] `k9s` → `pkgs.k9s`
+- [x] `k3d` → `pkgs.k3d`
+- [x] `kubeconform` → `pkgs.kubeconform`
+- [x] `skaffold` → `pkgs.skaffold`
 - [ ] `coder` → `pkgs.coder`
 
 ### Infra / Cloud
-- [ ] `terraform` → **drop** — no `.tf` files in Projects, no dependents, dead install
-- [ ] `azure-cli` → `pkgs.azure-cli`
-- [ ] `google-cloud-sdk` (cask) → `pkgs.google-cloud-sdk`
+- [x] `terraform` → **drop** — no `.tf` files in Projects, no dependents, dead install
+- [x] `azure-cli` → `pkgs.azure-cli`
+- [x] `google-cloud-sdk` (cask) → `pkgs.google-cloud-sdk`
 
 ### Build tools — drop globals, use per-project devShell
 
 All build tools have been audited. None are used globally:
 
-- [ ] `cmake` → **drop global** — all dependents are dead stacks (openvino, spice-gtk, open-mpi) or transitive lib deps
-- [ ] `ninja` → **drop global** — no dependents
-- [ ] `gcc` → **drop global** — only depended on by brew rust, which is also being dropped
-- [ ] `llvm` → **drop global** — only depended on by meson; meson has no dependents
-- [ ] `meson` → **drop global** — no dependents
-- [ ] `gradle` → **drop global** — one work Java project; per-project devShell
-- [ ] `maven` → **drop global** — same work project; per-project devShell
+- [x] `cmake` → **drop global** — all dependents are dead stacks (openvino, spice-gtk, open-mpi) or transitive lib deps
+- [x] `ninja` → **drop global** — no dependents
+- [x] `gcc` → **drop global** — only depended on by brew rust, which is also being dropped
+- [x] `llvm` → **drop global** — only depended on by meson; meson has no dependents
+- [x] `meson` → **drop global** — no dependents
+- [x] `gradle` → **drop global** — one work Java project; per-project devShell
+- [x] `maven` → **drop global** — same work project; per-project devShell
 
 ### JS / TS
-- [ ] `pnpm` → `pkgs.pnpm`
-- [ ] `deno` → `pkgs.deno`
-- [ ] `typescript` → ~~`pkgs.nodePackages.typescript`~~ **drop global** — Mason installs ts_ls with its own TypeScript; use `nix shell` for ad-hoc `tsc`
-- [ ] `node` / `node@24` → ⚠️ **drop globals, use mise**
+- [x] `pnpm` → `pkgs.pnpm`
+- [x] `deno` → `pkgs.deno`
+- [x] `typescript` → ~~`pkgs.nodePackages.typescript`~~ **drop global** — Mason installs ts_ls with its own TypeScript; use `nix shell` for ad-hoc `tsc`
+- [x] `node` / `node@24` → ⚠️ **drop globals, use mise**
 
 ### Python
 - [ ] `pipx` → `pkgs.pipx`
-- [ ] `python@3.12/3.13/3.14` → ⚠️ **drop globals, use mise**
-- [ ] `pyenv` → ⚠️ **drop, use mise**
+- [x] `python@3.12/3.13/3.14` → ⚠️ **drop globals, use mise**
+- [x] `pyenv` → ⚠️ **drop, use mise**
 
 ### Linters / AI
-- [ ] `hadolint` → `pkgs.hadolint`
-- [ ] `llama.cpp` → `pkgs.llama-cpp`
-- [ ] `opencode` → `pkgs.opencode`
-- [ ] `promptfoo` → `pkgs.promptfoo`
+- [x] `hadolint` → `pkgs.hadolint`
+- [x] `llama.cpp` → `pkgs.llama-cpp`
+- [x] `opencode` → `pkgs.opencode`
+- [x] `promptfoo` → `pkgs.promptfoo`
 
 ---
 
@@ -272,11 +272,11 @@ fonts.packages = with pkgs; [
 ];
 ```
 
-- [ ] `font-fantasque-sans-mono-nerd-font` → `pkgs.nerd-fonts.fantasque-sans-mono`
-- [ ] `font-fira-code-nerd-font` → `pkgs.nerd-fonts.fira-code`
-- [ ] `font-jetbrains-mono-nerd-font` → `pkgs.nerd-fonts.jetbrains-mono`
-- [ ] `font-symbols-only-nerd-font` → `pkgs.nerd-fonts.symbols-only`
-- [ ] `font-victor-mono-nerd-font` → `pkgs.nerd-fonts.victor-mono`
+- [x] `font-fantasque-sans-mono-nerd-font` → `pkgs.nerd-fonts.fantasque-sans-mono`
+- [x] `font-fira-code-nerd-font` → `pkgs.nerd-fonts.fira-code`
+- [x] `font-jetbrains-mono-nerd-font` → `pkgs.nerd-fonts.jetbrains-mono`
+- [x] `font-symbols-only-nerd-font` → `pkgs.nerd-fonts.symbols-only`
+- [x] `font-victor-mono-nerd-font` → `pkgs.nerd-fonts.victor-mono`
 
 ---
 
@@ -284,30 +284,30 @@ fonts.packages = with pkgs; [
 
 ### Via `environment.systemPackages` (in nixpkgs)
 - [ ] `alacritty` → `pkgs.alacritty`
-- [ ] `ghostty` → `pkgs.ghostty`
+- [x] `ghostty` → `pkgs.ghostty` *(macOS-only; keeping as homebrew.casks — Linux-only in nixpkgs)*
 - [ ] `kitty` → `pkgs.kitty`
 - [ ] `wezterm` → `pkgs.wezterm`
 - [ ] `rio` → `pkgs.rio`
 - [ ] `neovide` → `pkgs.neovide`
 - [ ] `inkscape` → `pkgs.inkscape`
-- [ ] `obs` → ~~`pkgs.obs-studio`~~ **keep as `homebrew.casks`** — `pkgs.obs-studio` is Linux-only (`meta.platforms` excludes Darwin)
+- [x] `obs` → ~~`pkgs.obs-studio`~~ **keep as `homebrew.casks`** — `pkgs.obs-studio` is Linux-only (`meta.platforms` excludes Darwin)
 - [ ] `qownnotes` → `pkgs.qownnotes`
-- [ ] `zettlr` → `pkgs.zettlr`
+- [x] `zettlr` → **drop** — uninstalled, not needed
 
 ### Via `homebrew.casks` (not in nixpkgs or macOS-incompatible)
 ```nix
 homebrew = {
   enable = true;
-  casks = [ "amethyst" "hiddenbar" "openlens" "basictex" "copilot-cli" "obs" ];
+  casks = [ "ghostty" "amethyst" "hiddenbar" "openlens" "basictex" "copilot-cli" ];
   onActivation.cleanup = "zap";
 };
 ```
-- [ ] `amethyst`
-- [ ] `hiddenbar`
-- [ ] `openlens`
-- [ ] `basictex` (or switch to `pkgs.texlive`)
-- [ ] `copilot-cli`
-- [ ] `obs` — `pkgs.obs-studio` is Linux-only; must stay as cask
+- [x] `amethyst`
+- [x] `hiddenbar`
+- [x] `openlens`
+- [x] `basictex` (or switch to `pkgs.texlive`)
+- [x] `copilot-cli`
+- [x] `obs` — `pkgs.obs-studio` is Linux-only; must stay as cask
 
 ---
 
@@ -317,10 +317,10 @@ homebrew = {
 homebrew.brews = [ "aoe" "zentime" ];
 ```
 
-- [ ] `aoe`
-- [ ] `repeater` — **drop**: no decks, no config, never set up
-- [ ] `shelldon` — **drop**: redundant with opencode for AI shell commands
-- [ ] `zentime` → keep in `homebrew.brews` — config in dotfiles, integrated into zellij layout
+- [x] `aoe`
+- [x] `repeater` — **drop**: no decks, no config, never set up
+- [x] `shelldon` — **drop**: redundant with opencode for AI shell commands
+- [x] `zentime` → keep in `homebrew.brews` — config in dotfiles, integrated into zellij layout
 
 Note: `libcuefile`, `libreplaygain`, `libusrsctp`, `latex2rtf`, `aklomp-base64` are
 transitive deps — they will not appear in your nix config.
@@ -367,10 +367,10 @@ Fish config has been audited. It is clean — no hardcoded `/opt/homebrew/bin`, 
 
 - [x] Audit fish config for hardcoded brew paths — none found
 - [x] Remove stale Rancher Desktop PATH injection from `config.fish` — done
-- [ ] Remove `nvm.fish` from `~/.config/fish/conf.d/` once nvm is dropped
-- [ ] Verify `mise` activation still works post-migration (mise uses `~/.local/share/mise`, PATH-independent)
-- [ ] Verify colima + docker context works post-migration (colima already active runtime)
-- [ ] Remove `/private/etc/sudoers.d/zzzzz-rancher-desktop-lima` — stale Rancher Desktop remnant (requires sudo)
+- [x] Remove `nvm.fish` from `~/.config/fish/conf.d/` once nvm is dropped
+- [x] Verify `mise` activation still works post-migration (mise uses `~/.local/share/mise`, PATH-independent)
+- [x] Verify colima + docker context works post-migration (colima already active runtime)
+- [x] Remove `/private/etc/sudoers.d/zzzzz-rancher-desktop-lima` — stale Rancher Desktop remnant (requires sudo)
 
 ---
 
