@@ -23,8 +23,6 @@
   autocrlf = input
   editor = nvim
   pager = delta
-  fsmonitor = true
-  untrackedCache = true
 [commit]
   template = ~/.gitmessage
 [fetch]

@@ -112,18 +112,18 @@ let fish_completer = {|spans|
 
 
 $env.PATH = ($env.PATH | split row (char esep) |
-    prepend '~/.cargo/bin' |
+     prepend '~/.cargo/bin' |
     prepend '~/.local/share/bob/nvim-bin' |
     prepend '~/.local/bin' |
     prepend '~/.bin' |
     prepend '~/bin' |
     prepend '~/bin/google-cloud-sdk/bin' |
     prepend '/usr/local/bin' |
-    prepend  '/opt/homebrew/bin' |
-    prepend '/opt/homebrew/sbin' 
+    prepend '/run/current-system/sw/bin' |
+    prepend '/nix/var/nix/profiles/default/bin'
 )
 
-$env.DYLD_LIBRARY_PATH = '/opt/homebrew/lib'
+# $env.DYLD_LIBRARY_PATH was previously set to '/opt/homebrew/lib' — no longer needed
 
 $env.EDITOR = 'nvim'
 
