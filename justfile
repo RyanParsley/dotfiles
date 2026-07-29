@@ -37,6 +37,10 @@ default:
 switch:
     sudo darwin-rebuild switch --flake ~/dotfiles
 
+# Update flake inputs and rebuild
+update:
+    nix --extra-experimental-features "nix-command flakes" flake update && just switch
+
 # === Stow management ===
 
 # Restow public dotfiles (fix broken symlinks)

@@ -8,6 +8,7 @@
       trusted-users = [ "root" "ryan" ];
       auto-optimise-store = true;
       max-jobs = "auto";
+      extra-experimental-features = [ "nix-command" "flakes" ];
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
@@ -183,6 +184,12 @@
     man.enable = true;
   };
 
+  nix.gc = {
+    automatic = true;
+    interval = { Weekday = 0; Hour = 4; };
+    options = "--delete-older-than 14d";
+  };
+
   homebrew = {
     enable = true;
     brews = [
@@ -196,6 +203,23 @@
       "obs"
     ];
     onActivation.cleanup = "zap";
+  };
+
+  launchd.daemons.nix-auto-update = {
+    script = ''
+      export PATH=/nix/var/nix/profiles/default/bin:${pkgs.nix}/bin:$PATH
+      cd /Users/ryan/dotfiles
+      echo "=== nix flake update $(date) ==="
+      nix --extra-experimental-features "nix-command flakes" flake update 2>&1
+      echo "=== darwin-rebuild switch $(date) ==="
+      /run/current-system/sw/bin/darwin-rebuild switch --flake /Users/ryan/dotfiles 2>&1
+      echo "=== done $(date) ==="
+    '';
+    serviceConfig = {
+      StartCalendarInterval = { Hour = 3; Minute = 0; };
+      StandardOutPath = "/var/log/nix-auto-update.log";
+      StandardErrorPath = "/var/log/nix-auto-update.log";
+    };
   };
 
   system.stateVersion = 7;
