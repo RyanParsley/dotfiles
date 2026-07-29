@@ -173,7 +173,9 @@
   # ── Homebrew: residual (not in nixpkgs or macOS-only) ─────────────────────
   homebrew = {
     enable = true;
-    taps = [];
+    brews = [
+      "aoe"
+    ];
     casks = [
       "ghostty"
       "amethyst"
