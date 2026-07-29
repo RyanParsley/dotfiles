@@ -41,8 +41,8 @@ switch:
 
 # Restow public dotfiles (fix broken symlinks)
 restow:
-    cd ~/dotfiles && stow --restow .
-    cd ~/dotfiles/.agents && stow --no-folding --ignore='node_modules' --target=$HOME/.agents/skills --restow skills
+    rm -f ~/dotfiles/result
+    cd ~/dotfiles && stow --restow --ignore=result .
 
 # Restow work-local dotfiles (run on work machine only)
 restow-local:
