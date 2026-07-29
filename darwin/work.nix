@@ -1,7 +1,6 @@
 { pkgs, ... }: {
-  environment.systemPackages = with pkgs; [
-    # ── Cloud ─────────────────────────────────────────────────────────────────
-    azure-cli
-    google-cloud-sdk
+  environment.systemPackages = [
+    pkgs.azure-cli
+    pkgs.google-cloud-sdk
   ];
 }

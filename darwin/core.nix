@@ -1,176 +1,188 @@
 { pkgs, ... }: {
   nixpkgs.hostPlatform = "aarch64-darwin";
+  nixpkgs.config.allowUnfree = true;
   system.primaryUser = "ryan";
-  nix.settings.trusted-users = [ "root" "ryan" ];
 
-  environment.systemPackages = with pkgs; [
+  nix = {
+    settings = {
+      trusted-users = [ "root" "ryan" ];
+      auto-optimise-store = true;
+      max-jobs = "auto";
+      substituters = [
+        "https://cache.nixos.org"
+        "https://nix-community.cachix.org"
+      ];
+      trusted-public-keys = [
+        "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      ];
+    };
+  };
 
-    # ── Terminal / Shell ──────────────────────────────────────────────────────
-    fish
-    nushell
-    starship
-    tmux
-    zellij
-    smug
-    screen
+  programs.fish.enable = true;
+  programs.tmux.enable = true;
 
-    # ── File / Navigation ─────────────────────────────────────────────────────
-    eza
-    fd
-    fzf
-    ripgrep
-    bat
-    bat-extras.batdiff
-    bat-extras.batman
-    bat-extras.batgrep
-    bat-extras.batwatch
-    lsd
-    yazi
-    zoxide
-    sd
-    tree
-    stow
-
-    # ── Git ───────────────────────────────────────────────────────────────────
-    git
-    delta
-    git-cliff
-    lazygit
-    gitleaks
-    tig
-    lefthook
-    cocogitto
-
-    # ── Productivity / TUI ────────────────────────────────────────────────────
-    htop
-    jq
-    yq-go
-    frogmouth
-    glow
-    nap
-    nb
-    taskwarrior3
-    taskwarrior-tui
-    vit
-    tldr
-    w3m
-    rich-cli
-    chafa
-    viu
-    ueberzugpp
-
-    # ── Docs / Diagramming ────────────────────────────────────────────────────
-    ack
-    cloc
-    tokei
-    d2
-    graphviz
-    gnuplot
-    pandoc
-    mdbook
-    hugo
-    zola
-    zk
-    marp-cli
-
-    # ── Network / Security ────────────────────────────────────────────────────
-    curl
-    wget
-    nmap
-    sq
-    caddy
-    ttyd
-    gnupg
-    pinentry-curses
-
-    # ── Media ─────────────────────────────────────────────────────────────────
-    ffmpeg
-    imagemagick
-    yt-dlp
-    vhs
-    agg
-    asciinema
-    whisper-cpp
-
-    # ── PDF / Viewer ──────────────────────────────────────────────────────────
-    zathura
-    ghostscript
-
-    # ── Dev: cross-project tools ──────────────────────────────────────────────
-    mise
-    just
-    watchexec
-    scriptisto
-    gh
-    carapace
-    pngpaste
-    direnv
-    zig
-
-    # ── Dev: containers / kubernetes ──────────────────────────────────────────
-    docker
-    docker-compose
-    docker-credential-helpers
-    colima
-    lima
-    kubectl
-    kubernetes-helm
-    k9s
-    k3d
-    kubeconform
-    skaffold
-    lazydocker
-
-    # ── Dev: JS / TS ──────────────────────────────────────────────────────────
-    pnpm
-    deno
-
-    # ── Dev: linters / formatters / AI ────────────────────────────────────────
-    hadolint
-    llama-cpp
-    opencode
-    promptfoo
-    taplo
-    yamlfmt
-    herdr
-
-    # ── Dev: Rust tooling ─────────────────────────────────────────────────────
-    cargo-llvm-cov
-    gitui
-    bacon
-    cargo-nextest
-    cargo-watch
-    dprint
-    presenterm
-    mprocs
-    wiki-tui
-    mdcat
-    sccache
-    cargo-audit
-    cargo-deny
-    trunk
-    leptosfmt
-    dioxus-cli
-    cargo-edit
-    cargo-update
-    cargo-crev
-
-    # ── GUI apps ──────────────────────────────────────────────────────────────
-    inkscape
-    devenv
-
+  environment.shells = [
+    pkgs.fish
+    pkgs.nushell
+    pkgs.zsh
   ];
 
-  # ── Fonts ──────────────────────────────────────────────────────────────────
-  fonts.packages = with pkgs; [
-    nerd-fonts.fantasque-sans-mono
-    nerd-fonts.fira-code
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.symbols-only
-    nerd-fonts.victor-mono
+  environment.systemPackages = [
+    pkgs.fish
+    pkgs.nushell
+    pkgs.starship
+    pkgs.tmux
+    pkgs.zellij
+    pkgs.smug
+    pkgs.screen
+
+    pkgs.eza
+    pkgs.fd
+    pkgs.fzf
+    pkgs.ripgrep
+    pkgs.bat
+    pkgs.bat-extras.batdiff
+    pkgs.bat-extras.batman
+    pkgs.bat-extras.batgrep
+    pkgs.bat-extras.batwatch
+    pkgs.lsd
+    pkgs.yazi
+    pkgs.zoxide
+    pkgs.sd
+    pkgs.tree
+    pkgs.stow
+
+    pkgs.git
+    pkgs.delta
+    pkgs.git-cliff
+    pkgs.lazygit
+    pkgs.gitleaks
+    pkgs.tig
+    pkgs.lefthook
+    pkgs.cocogitto
+
+    pkgs.htop
+    pkgs.jq
+    pkgs.yq-go
+    pkgs.frogmouth
+    pkgs.glow
+    pkgs.nap
+    pkgs.nb
+    pkgs.taskwarrior3
+    pkgs.taskwarrior-tui
+    pkgs.vit
+    pkgs.tldr
+    pkgs.w3m
+    pkgs.rich-cli
+    pkgs.chafa
+    pkgs.viu
+    pkgs.ueberzugpp
+
+    pkgs.ack
+    pkgs.cloc
+    pkgs.tokei
+    pkgs.d2
+    pkgs.graphviz
+    pkgs.gnuplot
+    pkgs.pandoc
+    pkgs.mdbook
+    pkgs.hugo
+    pkgs.zola
+    pkgs.zk
+    pkgs.marp-cli
+
+    pkgs.curl
+    pkgs.wget
+    pkgs.nmap
+    pkgs.sq
+    pkgs.caddy
+    pkgs.ttyd
+    pkgs.gnupg
+    pkgs.pinentry-curses
+
+    pkgs.ffmpeg
+    pkgs.imagemagick
+    pkgs.yt-dlp
+    pkgs.vhs
+    pkgs.agg
+    pkgs.asciinema
+    pkgs.whisper-cpp
+
+    pkgs.zathura
+    pkgs.ghostscript
+
+    pkgs.mise
+    pkgs.just
+    pkgs.watchexec
+    pkgs.scriptisto
+    pkgs.gh
+    pkgs.carapace
+    pkgs.pngpaste
+    pkgs.direnv
+    pkgs.zig
+
+    pkgs.docker
+    pkgs.docker-compose
+    pkgs.docker-credential-helpers
+    pkgs.colima
+    pkgs.lima
+    pkgs.kubectl
+    pkgs.kubernetes-helm
+    pkgs.k9s
+    pkgs.k3d
+    pkgs.kubeconform
+    pkgs.skaffold
+    pkgs.lazydocker
+
+    pkgs.pnpm
+    pkgs.deno
+
+    pkgs.hadolint
+    pkgs.llama-cpp
+    pkgs.opencode
+    pkgs.promptfoo
+    pkgs.taplo
+    pkgs.yamlfmt
+    pkgs.herdr
+
+    pkgs.cargo-llvm-cov
+    pkgs.gitui
+    pkgs.bacon
+    pkgs.cargo-nextest
+    pkgs.cargo-watch
+    pkgs.dprint
+    pkgs.presenterm
+    pkgs.mprocs
+    pkgs.wiki-tui
+    pkgs.mdcat
+    pkgs.sccache
+    pkgs.cargo-audit
+    pkgs.cargo-deny
+    pkgs.trunk
+    pkgs.leptosfmt
+    pkgs.dioxus-cli
+    pkgs.cargo-edit
+    pkgs.cargo-update
+    pkgs.cargo-crev
+
+    pkgs.inkscape
+    pkgs.devenv
   ];
 
-  # ── Homebrew: residual (not in nixpkgs or macOS-only) ─────────────────────
+  fonts.packages = [
+    pkgs.nerd-fonts.fantasque-sans-mono
+    pkgs.nerd-fonts.fira-code
+    pkgs.nerd-fonts.jetbrains-mono
+    pkgs.nerd-fonts.symbols-only
+    pkgs.nerd-fonts.victor-mono
+  ];
+
+  documentation = {
+    enable = false;
+    man.enable = true;
+  };
+
   homebrew = {
     enable = true;
     brews = [

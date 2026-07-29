@@ -10,9 +10,11 @@
   outputs = inputs@{ self, nix-darwin, nixpkgs, ... }: {
     darwinConfigurations."Daddio-M4" = nix-darwin.lib.darwinSystem {
       modules = [ ./darwin/core.nix ./darwin/home.nix ];
+      specialArgs = { inherit inputs; };
     };
     darwinConfigurations."MACX-410869RX" = nix-darwin.lib.darwinSystem {
       modules = [ ./darwin/core.nix ./darwin/work.nix ];
+      specialArgs = { inherit inputs; };
     };
   };
 }

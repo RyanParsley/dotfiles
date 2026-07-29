@@ -1,15 +1,12 @@
 { pkgs, ... }: {
-  environment.systemPackages = with pkgs; [
-    # ── Forgejo / Codeberg ────────────────────────────────────────────────────
-    forgejo-cli
-    woodpecker-cli
+  environment.systemPackages = [
+    pkgs.forgejo-cli
+    pkgs.woodpecker-cli
 
-    # ── Cloudflare ────────────────────────────────────────────────────────────
-    wrangler
-    cloudflared
+    pkgs.wrangler
+    pkgs.cloudflared
 
-    # ── Backup ────────────────────────────────────────────────────────────────
-    restic
+    pkgs.restic
   ];
 
   homebrew.casks = [
