@@ -44,6 +44,7 @@
     tig
     lefthook
     cocogitto
+    forgejo-cli
 
     # ── Productivity / TUI ────────────────────────────────────────────────────
     htop
@@ -62,6 +63,7 @@
     chafa
     viu
     ueberzugpp
+    restic
 
     # ── Docs / Diagramming ────────────────────────────────────────────────────
     ack
@@ -84,6 +86,9 @@
     sq
     caddy
     ttyd
+    gnupg
+    pinentry
+    cloudflared
 
     # ── Media ─────────────────────────────────────────────────────────────────
     ffmpeg
@@ -92,6 +97,7 @@
     vhs
     agg
     asciinema
+    whisper-cpp
 
     # ── PDF / Viewer ──────────────────────────────────────────────────────────
     zathura  # wrapper already bundles pdf-poppler and ps plugins
@@ -105,6 +111,8 @@
     gh
     carapace
     pngpaste
+    direnv
+    zig
 
     # ── Dev: containers / kubernetes ──────────────────────────────────────────
     docker
@@ -118,27 +126,27 @@
     k3d
     kubeconform
     skaffold
+    lazydocker
 
     # ── Dev: infra / cloud ────────────────────────────────────────────────────
     azure-cli
     google-cloud-sdk
+    cloudflare-wrangler
 
     # ── Dev: JS / TS ──────────────────────────────────────────────────────────
     pnpm
     deno
 
-    # ── Dev: linters / AI ─────────────────────────────────────────────────────
+    # ── Dev: linters / formatters / AI ────────────────────────────────────────
     hadolint
     llama-cpp
     opencode
     promptfoo
+    taplo
+    yamlfmt
+    woodpecker-cli
 
-    # ── GUI apps ──────────────────────────────────────────────────────────────
-    inkscape
-    devenv
-    agg
-    just
-    mdbook
+    # ── Dev: Rust tooling ─────────────────────────────────────────────────────
     cargo-llvm-cov
     gitui
     bacon
@@ -150,7 +158,6 @@
     wiki-tui
     mdcat
     sccache
-    cocogitto
     cargo-audit
     cargo-deny
     trunk
@@ -159,6 +166,10 @@
     cargo-edit
     cargo-update
     cargo-crev
+
+    # ── GUI apps ──────────────────────────────────────────────────────────────
+    inkscape
+    devenv
 
   ];
 
@@ -186,6 +197,8 @@
       "basictex"
       "copilot-cli"
       "obs"
+      "espanso"
+      "localsend"
     ];
     onActivation.cleanup = "zap";
   };
