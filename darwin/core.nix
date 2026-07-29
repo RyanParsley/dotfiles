@@ -132,6 +132,7 @@
     promptfoo
     taplo
     yamlfmt
+    herdr
 
     # ── Dev: Rust tooling ─────────────────────────────────────────────────────
     cargo-llvm-cov
