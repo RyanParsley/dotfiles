@@ -1,10 +1,6 @@
 { pkgs, ... }: {
-  # Apple Silicon
   nixpkgs.hostPlatform = "aarch64-darwin";
-  # Required for options that apply to the primary user (e.g. homebrew)
   system.primaryUser = "ryan";
-
-  # Allow ryan to use restricted nix settings (needed for devenv)
   nix.settings.trusted-users = [ "root" "ryan" ];
 
   environment.systemPackages = with pkgs; [
@@ -44,7 +40,6 @@
     tig
     lefthook
     cocogitto
-    forgejo-cli
 
     # ── Productivity / TUI ────────────────────────────────────────────────────
     htop
@@ -63,7 +58,6 @@
     chafa
     viu
     ueberzugpp
-    restic
 
     # ── Docs / Diagramming ────────────────────────────────────────────────────
     ack
@@ -88,7 +82,6 @@
     ttyd
     gnupg
     pinentry
-    cloudflared
 
     # ── Media ─────────────────────────────────────────────────────────────────
     ffmpeg
@@ -100,7 +93,7 @@
     whisper-cpp
 
     # ── PDF / Viewer ──────────────────────────────────────────────────────────
-    zathura  # wrapper already bundles pdf-poppler and ps plugins
+    zathura
     ghostscript
 
     # ── Dev: cross-project tools ──────────────────────────────────────────────
@@ -128,11 +121,6 @@
     skaffold
     lazydocker
 
-    # ── Dev: infra / cloud ────────────────────────────────────────────────────
-    azure-cli
-    google-cloud-sdk
-    cloudflare-wrangler
-
     # ── Dev: JS / TS ──────────────────────────────────────────────────────────
     pnpm
     deno
@@ -144,7 +132,6 @@
     promptfoo
     taplo
     yamlfmt
-    woodpecker-cli
 
     # ── Dev: Rust tooling ─────────────────────────────────────────────────────
     cargo-llvm-cov
@@ -186,19 +173,12 @@
   homebrew = {
     enable = true;
     taps = [];
-    brews = [
-      "aoe"
-    ];
     casks = [
       "ghostty"
       "amethyst"
       "hiddenbar"
-      "openlens"
       "basictex"
-      "copilot-cli"
       "obs"
-      "espanso"
-      "localsend"
     ];
     onActivation.cleanup = "zap";
   };
