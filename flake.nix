@@ -8,6 +8,9 @@
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, ... }: {
+    darwinConfigurations."Daddio-M4" = nix-darwin.lib.darwinSystem {
+      modules = [ ./darwin/configuration.nix ];
+    };
     darwinConfigurations."MACX-410869RX" = nix-darwin.lib.darwinSystem {
       modules = [ ./darwin/configuration.nix ];
     };
