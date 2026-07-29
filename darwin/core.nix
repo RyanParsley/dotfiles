@@ -81,7 +81,7 @@
     caddy
     ttyd
     gnupg
-    pinentry
+    pinentry-curses
 
     # ── Media ─────────────────────────────────────────────────────────────────
     ffmpeg

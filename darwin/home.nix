@@ -5,7 +5,7 @@
     woodpecker-cli
 
     # ── Cloudflare ────────────────────────────────────────────────────────────
-    cloudflare-wrangler
+    wrangler
     cloudflared
 
     # ── Backup ────────────────────────────────────────────────────────────────
