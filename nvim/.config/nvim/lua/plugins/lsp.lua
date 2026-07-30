@@ -9,6 +9,7 @@ return {
         opts = {
             ensure_installed = {
                 'js-debug-adapter',
+                'google-java-format',
             },
         },
     },
@@ -25,9 +26,13 @@ return {
                 'lua_ls',
                 'marksman',
                 'quick_lint_js',
-                'rust_analyzer',
                 'ts_ls',
                 'yamlls',
+            },
+            -- Prevent mason-lspconfig from auto-starting rust_analyzer
+            -- (rustaceanvim manages rust-analyzer exclusively)
+            handlers = {
+                rust_analyzer = function() end,
             },
         },
     },
@@ -80,27 +85,16 @@ return {
 
             -- Shared on_attach function for common LSP setup
             local function on_attach(client, bufnr)
-                -- Enable inlay hints if supported
-                if client.server_capabilities.inlayHintProvider then
-                    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-                    -- Refresh inlay hints after a short delay
-                    vim.defer_fn(function()
-                        if vim.lsp.inlay_hint.refresh then
-                            vim.lsp.inlay_hint.refresh { bufnr = bufnr }
-                        end
-                    end, 1000)
-                end
-
                 -- Set up codelens refresh for supported servers
                 if client.server_capabilities.codeLensProvider then
                     local codelens_group = vim.api.nvim_create_augroup('lsp_codelens_' .. bufnr, { clear = true })
                     vim.api.nvim_create_autocmd(
                         { 'TextChanged', 'InsertLeave', 'CursorHold', 'LspAttach', 'BufEnter' },
                         {
-                            buffer = bufnr,
+                            buf = bufnr,
                             group = codelens_group,
                             callback = function()
-                                vim.lsp.codelens.refresh { bufnr = bufnr }
+                                vim.lsp.codelens.enable(true, { bufnr = bufnr })
                             end,
                             desc = 'Refresh LSP codelens',
                         }
@@ -112,8 +106,26 @@ return {
 
             require('mason').setup()
             require('mason-tool-installer').setup {
-                -- Install these linters, formatters, debuggers automatically
-                ensure_installed = {},
+                ensure_installed = {
+                    -- Formatters
+                    'stylua',
+                    'shfmt',
+                    'prettierd',
+
+                    -- Linters
+                    'eslint_d',
+                    'markdownlint-cli2',
+
+                    -- Debuggers
+                    'codelldb',
+                    'js-debug-adapter',
+
+                    -- Tools
+                    'bacon',
+                    'bacon-ls',
+                    'tree-sitter-cli',
+                    'zk',
+                },
             }
             -- There is an issue with mason-tools-installer running with VeryLazy, since it triggers on VimEnter which has already occurred prior to this plugin loading so we need to call install explicitly
             -- https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim/issues/39
@@ -166,10 +178,13 @@ return {
 
                     -- setup Markdown Oxide daily note commands
                     if client.name == 'markdown_oxide' then
-                        vim.api.nvim_create_user_command('Daily', function(args)
-                            local input = args.args
-                            vim.lsp.buf.execute_command { command = 'jump', arguments = { input } }
-                        end, { desc = 'Open daily note', nargs = '*' })
+                    vim.api.nvim_create_user_command('Daily', function(args)
+                        local input = args.args
+                        local clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf(), name = 'markdown_oxide' })
+                        if clients[1] then
+                            clients[1]:exec_cmd({ command = 'jump', arguments = { input } })
+                        end
+                    end, { desc = 'Open daily note', nargs = '*' })
                     end
                 end,
                 capabilities = capabilities,
@@ -269,8 +284,8 @@ return {
             vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, { desc = 'Code actions' })
 
             -- Diagnostic keymaps
-            vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
-            vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+            vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = 'Go to previous diagnostic message' })
+            vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = 'Go to next diagnostic message' })
             vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
             vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
         end,

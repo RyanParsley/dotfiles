@@ -2,7 +2,7 @@ package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share
 package.path = package.path .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/share/lua/5.1/?.lua'
 package.cpath = package.cpath .. ';' .. vim.fn.expand '$HOME' .. '/.luarocks/lib/lua/5.1/?.so'
 -- tell neovim to use mise version of java
-vim.g.java_home = '/Users/ryan/.local/share/mise/installs/java/22.0.2/bin/java'
+vim.g.java_home = '/Users/ryan/.local/share/mise/installs/java/24.0.1/bin/java'
 
 vim.opt.expandtab = true
 vim.opt.tabstop = 2
@@ -126,11 +126,11 @@ vim.keymap.set(
 vim.keymap.set('n', '<leader>b', require('dap').toggle_breakpoint, { desc = 'Toggle breakpoint' })
 
 -- [[ Highlight on yank ]]
--- See `:help vim.highlight.on_yank()`
+-- See `:help vim.hl.on_yank()`
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
     callback = function()
-        vim.highlight.on_yank()
+        vim.hl.on_yank()
     end,
     group = highlight_group,
     pattern = '*',
@@ -144,7 +144,23 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     group = format_on_save_ts,
     desc = 'Run ESLint fix on TypeScript/JavaScript files before save',
 })
-vim.lsp.inlay_hint.enable()
+vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('inlay-hints', { clear = true }),
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+        if client and client.server_capabilities.inlayHintProvider then
+            vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+            -- Workaround for Neovim bug #26511: inlay hints don't render on initial attach
+            if client.name == 'rust-analyzer' then
+                vim.defer_fn(function()
+                    vim.lsp.inlay_hint.enable(false, { bufnr = args.buf })
+                    vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+                end, 100)
+            end
+        end
+    end,
+    desc = 'Enable inlay hints on LSP attach',
+})
 
 -- LuaSnip keymaps using vim.keymap.set for better integration
 vim.keymap.set({ 'i', 's' }, '<Tab>', function()

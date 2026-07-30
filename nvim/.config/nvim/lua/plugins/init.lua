@@ -1,5 +1,4 @@
 return {
-    'zapling/mason-conform.nvim',
     'zaid/vim-rec',
     'tpope/vim-surround',
     'tpope/vim-fugitive',

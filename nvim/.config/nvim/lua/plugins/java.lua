@@ -136,21 +136,21 @@ return {
                     vim.keymap.set('n', '<leader>dt', function()
                         require('jdtls.dap').test_nearest_method()
                     end, {
-                        buffer = args.buf,
+                        buf = args.buf,
                         desc = 'Debug: Test Nearest Method'
                     })
 
                     vim.keymap.set('n', '<leader>dT', function()
                         require('jdtls.dap').test_class()
                     end, {
-                        buffer = args.buf,
+                        buf = args.buf,
                         desc = 'Debug: Test Class'
                     })
 
                     vim.keymap.set('n', '<leader>dc', function()
                         require('jdtls').pick_test()
                     end, {
-                        buffer = args.buf,
+                        buf = args.buf,
                         desc = 'Debug: Pick Test'
                     })
                     
@@ -159,7 +159,7 @@ return {
                         require('jdtls.dap').setup_dap_main_class_configs()
                         vim.cmd('DapContinue')
                     end, {
-                        buffer = args.buf,
+                        buf = args.buf,
                         desc = 'Debug: Run/Debug Main Class'
                     })
                 end

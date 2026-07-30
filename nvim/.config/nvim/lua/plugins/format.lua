@@ -23,7 +23,7 @@ return {
                 lua = { 'stylua' },
                 fish = { 'fish_indent' },
                 sh = { 'shfmt' },
-                java = { 'prettierd', 'prettier', stop_after_first = true },
+                java = { 'google-java-format' },
                 javascript = { 'prettierd', 'prettier', stop_after_first = true },
                 typescript = { 'prettierd', 'prettier', stop_after_first = true },
                 ['markdown'] = { 'prettierd', 'prettier', stop_after_first = true },
