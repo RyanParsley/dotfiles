@@ -37,6 +37,18 @@ So long as [this is open], you'll need to create a symlink if you want to keep n
 ln -s ~/dotfiles/.config/nushell/* "/Users/ryan/Library/Application Support/nushell/"
 ```
 
+## Pi coding agent runtime
+
+Pi is enabled through nix-darwin and pinned to Nix's Node 22 npm wrapper so native packages like `better-sqlite3` build against a stable ABI.
+
+If you ever change the Pi runtime and see a stale native-addon error again, do a one-time cleanup of the user package cache and restart Pi:
+
+```bash
+rm -rf ~/.pi/agent/npm
+```
+
+Do not hand-rebuild Pi's `node_modules`; let the Nix-managed wrapper and Pi's own package installer recreate them.
+
 ## Agent Skills
 
 Agent Skills ([agentskills.io](https://agentskills.io)) live in `~/.agents/skills/` and work with pi agent, opencode, Claude Code, and more.
