@@ -68,6 +68,7 @@
     pkgs.tig
     pkgs.lefthook
     pkgs.cocogitto
+    pkgs.gh-dash
 
     pkgs.htop
     pkgs.jq
