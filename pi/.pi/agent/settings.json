@@ -1,6 +1,11 @@
 {
-  "lastChangelogVersion": "0.75.4",
+  "defaultModel": "big-pickle",
   "defaultProvider": "opencode",
-  "defaultModel": "qwen3.6-plus-free",
-  "defaultThinkingLevel": "high"
+  "defaultThinkingLevel": "high",
+  "lastChangelogVersion": "0.83.0",
+  "packages": [
+    "npm:@ollama/pi-web-search",
+    "npm:pi-hermes-memory"
+  ],
+  "theme": "dark"
 }

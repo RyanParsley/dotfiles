@@ -7,7 +7,7 @@
 
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
+import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
 import { isToolCallEventType } from "@mariozechner/pi-coding-agent";
 
 const DEBOUNCE_MS = 2000;
@@ -160,7 +160,7 @@ export default function (pi: ExtensionAPI) {
     }
   });
 
-  async function runTests(cwd: string) {
+  async function runTests(cwd: string, ctx: ExtensionContext) {
     if (!framework) return;
     const now = Date.now();
     if (now - lastRunTime < DEBOUNCE_MS || isRunning) return;
@@ -191,7 +191,7 @@ export default function (pi: ExtensionAPI) {
     if (!framework) return;
     const filePath = event.path || "";
     if (isWatchedFile(filePath, framework)) {
-      await runTests(ctx.cwd);
+      await runTests(ctx.cwd, ctx);
     }
   });
 
@@ -204,7 +204,7 @@ export default function (pi: ExtensionAPI) {
     if (!isGitCommitCommand(command)) return;
 
     // Re-run fresh before allowing commit
-    await runTests(ctx.cwd);
+    await runTests(ctx.cwd, ctx);
 
     if (lastResult && !lastResult.allPassed) {
       const { failed, passed, total } = lastResult;

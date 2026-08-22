@@ -6,7 +6,7 @@
  */
 
 import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { isAbsolute, join } from "node:path";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { isToolCallEventType } from "@mariozechner/pi-coding-agent";
 
@@ -47,7 +47,7 @@ export default function (pi: ExtensionAPI) {
     const testFile = getTestFileForSource(filePath);
     if (!testFile) return; // Not a source file we track
 
-    const testPath = join(ctx.cwd, testFile);
+    const testPath = isAbsolute(testFile) ? testFile : join(ctx.cwd, testFile);
     if (!existsSync(testPath)) {
       return {
         block: true,

@@ -88,20 +88,22 @@
         "baseURL": "http://127.0.0.1:11434/v1"
       },
       "models": {
-        "devstral-small-2:latest": { "name": "Devstral Small 2",    "tool_call": true },
-        "devstral:24b":            { "name": "Devstral 24b",        "tool_call": true },
-        "gemma4:e2b":              { "name": "Gemma 4 E2B",         "tool_call": true },
-        "gemma4:e4b":              { "name": "Gemma 4 E4B",         "tool_call": true },
-        "gemma4:12b":              { "name": "Gemma 4 12b",         "tool_call": true },
-        "gemma4:26b":              { "name": "Gemma 4 26b",         "tool_call": true },
-        "gemma4:26b-mlx":          { "name": "Gemma 4 26b (MLX)",   "tool_call": true },
         "gemma4:31b":              { "name": "Gemma 4 31b",         "tool_call": true },
-        "gemma4:latest":           { "name": "Gemma 4",             "tool_call": true },
-        "gpt-oss:latest":          { "name": "GPT-OSS", "options": { "reasoning_effort": "high" } },
-        "ministral-3:14b":         { "name": "Ministral 3 14b" },
-        "ministral-3:latest":      { "name": "Ministral 3" },
-        "mistral-small3.2:latest": { "name": "Mistral Small 3.2",   "tool_call": true },
-        "llama3.2:latest":         { "name": "Llama 3.2" }
+        "gemma4:31b-128k":       { "name": "Gemma 4 31b (128k)",  "tool_call": true },
+        "gemma4:31b-256k":       { "name": "Gemma 4 31b (256k)",  "tool_call": true },
+        "gemma4:31b-mxfp8":      { "name": "Gemma 4 31b (MXFP8)", "tool_call": true },
+        "gemma4:26b":              { "name": "Gemma 4 26b",         "tool_call": true },
+        "gemma4:26b-64k":        { "name": "Gemma 4 26b (64k)",   "tool_call": true },
+        "gemma4:26b-128k":       { "name": "Gemma 4 26b (128k)",  "tool_call": true },
+        "gemma4:26b-256k":       { "name": "Gemma 4 26b (256k)",  "tool_call": true },
+        "qwen3.6:27b":             { "name": "Qwen 3.6 27b",        "tool_call": true },
+        "qwen3.6:latest":          { "name": "Qwen 3.6",            "tool_call": true },
+        "ministral-3:8b":          { "name": "Ministral 3 8b",      "tool_call": true },
+        "devstral:latest":         { "name": "Devstral",            "tool_call": true },
+        "nemotron-3-nano:4b":      { "name": "Nemotron 3 Nano 4b",  "tool_call": true },
+        "rnj-1:8b":                { "name": "RNJ-1 8b",            "tool_call": true },
+        "functiongemma:270m":      { "name": "FunctionGemma 270M",   "tool_call": true },
+        "kimi-k2.5:cloud":         { "name": "Kimi K2.5 (Cloud)",   "tool_call": true }
       }
     }
   },
