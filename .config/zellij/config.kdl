@@ -201,6 +201,10 @@ plugins {
 
 default_shell "nu"
 
+// Ghostty supports Kitty graphics, and Zellij provides native pane-aware
+// compositing for the protocol. Requires restarting Zellij sessions.
+support_kitty_graphics_protocol true
+
 // Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
 // eg. when terminal window with an active zellij session is closed
 // Options:
