@@ -1,7 +1,73 @@
-{ pkgs, inputs, ... }: {
+{ pkgs, ... }:
+let
+  mise-bin = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
+    pname = "mise-bin";
+    version = "2026.8.12";
+
+    src = pkgs.fetchurl {
+      url = "https://github.com/jdx/mise/releases/download/v${finalAttrs.version}/mise-v${finalAttrs.version}-macos-arm64.tar.xz";
+      hash = "sha256-0nXDCuK0J/JUT4wgRmqwKhsKfmvVA6tM3K5RVUpGUh0=";
+    };
+
+    sourceRoot = "mise";
+    dontStrip = true;
+
+    installPhase = ''
+      runHook preInstall
+
+      cp -R . "$out"
+      mkdir -p \
+        "$out/lib/mise" \
+        "$out/share/bash-completion/completions" \
+        "$out/share/fish/vendor_completions.d" \
+        "$out/share/zsh/site-functions"
+      touch "$out/lib/mise/.disable-self-update"
+
+      HOME="$TMPDIR" "$out/bin/mise" completion bash > "$out/share/bash-completion/completions/mise"
+      HOME="$TMPDIR" "$out/bin/mise" completion fish > "$out/share/fish/vendor_completions.d/mise.fish"
+      HOME="$TMPDIR" "$out/bin/mise" completion zsh > "$out/share/zsh/site-functions/_mise"
+
+      runHook postInstall
+    '';
+
+    doInstallCheck = true;
+    installCheckPhase = ''
+      HOME="$TMPDIR" MISE_OFFLINE=1 "$out/bin/mise" --version | grep -F "${finalAttrs.version}"
+    '';
+
+    meta = {
+      description = "Front-end to your dev env, using the official release binary";
+      homepage = "https://mise.jdx.dev";
+      license = pkgs.lib.licenses.mit;
+      mainProgram = "mise";
+      platforms = [ "aarch64-darwin" ];
+      sourceProvenance = [ pkgs.lib.sourceTypes.binaryNativeCode ];
+    };
+  });
+in
+{
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;
+  # Remove once nixpkgs-unstable includes NixOS/nixpkgs#555604.
+  nixpkgs.overlays = [
+    (_final: prev: {
+      tmux = prev.tmux.overrideAttrs (oldAttrs: {
+        buildInputs = oldAttrs.buildInputs ++ [ prev.jemalloc ];
+        configureFlags = oldAttrs.configureFlags ++ [ "--enable-jemalloc" ];
+      });
+      # Remove once Zellij includes zellij-org/zellij#5526 in a release.
+      zellij-unwrapped = prev.zellij-unwrapped.overrideAttrs (oldAttrs: {
+        patches = (oldAttrs.patches or [ ]) ++ [
+          (prev.fetchurl {
+            url = "https://github.com/zellij-org/zellij/commit/016f3437979b3e6020b24ae62f2a33e909491c0a.patch";
+            hash = "sha256-44BSW0DuU+XC1lWU8hqChQj1MO2x7f6QOsB3Dy/byUk=";
+          })
+        ];
+      });
+    })
+  ];
   system.primaryUser = "ryan";
+  environment.variables.PKG_CONFIG_PATH = "${pkgs.imagemagick.dev}/lib/pkgconfig";
 
   nix = {
     settings = {
@@ -16,7 +82,7 @@
       ];
       trusted-public-keys = [
         "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
-        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bk5CX+/rkCWyvRCYg3Fs="
+        "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
         "pi.cachix.org-1:lGeoGJaZ5ZDabuRzkcD5EBTNnDM4HJ1vqeOxlWk1Flk="
       ];
     };
@@ -39,7 +105,6 @@
     pkgs.fish
     pkgs.nushell
     pkgs.starship
-    pkgs.tmux
     pkgs.zellij
     pkgs.smug
     pkgs.screen
@@ -85,7 +150,6 @@
     pkgs.rich-cli
     pkgs.chafa
     pkgs.viu
-    pkgs.ueberzugpp
 
     pkgs.ack
     pkgs.cloc
@@ -111,6 +175,7 @@
 
     pkgs.ffmpeg
     pkgs.imagemagick
+    pkgs.pkg-config
     pkgs.yt-dlp
     pkgs.vhs
     pkgs.agg
@@ -120,7 +185,7 @@
     pkgs.zathura
     pkgs.ghostscript
 
-    pkgs.mise
+    mise-bin
     pkgs.just
     pkgs.watchexec
     pkgs.scriptisto
@@ -202,6 +267,10 @@
     enable = true;
     brews = [
       "aoe"
+      {
+        name = "tmux";
+        link = false;
+      }
     ];
     casks = [
       "ghostty"
