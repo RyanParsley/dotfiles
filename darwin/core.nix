@@ -64,6 +64,10 @@ in
           })
         ];
       });
+      curl-impersonate = prev.curl-impersonate.overrideAttrs (old: {
+        nativeBuildInputs = old.nativeBuildInputs
+          ++ prev.lib.optional prev.stdenv.hostPlatform.isDarwin prev.fixDarwinDylibNames;
+      });
     })
   ];
   system.primaryUser = "ryan";

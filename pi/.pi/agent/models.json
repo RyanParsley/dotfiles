@@ -65,7 +65,6 @@
           "reasoning": true
         },
         {
-          "_launch": true,
           "contextWindow": 32768,
           "id": "qwen3.6:latest",
           "input": [
@@ -73,6 +72,37 @@
             "image"
           ],
           "name": "Qwen 3.6",
+          "reasoning": true
+        },
+        {
+          "_launch": true,
+          "contextWindow": 131072,
+          "id": "qwen3.8:27b-mlx",
+          "input": [
+            "text",
+            "image"
+          ],
+          "name": "Qwen 3.8",
+          "reasoning": true
+        },
+        {
+          "contextWindow": 131072,
+          "id": "qwen3.8:27b-nvfp4",
+          "input": [
+            "text",
+            "image"
+          ],
+          "name": "Qwen 3.8 NVFP4",
+          "reasoning": true
+        },
+        {
+          "contextWindow": 131072,
+          "id": "gemma4:12b-mlx",
+          "input": [
+            "text",
+            "image"
+          ],
+          "name": "Gemma 4 12B",
           "reasoning": true
         },
         {
