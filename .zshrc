@@ -65,16 +65,8 @@ fi
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-# macOS-only: Homebrew-dependent paths and tools
-if [[ "$(uname)" == "Darwin" ]]; then
-  export MAGICK_HOME=$(brew --prefix)
-  export CPPFLAGS="-I$(brew --prefix)/opt/libffi/include"
-  export PKG_CONFIG_PATH="$(brew --prefix)/opt/libffi/lib/pkgconfig"
-  export OPENSSL_ROOT_DIR=/usr/local/opt/openssl@3
-  export CMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH:$(brew --prefix qt@5)
-  export PATH=$PATH:$(brew --prefix qt@5)/bin
-  export PATH="/opt/homebrew/sbin:$PATH"
-fi
+# macOS-only: Homebrew sbin
+[[ "$(uname)" == "Darwin" ]] && export PATH="/opt/homebrew/sbin:$PATH"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -111,7 +103,17 @@ export AIDER_EDITOR=nvim
 # Google Cloud SDK — macOS paths
 if [[ "$(uname)" == "Darwin" ]]; then
   [ -f '/Users/ryan/google-cloud-sdk/path.zsh.inc' ] && . '/Users/ryan/google-cloud-sdk/path.zsh.inc'
-  [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ] && . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'
+  # Lazy-load gcloud completions on first tab — sourcing completion.zsh.inc eagerly costs ~500ms
+  if [ -f '/Users/ryan/google-cloud-sdk/completion.zsh.inc' ]; then
+    _gcloud_lazy_completion() {
+      unfunction gcloud gsutil bq 2>/dev/null
+      . '/Users/ryan/google-cloud-sdk/completion.zsh.inc'
+      compdef _gcloud gcloud
+      compdef _gsutil gsutil
+      compdef _bq bq
+    }
+    compdef _gcloud_lazy_completion gcloud gsutil bq
+  fi
 fi
 
 # Cargo env
@@ -135,11 +137,8 @@ fi
 # Force use of rustup tools over everything else — macOS only
 [[ "$(uname)" == "Darwin" ]] && export PATH="$HOME/.cargo/bin:$PATH"
 
-# ESP toolchain for Xtensa (ESP32) — macOS only
+# ESP toolchain for Xtensa (ESP32) — macOS only; source if present
 [[ "$(uname)" == "Darwin" ]] && [ -f ~/export-esp.sh ] && source ~/export-esp.sh
-
-# SDL2 for embedded-graphics-simulator — macOS only
-[[ "$(uname)" == "Darwin" ]] && export LIBRARY_PATH="/opt/homebrew/opt/sdl2/lib:$LIBRARY_PATH"
 
 # mise version manager
 export PATH="$HOME/.local/bin:$PATH"
