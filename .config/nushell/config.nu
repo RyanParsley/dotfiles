@@ -167,7 +167,7 @@ let zoxide_completer = {|spans|
 let external_completer = {|spans|
     let expanded_alias = scope aliases
     | where name == $spans.0
-    | get -i 0.expansion
+    | get --optional 0.expansion
 
     let spans = if $expanded_alias != null {
         $spans
@@ -986,5 +986,3 @@ source "/Users/ryan/dotfiles/.config/nushell/mise.nu"
 # https://carapace-sh.github.io/carapace-bin/setup.html
 source ~/.cache/carapace/init.nu
 source ~/.config/nushell/settle.nu
-
-source $"($nu.home-path)/.cargo/env.nu"
