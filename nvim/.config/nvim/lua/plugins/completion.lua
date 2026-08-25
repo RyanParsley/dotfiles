@@ -27,14 +27,6 @@ return {
             --    for various frameworks/libraries/etc. but you will have to
             --    set up the ones that are useful for you.
             'rafamadriz/friendly-snippets',
-            vim.g.copilotEnabled and {
-                'zbirenbaum/copilot-cmp',
-                dependencies = 'copilot.lua',
-                config = function(_, opts)
-                    local copilot_cmp = require 'copilot_cmp'
-                    copilot_cmp.setup(opts)
-                end,
-            } or {},
         },
         config = function()
             -- See `:help cmp`
@@ -110,21 +102,9 @@ return {
                     { name = 'path' },
                     { name = 'buffer' },
                     { name = 'crates' },
-                    vim.g.copilotEnabled and { name = 'copilot' } or {},
                 },
                 sorting = {
                     comparators = {
-                        function(entry1, entry2)
-                            local source1 = entry1.source.name
-                            local source2 = entry2.source.name
-                            
-                            if source1 == 'nvim_lsp' and source2 == 'copilot' then
-                                return true
-                            elseif source1 == 'copilot' and source2 == 'nvim_lsp' then
-                                return false
-                            end
-                        end,
-                        
                         cmp.config.compare.offset,
                         cmp.config.compare.exact,
                         cmp.config.compare.score,

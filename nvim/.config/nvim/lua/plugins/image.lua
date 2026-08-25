@@ -1,21 +1,17 @@
 return {
     {
         '3rd/image.nvim',
+        build = false,
+        cond = function()
+            return #vim.api.nvim_list_uis() > 0
+        end,
         dependencies = {
-            {
-                'nvim-treesitter/nvim-treesitter',
-                build = ':TSUpdate',
-                config = function()
-                    require('nvim-treesitter.configs').setup {
-                        ensure_installed = { 'markdown' },
-                        highlight = { enable = true },
-                    }
-                end,
-            },
+            'nvim-treesitter/nvim-treesitter',
         },
         opts = {
-            -- "ueberzug" or "kitty"
             backend = 'kitty',
+            -- Zellij supports standard Kitty placements, not Unicode placeholders.
+            kitty_method = 'normal',
             processor = 'magick_cli', -- or "magick_rock"
             integrations = {
                 markdown = {
