@@ -44,7 +44,10 @@
   autosquash = true
   updateRefs = true
   missingCommitsCheck = warn
-[include]
+[user]
+  email = RMParsley@gmail.com
+  name = Ryan Parsley
+[includeIf "hasconfig:remote.*.url:git@ssh.dev.azure.com:v3/jbhunt/EngAndTech/app_operationsexecution_loads_ui"]
   path = ~/.gitconfig.local
 [diff]
   tool = vimdiff
@@ -96,6 +99,3 @@
   helper = /usr/local/share/gcm-core/git-credential-manager
 [credential "https://codeberg.org"]
   provider = generic
-[user]
-  email = RMParsley@gmail.com
-  name = Ryan Parsley
