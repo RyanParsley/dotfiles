@@ -48,6 +48,20 @@ Configuration, rates, and structured reference data belong in data files
 in review and can be updated without touching logic. Compile in via
 `include_str!` when offline availability is required.
 
+## Script tooling
+
+When a nontrivial one-off or validation script is needed, prefer Rust over Python or another environment-dependent runtime. Use Cargo's nightly script mode with an inline manifest, following this shape:
+
+```rust
+#! /usr/bin/env -S cargo +nightly -Zscript -q
+---cargo
+package.edition = "2024"
+[dependencies]
+---
+```
+
+Use shell for trivial command composition. Create a full Cargo project only when the script needs reuse, tests, or enough code to justify project structure. If the Rust script path is unavailable, report that constraint before choosing a fallback.
+
 ## Option over sentinel values
 
 `Option<f64>` over `0.0` as a sentinel, `Option<String>` over `""`,
