@@ -55,15 +55,6 @@ in
         buildInputs = oldAttrs.buildInputs ++ [ prev.jemalloc ];
         configureFlags = oldAttrs.configureFlags ++ [ "--enable-jemalloc" ];
       });
-      # Remove once Zellij includes zellij-org/zellij#5526 in a release.
-      zellij-unwrapped = prev.zellij-unwrapped.overrideAttrs (oldAttrs: {
-        patches = (oldAttrs.patches or [ ]) ++ [
-          (prev.fetchurl {
-            url = "https://github.com/zellij-org/zellij/commit/016f3437979b3e6020b24ae62f2a33e909491c0a.patch";
-            hash = "sha256-44BSW0DuU+XC1lWU8hqChQj1MO2x7f6QOsB3Dy/byUk=";
-          })
-        ];
-      });
       curl-impersonate = prev.curl-impersonate.overrideAttrs (old: {
         nativeBuildInputs = old.nativeBuildInputs
           ++ prev.lib.optional prev.stdenv.hostPlatform.isDarwin prev.fixDarwinDylibNames;
