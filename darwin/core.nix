@@ -1,68 +1,11 @@
 { pkgs, ... }:
-let
-  mise-bin = pkgs.stdenvNoCC.mkDerivation (finalAttrs: {
-    pname = "mise-bin";
-    version = "2026.8.12";
-
-    src = pkgs.fetchurl {
-      url = "https://github.com/jdx/mise/releases/download/v${finalAttrs.version}/mise-v${finalAttrs.version}-macos-arm64.tar.xz";
-      hash = "sha256-0nXDCuK0J/JUT4wgRmqwKhsKfmvVA6tM3K5RVUpGUh0=";
-    };
-
-    sourceRoot = "mise";
-    dontStrip = true;
-
-    installPhase = ''
-      runHook preInstall
-
-      cp -R . "$out"
-      mkdir -p \
-        "$out/lib/mise" \
-        "$out/share/bash-completion/completions" \
-        "$out/share/fish/vendor_completions.d" \
-        "$out/share/zsh/site-functions"
-      touch "$out/lib/mise/.disable-self-update"
-
-      HOME="$TMPDIR" "$out/bin/mise" completion bash > "$out/share/bash-completion/completions/mise"
-      HOME="$TMPDIR" "$out/bin/mise" completion fish > "$out/share/fish/vendor_completions.d/mise.fish"
-      HOME="$TMPDIR" "$out/bin/mise" completion zsh > "$out/share/zsh/site-functions/_mise"
-
-      runHook postInstall
-    '';
-
-    doInstallCheck = true;
-    installCheckPhase = ''
-      HOME="$TMPDIR" MISE_OFFLINE=1 "$out/bin/mise" --version | grep -F "${finalAttrs.version}"
-    '';
-
-    meta = {
-      description = "Front-end to your dev env, using the official release binary";
-      homepage = "https://mise.jdx.dev";
-      license = pkgs.lib.licenses.mit;
-      mainProgram = "mise";
-      platforms = [ "aarch64-darwin" ];
-      sourceProvenance = [ pkgs.lib.sourceTypes.binaryNativeCode ];
-    };
-  });
-in
 {
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;
-  # Remove once nixpkgs-unstable includes NixOS/nixpkgs#555604.
-  nixpkgs.overlays = [
-    (_final: prev: {
-      tmux = prev.tmux.overrideAttrs (oldAttrs: {
-        buildInputs = oldAttrs.buildInputs ++ [ prev.jemalloc ];
-        configureFlags = oldAttrs.configureFlags ++ [ "--enable-jemalloc" ];
-      });
-      curl-impersonate = prev.curl-impersonate.overrideAttrs (old: {
-        nativeBuildInputs = old.nativeBuildInputs
-          ++ prev.lib.optional prev.stdenv.hostPlatform.isDarwin prev.fixDarwinDylibNames;
-      });
-    })
-  ];
+
   system.primaryUser = "ryan";
   environment.variables.PKG_CONFIG_PATH = "${pkgs.imagemagick.dev}/lib/pkgconfig";
+  environment.variables.MISE_QUIET = "1";
 
   nix = {
     settings = {
@@ -91,13 +34,10 @@ in
   };
 
   environment.shells = [
-    pkgs.fish
     pkgs.nushell
-    pkgs.zsh
   ];
 
   environment.systemPackages = [
-    pkgs.fish
     pkgs.nushell
     pkgs.starship
     pkgs.zellij
@@ -181,7 +121,9 @@ in
     pkgs.zathura
     pkgs.ghostscript
 
-    mise-bin
+    pkgs.texliveSmall
+
+    pkgs.mise
     pkgs.just
     pkgs.watchexec
     pkgs.scriptisto
@@ -261,18 +203,10 @@ in
 
   homebrew = {
     enable = true;
-    brews = [
-      "aoe"
-      {
-        name = "tmux";
-        link = false;
-      }
-    ];
     casks = [
       "ghostty"
       "amethyst"
       "hiddenbar"
-      "basictex"
       "obs"
     ];
     onActivation.cleanup = "zap";
