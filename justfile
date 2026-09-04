@@ -41,6 +41,8 @@ switch:
 # Update flake inputs and rebuild
 update:
     nix --extra-experimental-features "nix-command flakes" flake update && just switch
+    brew upgrade
+    cargo install-update -a
 
 # Verify the activated nix-darwin system and terminal toolchain
 verify-system:
