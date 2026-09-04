@@ -119,6 +119,7 @@ in
     pkgs.sd
     pkgs.tree
     pkgs.stow
+    pkgs.zstd
 
     pkgs.git
     pkgs.delta
