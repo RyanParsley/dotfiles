@@ -52,6 +52,39 @@ verify-system:
         exit 1
     }
 
+    kill_tree() {
+        local pid="$1"
+        local sig="${2:-TERM}"
+        local child
+        for child in $(pgrep -P "$pid" 2>/dev/null); do
+            kill_tree "$child" "$sig"
+        done
+        kill "-$sig" "$pid" 2>/dev/null
+    }
+
+    # Run a command with a hard wall-clock timeout, killing its entire
+    # process tree (not just the immediate child) if it overruns. Avoids
+    # depending on GNU coreutils' timeout/gtimeout, which aren't guaranteed
+    # to be installed.
+    run_with_timeout() {
+        local seconds="$1"; shift
+        "$@" &
+        local pid=$!
+        (
+            sleep "$seconds"
+            kill -0 "$pid" 2>/dev/null || exit 0
+            kill_tree "$pid" TERM
+            sleep 1
+            kill_tree "$pid" KILL
+        ) &
+        local watchdog=$!
+        local rc=0
+        wait "$pid" 2>/dev/null || rc=$?
+        kill "$watchdog" 2>/dev/null
+        wait "$watchdog" 2>/dev/null
+        return "$rc"
+    }
+
     [[ -e /run/current-system ]] || fail "/run/current-system is missing"
     nix store info --json | jq -e '.trusted == true and .url == "daemon"' >/dev/null \
         || fail "Nix daemon is unavailable or untrusted"
@@ -74,8 +107,8 @@ verify-system:
     ${fresh_zsh[@]} 'pkg-config --exists MagickWand' || fail "pkg-config cannot resolve MagickWand"
 
     mise_log="$(mktemp)"
-    script -q "$mise_log" env -i HOME="$HOME" USER="$USER" SHELL=/bin/zsh TERM=xterm-256color \
-        /bin/zsh -ilc 'mise doctor' </dev/null >/dev/null 2>&1 || fail "mise doctor failed"
+    run_with_timeout 30 script -q "$mise_log" env -i HOME="$HOME" USER="$USER" SHELL=/bin/zsh TERM=xterm-256color \
+        /bin/zsh -ilc 'mise doctor' </dev/null >/dev/null 2>&1 || fail "mise doctor failed or timed out"
     strings "$mise_log" | grep -Fq "No problems found" || fail "mise doctor reported a problem"
 
     ghostty_bin="/Applications/Ghostty.app/Contents/MacOS/ghostty"
@@ -84,10 +117,10 @@ verify-system:
 
     nvim_log="$(mktemp)"
     trap 'rm -f "$mise_log" "$nvim_log"' EXIT
-    script -q "$nvim_log" env -i HOME="$HOME" USER="$USER" SHELL=/bin/zsh TERM=xterm-256color \
+    run_with_timeout 20 script -q "$nvim_log" env -i HOME="$HOME" USER="$USER" SHELL=/bin/zsh TERM=xterm-256color \
         /bin/zsh -ilc \
         'exec nvim --cmd "autocmd VimEnter * ++once qall"' </dev/null >/dev/null 2>&1 \
-        || fail "Neovim failed to start"
+        || fail "Neovim failed to start or timed out"
     if strings "$nvim_log" | grep -Eq 'pkg-config|MagickWand|Error detected|Failed to run'; then
         strings "$nvim_log" >&2
         fail "Neovim emitted a startup error"
