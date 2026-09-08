@@ -24,7 +24,7 @@ try {
   const transcript = await YoutubeTranscript.fetchTranscript(extractedId);
   
   for (const entry of transcript) {
-    const timestamp = formatTimestamp(entry.offset / 1000);
+    const timestamp = formatTimestamp(entry.offset);
     console.log(`[${timestamp}] ${entry.text}`);
   }
 } catch (error) {
@@ -33,6 +33,7 @@ try {
 }
 
 function formatTimestamp(seconds) {
+  seconds = Math.max(0, Math.floor(Number(seconds) || 0));
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = Math.floor(seconds % 60);
