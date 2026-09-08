@@ -3,12 +3,16 @@
  *
  * Auto-detects the test framework for a project, runs tests on file changes,
  * and blocks commits when tests are failing.
+ *
+ * Both the watcher and the commit gate resolve the repository the work is
+ * happening in rather than assuming the session's working directory: an agent
+ * commits from `git worktree` checkouts all day, and grading the session
+ * checkout would report on code the commit does not contain.
  */
 
 import { existsSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, isAbsolute, join, resolve } from "node:path";
 import type { ExtensionAPI, ExtensionContext } from "@mariozechner/pi-coding-agent";
-import { isToolCallEventType } from "@mariozechner/pi-coding-agent";
 
 const DEBOUNCE_MS = 2000;
 
@@ -17,7 +21,19 @@ interface TestResult {
   passed: number;
   failed: number;
   allPassed: boolean;
+  /** The run was killed (timeout/abort): nothing was proven either way. */
+  inconclusive: boolean;
   output: string;
+  /** Repository the suite actually ran in. */
+  root: string;
+}
+
+interface ExecLike {
+  stdout?: string;
+  stderr?: string;
+  /** pi.exec reports the status as `code`; `killed` distinguishes a timeout. */
+  code?: number;
+  killed?: boolean;
 }
 
 interface Framework {
@@ -27,6 +43,97 @@ interface Framework {
   watchPatterns: string[];
 }
 
+function outputOf(result: ExecLike): string {
+  return result.stdout || result.stderr || String(result.code ?? "");
+}
+
+function intGroup(pattern: RegExp, text: string): number {
+  const match = pattern.exec(text);
+  return match ? Number.parseInt(match[1], 10) || 0 : 0;
+}
+
+/**
+ * Exit code is ground truth. A build that never produced test counts (a missing
+ * system dependency, for example) must not be mistaken for "nothing failed".
+ */
+function green(result: ExecLike, failed: number): boolean {
+  return result.code === 0 && failed === 0;
+}
+
+export function parseCargoOutput(result: ExecLike, root = ""): TestResult {
+  const output = outputOf(result);
+  const failed = intGroup(/(\d+)\s+failed/, output);
+  return {
+    total: intGroup(/running (\d+) test/, output),
+    passed: intGroup(/(\d+)\s+passed/, output),
+    failed,
+    allPassed: green(result, failed),
+    inconclusive: result.killed === true,
+    output: output.slice(0, 500),
+    root,
+  };
+}
+
+function parseGoOutput(result: ExecLike, root = ""): TestResult {
+  const output = outputOf(result);
+  const failed = (output.match(/^FAIL/gm) || []).length + (output.match(/--- FAIL:/g) || []).length;
+  return {
+    total: 1,
+    passed: failed === 0 ? 1 : 0,
+    failed,
+    allPassed: green(result, failed),
+    inconclusive: result.killed === true,
+    output: output.slice(0, 500),
+    root,
+  };
+}
+
+export function parseGenericOutput(result: ExecLike, root = ""): TestResult {
+  const output = outputOf(result);
+  const failed = intGroup(/(\d+)\s+failed/, output) || (/(^|\n)FAIL|Error:/.test(output) ? 1 : 0);
+  const passed = intGroup(/(\d+)\s+passed/, output) || (/success|PASS/.test(output) ? 1 : 0);
+  return {
+    total: passed + failed,
+    passed,
+    failed,
+    allPassed: green(result, failed),
+    inconclusive: result.killed === true,
+    output: output.slice(0, 500),
+    root,
+  };
+}
+
+/**
+ * Cucumber reports a summary line; when it is absent the run is inconclusive
+ * rather than failed, so the caller decides what to say.
+ */
+function parseCucumberOutput(result: ExecLike, root = ""): TestResult | null {
+  const output = outputOf(result);
+  const scenarios = output.match(/(\d+) scenarios? \((\d+) passed, (\d+) skipped, (\d+) failed\)/);
+  if (!scenarios) {
+    if (result.code === 0 && result.killed !== true) return null;
+    return {
+      total: 0,
+      passed: 0,
+      failed: 1,
+      allPassed: false,
+      inconclusive: result.killed === true,
+      output: output.slice(0, 500),
+      root,
+    };
+  }
+  const failed = Number.parseInt(scenarios[4], 10);
+  return {
+    total: Number.parseInt(scenarios[1], 10),
+    passed: Number.parseInt(scenarios[2], 10),
+    failed,
+    allPassed: green(result, failed),
+    inconclusive: result.killed === true,
+    output: output.slice(0, 500),
+    root,
+  };
+}
+
 const FRAMEWORKS: Framework[] = [
   {
     name: "rust",
@@ -34,7 +141,7 @@ const FRAMEWORKS: Framework[] = [
     watchPatterns: [".rs"],
     async run(cwd, pi) {
       const result = await pi.exec("cargo", ["test"], { cwd });
-      return parseCargoOutput(result);
+      return parseCargoOutput(result, cwd);
     },
   },
   {
@@ -48,7 +155,7 @@ const FRAMEWORKS: Framework[] = [
           ? "yarn"
           : "npm";
       const result = await pi.exec(pkgManager, ["test"], { cwd });
-      return parseGenericOutput(result, "node");
+      return parseGenericOutput(result, cwd);
     },
   },
   {
@@ -57,7 +164,7 @@ const FRAMEWORKS: Framework[] = [
     watchPatterns: ["test_", "_test.py", "tests/"],
     async run(cwd, pi) {
       const result = await pi.exec("python", ["-m", "pytest"], { cwd });
-      return parseGenericOutput(result, "pytest");
+      return parseGenericOutput(result, cwd);
     },
   },
   {
@@ -66,7 +173,7 @@ const FRAMEWORKS: Framework[] = [
     watchPatterns: ["_test.go"],
     async run(cwd, pi) {
       const result = await pi.exec("go", ["test", "./..."], { cwd });
-      return parseGoOutput(result);
+      return parseGoOutput(result, cwd);
     },
   },
   {
@@ -76,56 +183,30 @@ const FRAMEWORKS: Framework[] = [
     async run(cwd, pi) {
       if (existsSync(join(cwd, "features"))) {
         const result = await pi.exec("bundle", ["exec", "cucumber"], { cwd });
-        return parseCucumberOutput(result);
+        return parseCucumberOutput(result, cwd);
       }
       const result = await pi.exec("bundle", ["exec", "rspec"], { cwd });
-      return parseGenericOutput(result, "rspec");
+      return parseGenericOutput(result, cwd);
     },
   },
 ];
 
-function stringifyResult(result: { stdout?: string; stderr?: string; exitCode?: number }): string {
-  return result.stdout || result.stderr || String(result.exitCode ?? "");
+/** True when the command is a fresh commit (amend and dry-run are not gated). */
+export function isGitCommitCommand(command: string): boolean {
+  return command.includes("git commit") && !command.includes("--amend") && !command.includes("--dry-run");
 }
 
-function parseCargoOutput(result: { stdout?: string; stderr?: string; exitCode?: number }): TestResult | null {
-  const output = stringifyResult(result);
-  const passMatch = output.match(/(\d+) passed/);
-  const failMatch = output.match(/(\d+) failed/);
-  const totalMatch = output.match(/running (\d+) test/);
-  const total = totalMatch ? parseInt(totalMatch[1]) : 0;
-  const passed = passMatch ? parseInt(passMatch[1]) : 0;
-  const failed = failMatch ? parseInt(failMatch[1]) : 0;
-  return { total, passed, failed, allPassed: failed === 0 && total > 0, output: output.slice(0, 500) };
+/**
+ * Directory a command changes into before running, e.g. the `/work/tree` in
+ * `cd /work/tree && git commit`. Returns null when the command does not move.
+ */
+export function commandWorkdir(command: string): string | null {
+  const match = /^\s*cd\s+(?:"([^"]+)"|'([^']+)'|([^\s;&|]+))\s*(?:&&|\|\||;|\n)/.exec(command);
+  if (!match) return null;
+  return match[1] ?? match[2] ?? match[3] ?? null;
 }
 
-function parseGoOutput(result: { stdout?: string; stderr?: string; exitCode?: number }): TestResult | null {
-  const output = stringifyResult(result);
-  const passMatch = output.match(/^(ok\s+\d+|[\s\S]*?PASS)/m);
-  const failMatch = output.match(/^(FAIL|[\s\S]*?--- FAIL:)/m);
-  const allPassed = !failMatch && !!passMatch;
-  return { total: 1, passed: allPassed ? 1 : 0, failed: allPassed ? 0 : 1, allPassed, output: output.slice(0, 500) };
-}
-
-function parseCucumberOutput(result: { stdout?: string; stderr?: string; exitCode?: number }): TestResult | null {
-  const output = stringifyResult(result);
-  const scenariosMatch = output.match(/(\d+) scenarios? \((\d+) passed, (\d+) skipped, (\d+) failed\)/);
-  if (!scenariosMatch) return null;
-  const failed = parseInt(scenariosMatch[4]);
-  const total = parseInt(scenariosMatch[1]);
-  return { total, passed: parseInt(scenariosMatch[2]), failed, allPassed: failed === 0, output: output.slice(0, 500) };
-}
-
-function parseGenericOutput(result: { stdout?: string; stderr?: string; exitCode?: number }, _label: string): TestResult | null {
-  const output = stringifyResult(result);
-  const failMatch = output.match(/(\d+)\s+failed/) || output.match(/FAIL/) || output.match(/Error:/);
-  const passMatch = output.match(/(\d+)\s+passed/) || output.match(/success/i) || output.match(/PASS/);
-  const failed = failMatch ? parseInt(failMatch[1]) || 1 : 0;
-  const passed = passMatch ? parseInt(passMatch[1]) || 1 : 0;
-  return { total: passed + failed, passed, failed, allPassed: failed === 0 && passed > 0, output: output.slice(0, 500) };
-}
-
-function detectFramework(directory: string): Framework | null {
+export function detectFramework(directory: string): Framework | null {
   for (const fw of FRAMEWORKS) {
     if (fw.files.some((f) => existsSync(join(directory, f)))) {
       return fw;
@@ -139,80 +220,126 @@ function isWatchedFile(filePath: string, framework: Framework): boolean {
   return framework.watchPatterns.some((pattern) => filePath.includes(pattern));
 }
 
-function isGitCommitCommand(command: string): boolean {
-  return (
-    command.includes("git commit") &&
-    !command.includes("git commit --amend") &&
-    !command.includes("--dry-run")
-  );
+function absoluteIn(cwd: string, filePath: string): string {
+  return isAbsolute(filePath) ? filePath : resolve(cwd, filePath);
 }
 
 export default function (pi: ExtensionAPI) {
-  let framework: Framework | null = null;
-  let lastResult: TestResult | null = null;
-  let lastRunTime = 0;
-  let isRunning = false;
+  const frameworkByRoot = new Map<string, Framework | null>();
+  const lastResult = new Map<string, TestResult>();
+  const lastRunAt = new Map<string, number>();
+  const inFlight = new Map<string, Promise<TestResult | null>>();
 
-  pi.on("session_start", async (_event, ctx) => {
-    framework = detectFramework(ctx.cwd);
-    if (framework) {
-      ctx.ui.notify(`Detected ${framework.name} test framework — auto-test enabled`, "info");
-    }
-  });
+  function frameworkFor(root: string): Framework | null {
+    const cached = frameworkByRoot.get(root);
+    if (cached !== undefined) return cached;
+    const detected = detectFramework(root);
+    frameworkByRoot.set(root, detected);
+    return detected;
+  }
 
-  async function runTests(cwd: string, ctx: ExtensionContext) {
-    if (!framework) return;
-    const now = Date.now();
-    if (now - lastRunTime < DEBOUNCE_MS || isRunning) return;
-    isRunning = true;
-    lastRunTime = now;
-
+  /** Git toplevel containing `dir`, so subdirectories grade the whole repo. */
+  async function repoRootOf(dir: string, fallback: string): Promise<string> {
     try {
-      const result = await framework.run(cwd, pi);
-      lastResult = result;
+      const result = await pi.exec("git", ["rev-parse", "--show-toplevel"], { cwd: dir });
+      const root = result.stdout?.trim();
+      if (root) return root;
+    } catch {
+      // Not a repository (or git unavailable) — fall through.
+    }
+    return fallback;
+  }
 
-      if (result) {
-        if (result.failed > 0) {
-          ctx.ui.notify(`${result.failed} test(s) failing — ${framework.name}`, "error");
-        } else if (result.passed > 0) {
-          ctx.ui.notify(`${result.passed} test(s) passing — ${framework.name}`, "info");
-        }
+  async function runTests(root: string, ctx: ExtensionContext, force = false): Promise<TestResult | null> {
+    const framework = frameworkFor(root);
+    if (!framework) return null;
+
+    const pending = inFlight.get(root);
+    if (pending) {
+      // Wait for the run already in progress rather than grading a commit
+      // against a result produced from an older tree.
+      return force ? await pending : (lastResult.get(root) ?? null);
+    }
+    if (!force && Date.now() - (lastRunAt.get(root) ?? 0) < DEBOUNCE_MS) {
+      return lastResult.get(root) ?? null;
+    }
+
+    lastRunAt.set(root, Date.now());
+    const run = framework.run(root, pi);
+    inFlight.set(root, run);
+    try {
+      const result = await run;
+      if (!result) {
+        ctx.ui.notify(`${framework.name}: no parseable test summary from ${root} — not blocking`, "info");
+        lastResult.delete(root);
+        return null;
       }
-    } catch (e) {
-      lastResult = null;
-      ctx.ui.notify(`Test run failed: ${e instanceof Error ? e.message : String(e)}`, "error");
+      lastResult.set(root, result);
+      if (result.inconclusive) {
+        ctx.ui.notify(`${framework.name} run did not finish in ${root}`, "info");
+      } else if (!result.allPassed) {
+        ctx.ui.notify(`${framework.name} tests failing in ${root} (${result.failed} failing)`, "error");
+      } else if (result.passed > 0) {
+        ctx.ui.notify(`${result.passed} ${framework.name} test(s) passing in ${root}`, "info");
+      } else {
+        ctx.ui.notify(`${framework.name} tests green in ${root} (no tests executed)`, "info");
+      }
+      return result;
+    } catch (error) {
+      lastResult.delete(root);
+      ctx.ui.notify(`Test run failed in ${root}: ${error instanceof Error ? error.message : String(error)}`, "error");
+      return null;
     } finally {
-      isRunning = false;
+      inFlight.delete(root);
     }
   }
 
-  // Auto-run on watched file changes
-  pi.on("file.edited", async (event, ctx) => {
-    if (!framework) return;
-    const filePath = event.path || "";
-    if (isWatchedFile(filePath, framework)) {
-      await runTests(ctx.cwd, ctx);
+  pi.on("session_start", async (_event, ctx) => {
+    const root = await repoRootOf(ctx.cwd, ctx.cwd);
+    const framework = frameworkFor(root);
+    if (framework) {
+      ctx.ui.notify(`Detected ${framework.name} test framework in ${root} — auto-test enabled`, "info");
     }
   });
 
-  // Pre-commit gate
-  pi.on("tool_call", async (event, ctx) => {
-    if (!framework) return;
-    if (!isToolCallEventType("bash", event)) return;
+  pi.on("file.edited", async (event, ctx) => {
+    const filePath = event.path || "";
+    if (!filePath) return;
+    const root = await repoRootOf(dirname(absoluteIn(ctx.cwd, filePath)), ctx.cwd);
+    const framework = frameworkFor(root);
+    if (!framework || !isWatchedFile(filePath, framework)) return;
+    await runTests(root, ctx);
+  });
 
-    const command = event.input.command || "";
+  pi.on("tool_call", async (event, ctx) => {
+    if (event.toolName !== "bash") return;
+
+    const command: string = event.input?.command || "";
     if (!isGitCommitCommand(command)) return;
 
-    // Re-run fresh before allowing commit
-    await runTests(ctx.cwd, ctx);
+    const startDir = commandWorkdir(command);
+    const cwd = startDir ? absoluteIn(ctx.cwd, startDir) : ctx.cwd;
+    const root = await repoRootOf(cwd, cwd);
 
-    if (lastResult && !lastResult.allPassed) {
-      const { failed, passed, total } = lastResult;
+    const framework = frameworkFor(root);
+    if (!framework) {
+      ctx.ui.notify(`No supported test framework at ${root} — commit not gated`, "info");
+      return;
+    }
+
+    const result = await runTests(root, ctx, true);
+    if (result?.inconclusive) {
+      ctx.ui.notify(`Test run did not finish in ${root} — commit not gated`, "info");
+      return;
+    }
+    if (result && !result.allPassed) {
       return {
         block: true,
         reason:
-          `Test enforcement: ${failed} test(s) failing (${passed}/${total} passing).\n` +
-          `Fix the failing tests before committing.`,
+          `Test enforcement: ${result.failed} test(s) failing in ${result.root} ` +
+          `(${result.passed}/${result.total} reported passing).\n` +
+          `Fix the failing tests — or the build, when no counts appear — before committing.\n\n` +
+          `${result.output}`,
       };
     }
   });
