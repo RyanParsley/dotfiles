@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 {
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;
@@ -36,7 +36,12 @@
   programs.tmux.enable = true;
   programs.pi.coding-agent = {
     enable = true;
-    settings.npmCommand = [ "${pkgs.nodejs_22}/bin/npm" ];
+    # pi.nix's own build of coding-agent breaks against nixpkgs revs after
+    # 2026-09-08 (typescript-go renamed to typescript upstream) - override
+    # until pi.nix bumps its package.nix.
+    package = inputs.pi-nix.packages.${pkgs.stdenv.hostPlatform.system}.coding-agent.override {
+      typescript-go = pkgs.typescript;
+    };
   };
 
   environment.shells = [
