@@ -107,6 +107,7 @@ return {
                     'eslint_d',
                     'markdownlint-cli2',
                     'checkstyle',
+                    'statix',
 
                     -- Debuggers
                     'codelldb',
@@ -257,6 +258,9 @@ return {
             vim.lsp.config('html', { capabilities = capabilities })
             vim.lsp.config('lua_ls', { capabilities = capabilities })
             vim.lsp.config('stylelint_lsp', { capabilities = capabilities })
+
+            vim.lsp.config('nixd', { capabilities = capabilities })
+            vim.lsp.enable 'nixd'
 
             -- LSP keymaps
             vim.keymap.set('n', 'K', vim.lsp.buf.hover, { desc = 'Show LSP hover information' })

@@ -28,7 +28,8 @@ return {
                 typescript = { 'prettierd', 'prettier', stop_after_first = true },
                 ['markdown'] = { 'prettierd', 'prettier', stop_after_first = true },
                 ['markdown.mdx'] = { 'prettierd', 'prettier', stop_after_first = true },
-                python = { "isort", "black" },
+                python = { 'isort', 'black' },
+                nix = { 'nixfmt' },
             },
             default_format_opts = {
                 lsp_format = 'fallback',
@@ -48,8 +49,22 @@ return {
                 java = { 'checkstyle' },
                 javascript = { 'eslint_d' },
                 typescript = { 'eslint_d' },
+                nix = { 'nix', 'statix' },
             },
         },
-        config = function() end,
+        config = function(_, opts)
+            local lint = require 'lint'
+            lint.linters_by_ft = opts.linters_by_ft
+
+            -- nvim-lint installs no autocmds of its own; try_lint() must be
+            -- triggered by hand. Lint on write, mirroring conform's
+            -- format_on_save above.
+            vim.api.nvim_create_autocmd('BufWritePost', {
+                desc = 'nvim-lint: re-lint the buffer after a write',
+                callback = function()
+                    lint.try_lint()
+                end,
+            })
+        end,
     },
 }

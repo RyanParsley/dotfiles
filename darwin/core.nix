@@ -9,10 +9,16 @@
 
   nix = {
     settings = {
-      trusted-users = [ "root" "ryan" ];
+      trusted-users = [
+        "root"
+        "ryan"
+      ];
       auto-optimise-store = true;
       max-jobs = "auto";
-      extra-experimental-features = [ "nix-command" "flakes" ];
+      extra-experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       substituters = [
         "https://cache.nixos.org"
         "https://nix-community.cachix.org"
@@ -197,7 +203,10 @@
 
   nix.gc = {
     automatic = true;
-    interval = { Weekday = 0; Hour = 4; };
+    interval = {
+      Weekday = 0;
+      Hour = 4;
+    };
     options = "--delete-older-than 14d";
   };
 
@@ -223,7 +232,10 @@
       echo "=== done $(date) ==="
     '';
     serviceConfig = {
-      StartCalendarInterval = { Hour = 3; Minute = 0; };
+      StartCalendarInterval = {
+        Hour = 3;
+        Minute = 0;
+      };
       StandardOutPath = "/var/log/nix-auto-update.log";
       StandardErrorPath = "/var/log/nix-auto-update.log";
     };

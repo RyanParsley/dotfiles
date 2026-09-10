@@ -7,6 +7,10 @@
     pkgs.cloudflared
 
     pkgs.restic
+
+    # Nix language tooling
+    pkgs.nixd
+    pkgs.nixfmt
   ];
 
   homebrew.casks = [
