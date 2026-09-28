@@ -2,6 +2,11 @@
   "$schema": "https://opencode.ai/config.json",
   "autoupdate": true,
   "share": "disabled",
+  "enabled_providers": [
+    "opencode",
+    "ollama"
+  ],
+  "model": "ollama/qwen3.8:27b-mlx",
   "plugin": [
     "~/.config/opencode/plugins/hook-guard.js",
     "~/.config/opencode/plugins/main-branch-guard.js",

@@ -1,6 +1,8 @@
 ^\.git$
 ^\.gitignore$
 ^\.DS_Store$
+^\.stow$
+^\.debug-.*$
 ^README\.md$
 ^\.aider\.chat\.history\.md$
 ^\.aider\.input\.history$
@@ -9,5 +11,7 @@
 ^nvim$
 ^ghostty$
 ^yazi$
+^pi-common$
+^pi-home$
 ^node_modules$
 ^\.agents$

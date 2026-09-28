@@ -1,0 +1,15 @@
+{
+  "defaultModel": "qwen3.8:27b-mlx",
+  "defaultProvider": "ollama",
+  "defaultThinkingLevel": "high",
+  "enabledModels": [
+    "opencode/*",
+    "ollama/*"
+  ],
+  "lastChangelogVersion": "0.87.1",
+  "packages": [
+    "npm:@ollama/pi-web-search",
+    "npm:pi-hermes-memory"
+  ],
+  "theme": "dark"
+}

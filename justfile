@@ -20,9 +20,12 @@
 #     cd ~/dotfiles/.agents && stow --no-folding --ignore=node_modules --target=$HOME/.agents/skills --stow skills
 #     cd ~/.dotfiles-local/.agents && stow --no-folding --ignore=node_modules --target=$HOME/.agents/skills --stow skills
 #
-# Pi models strategy:
-#   ~/.pi/agent/models.json    -> symlink to ~/dotfiles/.pi/agent/models.json (public/local providers)
-#   ~/.pi/agent/models.work.json -> symlink to ~/.dotfiles-local/.pi/agent/models.work.json (work providers)
+# Pi Stow packages:
+#   pi-common - extensions and project defaults shared by every machine
+#   pi-home   - home settings and models (OpenCode + Ollama, Qwen default)
+#   pi-work   - private work settings and models (Copilot + Gemma, no OpenCode)
+# pi-common and one machine profile merge into ~/.pi with --no-folding so
+# Pi's runtime files can coexist with managed links.
 
 # Set shell explicitly
 set shell := ["zsh", "-c"]
@@ -132,22 +135,33 @@ verify-system:
 
 # === Stow management ===
 
-# Restow public dotfiles (fix broken symlinks)
+# Restow public dotfiles. Install the home Pi profile only when no work profile exists.
 restow:
     rm -f ~/dotfiles/result
-    cd ~/dotfiles && stow --restow --ignore=result .
+    cd ~/dotfiles && stow --no-folding --restow --ignore=result .
+    cd ~/dotfiles && stow --no-folding --target=$HOME --restow pi-common
+    if [[ ! -d ~/.dotfiles-local/pi-work ]]; then cd ~/dotfiles && stow --no-folding --target=$HOME --restow pi-home; fi
+    cd ~/dotfiles/.agents && stow --no-folding --ignore='node_modules' --target=$HOME/.agents/skills --restow skills
 
-# Restow work-local dotfiles (run on work machine only)
+# Restow work-local dotfiles and select the mutually exclusive work Pi profile.
 restow-local:
-    cd ~/.dotfiles-local && stow --restow .
+    cd ~/dotfiles && stow --no-folding --target=$HOME --delete pi-home
+    cd ~/.dotfiles-local && stow --no-folding --restow --ignore='^pi-work$' .
+    cd ~/.dotfiles-local && stow --no-folding --target=$HOME --restow pi-work
     cd ~/.dotfiles-local/.agents && stow --no-folding --ignore='node_modules' --target=$HOME/.agents/skills --restow skills
 
 # Restow both repos (work machine only)
 restow-all: restow restow-local
 
-# Check stow status for public dotfiles (simulate)
+# Check Stow operations for this machine without changing files.
 stow-check:
-    cd ~/dotfiles && stow --simulate . 2>&1 | grep -v "not owned by stow"
+    cd ~/dotfiles && stow --simulate --no-folding .
+    cd ~/dotfiles && stow --simulate --no-folding --target=$HOME pi-common
+    if [[ ! -d ~/.dotfiles-local/pi-work ]]; then cd ~/dotfiles && stow --simulate --no-folding --target=$HOME pi-home; fi
+    if [[ -d ~/.dotfiles-local/pi-work ]]; then cd ~/.dotfiles-local && stow --simulate --no-folding --ignore='^pi-work$' .; fi
+    if [[ -d ~/.dotfiles-local/pi-work ]]; then cd ~/.dotfiles-local && stow --simulate --no-folding --target=$HOME pi-work; fi
+    cd ~/dotfiles/.agents && stow --simulate --no-folding --ignore='node_modules' --target=$HOME/.agents/skills skills
+    if [[ -d ~/.dotfiles-local/.agents/skills ]]; then cd ~/.dotfiles-local/.agents && stow --simulate --no-folding --ignore='node_modules' --target=$HOME/.agents/skills skills; fi
 
 # === Git maintenance ===
 
@@ -185,11 +199,22 @@ check-links:
     @ls -la ~/.config/opencode/ | grep -E "^l" || echo "No symlinks found"
     @echo ""
     @echo "=== Checking ~/.pi/agent symlinks ==="
-    @ls -la ~/.pi/agent/ 2>/dev/null | grep -E "^l" || echo "No symlinks found"
+    @test -L ~/.pi/agent/settings.json || { echo "  Pi settings are not stowed"; exit 1; }
+    @test -L ~/.pi/agent/models.json || { echo "  Pi models are not stowed"; exit 1; }
+    @actual="$HOME/.pi/agent/settings.json"; \
+        if [[ -d ~/.dotfiles-local/pi-work ]]; then expected="$HOME/.dotfiles-local/pi-work/.pi/agent/settings.json"; else expected="$HOME/dotfiles/pi-home/.pi/agent/settings.json"; fi; \
+        [[ "${actual:A}" == "${expected:A}" ]] || { echo "  Wrong Pi profile is active"; exit 1; }
+    @echo "  Pi profile: linked"
     @echo ""
-    @echo "=== Checking ~/.agents skill symlinks (sample) ==="
-    @ls ~/.agents/ 2>/dev/null | head -5 || echo "No skills found"
-    @ls -la ~/.agents/ado-build-logs/SKILL.md 2>/dev/null || echo "  ado-build-logs not stowed (work machine only)"
+    @echo "=== Checking ~/.agents skill symlinks ==="
+    @test -L ~/.agents/skills/unslop/SKILL.md || { echo "  Public skills are not stowed"; exit 1; }
+    @echo "  Public skills: linked"
+    @if [[ -d ~/.dotfiles-local/.agents/skills ]]; then \
+        test -L ~/.agents/skills/ado-build-logs/SKILL.md || { echo "  Work skills are not stowed"; exit 1; }; \
+        echo "  Work skills: linked"; \
+    else \
+        echo "  Work skills: not installed on this machine"; \
+    fi
 
 # === Full system check ===
 
