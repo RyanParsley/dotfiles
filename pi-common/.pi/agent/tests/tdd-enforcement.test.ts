@@ -86,6 +86,51 @@ describe("findTestEvidence — rust", () => {
     }
   });
 
+  it("counts a feature-gated inline module: #[cfg(all(test, feature))]", () => {
+    // Regression: `includes("#[cfg(test)]")` missed the common gated form,
+    // blocking edits to files that plainly have tests.
+    const root = fixture();
+    try {
+      const source = join(root, "crates/core/src/components/gated.rs");
+      writeFileSync(
+        source,
+        "pub struct Gated;\n\n#[cfg(all(test, feature = \"ssr\"))]\nmod tests {\n    #[test]\n    fn renders() {}\n}\n",
+      );
+      assert.match(findTestEvidence(source) ?? "", /#\[cfg/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("does not mistake a test-utils feature gate for test code", () => {
+    const root = fixture();
+    try {
+      const source = join(root, "crates/core/src/components/utils.rs");
+      writeFileSync(
+        source,
+        "#[cfg(feature = \"test-utils\")]\npub mod test_support {}\n",
+      );
+      assert.equal(findTestEvidence(source), null);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
+  it("counts crate integration coverage in a tests subdirectory", () => {
+    // Regression: tests/e2e/main.rs (a [[test]] target in a subdir) was not
+    // seen by the shallow readdir, blocking every src file in the crate.
+    const root = fixture();
+    try {
+      const source = join(root, "crates/ui/src/widgets.rs");
+      writeFileSync(source, "pub struct Widgets;\n");
+      mkdirSync(join(root, "crates/ui/tests/e2e"), { recursive: true });
+      writeFileSync(join(root, "crates/ui/tests/e2e/main.rs"), "fn main() {}\n");
+      assert.match(findTestEvidence(source) ?? "", /tests/);
+    } finally {
+      rmSync(root, { recursive: true, force: true });
+    }
+  });
+
   it("counts a sibling _test.rs", () => {
     const root = fixture();
     try {

@@ -78,17 +78,26 @@ export function crateRootOf(sourcePath: string): string | null {
 
 function hasInlineRustTests(sourcePath: string): boolean {
   try {
-    return readFileSync(sourcePath, "utf8").includes("#[cfg(test)]");
+    const source = readFileSync(sourcePath, "utf8");
+    // `test` as a cfg predicate anywhere in the attribute: matches
+    // `#[cfg(test)]` and gated forms like `#[cfg(all(test, feature = "ssr"))]`,
+    // while a `test-utils` feature gate (not test code) does not qualify.
+    return /#\s*\[\s*cfg\s*\([^#\]]*\btest\b(?!-)[^#\]]*\)\s*\]/.test(source);
   } catch {
     return false;
   }
 }
 
-function directoryHasRustFiles(dir: string): boolean {
+function directoryHasRustFiles(dir: string, depth = 3): boolean {
   try {
-    return readdirSync(dir, { withFileTypes: true }).some(
-      (entry) => entry.isFile() && entry.name.endsWith(".rs"),
-    );
+    return readdirSync(dir, { withFileTypes: true }).some((entry) => {
+      if (entry.isFile()) return entry.name.endsWith(".rs");
+      // Cargo test targets may live in subdirectories (tests/e2e/main.rs),
+      // so look a few levels down rather than only at direct children.
+      return depth > 0 && entry.isDirectory()
+        ? directoryHasRustFiles(join(dir, entry.name), depth - 1)
+        : false;
+    });
   } catch {
     return false;
   }
