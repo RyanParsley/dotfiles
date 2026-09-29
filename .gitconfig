@@ -95,7 +95,9 @@
   tool = vimdiff
   conflictstyle = zdiff3
   log = true
-[credential]
-  helper = /usr/local/share/gcm-core/git-credential-manager
-[credential "https://codeberg.org"]
-  provider = generic
+
+# credential.helper comes from the nix-darwin git package (osxkeychain). The
+# Git Credential Manager helper that used to be declared here pointed at
+# /usr/local/share/gcm-core, which the brew `cleanup = "zap"` removed; every
+# credential lookup printed "No such file or directory" before falling through
+# to the working helper. Its `provider = generic` sub-block was GCM-only too.
