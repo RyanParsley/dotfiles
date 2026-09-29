@@ -104,6 +104,7 @@
     pkgs.zola
     pkgs.zk
     pkgs.marp-cli
+    pkgs.vale
 
     pkgs.curl
     pkgs.wget
