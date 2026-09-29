@@ -4,7 +4,9 @@ import { homedir } from "node:os";
 import type { ExtensionAPI } from "@mariozechner/pi-coding-agent";
 import { Type } from "typebox";
 
-interface ProjectInfo {
+// --- Parsers ---
+
+export interface ProjectInfo {
   name: string;
   path: string;
   lastActivity: string;
@@ -15,7 +17,7 @@ interface ProjectInfo {
   next?: string;
 }
 
-interface JournalEntry {
+export interface JournalEntry {
   date: string;
   projects: number;
   sessions: number;
@@ -23,23 +25,10 @@ interface JournalEntry {
   path: string;
 }
 
-interface GoalEntry {
+export interface GoalEntry {
   title: string;
   path: string;
   type: string;
-}
-
-function getCortexPath(): string {
-  return process.env.CORTEX_PATH || join(homedir(), "Projects", "cortex");
-}
-
-async function fileExists(path: string): Promise<boolean> {
-  try {
-    await stat(path);
-    return true;
-  } catch {
-    return false;
-  }
 }
 
 async function parseIndexPage(content: string): Promise<ProjectInfo[]> {
@@ -51,35 +40,33 @@ async function parseIndexPage(content: string): Promise<ProjectInfo[]> {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     
-    // Match project header like ### [rpdc](./projects/rpdc.md)
-    const headerMatch = line.match(/###\s+\[(\w+)\]\(\.\/projects\/([^.]+)\.md\)/);
+    const headerMatch =
+      line.match(/\[Open project[^\]]*\]\(\.\/projects\/(.+)\.md\)/) ??
+      line.match(/^###\s+\[[^\]]+\]\(\.\/projects\/(.+)\.md\)/);
     if (headerMatch) {
       if (currentProject.name) {
         projects.push(currentProject as ProjectInfo);
       }
       currentProject = {
         name: headerMatch[1],
-        path: `./projects/${headerMatch[2]}.md`,
+        path: `./projects/${headerMatch[1]}.md`,
       };
       continue;
     }
     
-    // Match "Last touched: X ago" or "Last touched: YYYY-MM-DD"
     const touchedMatch = line.match(/\*\*Last touched:\*\*\s*(.+)/);
     if (touchedMatch) {
       currentProject.lastActivity = touchedMatch[1].trim();
       continue;
     }
     
-    // Match "Activity: X commits, Y sessions"
-    const activityMatch = line.match(/\*\*Activity:\*\*\s*(\d+)\s+commits?,\s*(\d+)\s+sessions?/);
+    const activityMatch = line.match(/\*\*Activity:\*\*\s*(\d+)\s+commits?,\s*(\d+)\s+(?:AI\s+)?sessions?/);
     if (activityMatch) {
       currentProject.commits = parseInt(activityMatch[1], 10);
       currentProject.sessions = parseInt(activityMatch[2], 10);
       continue;
     }
     
-    // Match "TODOs: X"
     const todosMatch = line.match(/\*\*TODOs:\*\*\s*(\d+)/);
     if (todosMatch) {
       currentProject.todos = parseInt(todosMatch[1], 10);
@@ -169,7 +156,7 @@ async function parseProjectPage(content: string): Promise<{
     }
     
     if (inCommits && line.includes("`")) {
-      const commitMatch = line.match(/`([a-f0-9]+)`\s*[-–]\s*(.+)/);
+      const commitMatch = line.match(/`([a-f0-9]+)`\s*[-–—]\s*(.+)/);
       if (commitMatch) {
         result.commits.push({
           hash: commitMatch[1],
@@ -179,7 +166,7 @@ async function parseProjectPage(content: string): Promise<{
     }
     
     if (inSessions && line.includes("**")) {
-      const sessionMatch = line.match(/\*\*([\d-]+)\*\*\s*[-–]\s*(.+)/);
+      const sessionMatch = line.match(/\*\*([\d-]+)\*\*\s*[-–—]\s*(.+)/);
       if (sessionMatch) {
         result.sessions.push({
           date: sessionMatch[1],
@@ -197,7 +184,7 @@ async function parseJournalIndex(content: string): Promise<JournalEntry[]> {
   const lines = content.split("\n");
   
   for (const line of lines) {
-    const match = line.match(/\[([A-Z][a-z]{2}\s[\d]{2})\]\(([^)]+)\)\s*[-–]\s*(\d+)\s+projects?,\s*(\d+)\s+sessions?,\s*(\d+)\s+commits?/);
+    const match = line.match(/\[([A-Z][a-z]{2}(?:\s+[A-Z][a-z]{2})?\s\d{1,2})\]\(([^)]+)\)\s*[-–—]\s*(\d+)\s+projects?,\s*(\d+)\s+sessions?,\s*(\d+)\s+commits?/);
     if (match) {
       entries.push({
         date: match[1],
@@ -212,6 +199,22 @@ async function parseJournalIndex(content: string): Promise<JournalEntry[]> {
   return entries;
 }
 
+// --- Extension ---
+
+function getCortexPath(): string {
+  return process.env.CORTEX_PATH || join(homedir(), "Projects", "cortex");
+}
+
+async function fileExists(path: string): Promise<boolean> {
+  try {
+    await stat(path);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+
 export default function (pi: ExtensionAPI) {
   const cortexPath = getCortexPath();
   const contentPath = join(cortexPath, "content");
@@ -225,7 +228,6 @@ export default function (pi: ExtensionAPI) {
     }
   });
   
-  // Tool: List all projects
   pi.registerTool({
     name: "list_projects",
     label: "List Projects",
@@ -255,7 +257,6 @@ export default function (pi: ExtensionAPI) {
     },
   });
   
-  // Tool: Get project details
   pi.registerTool({
     name: "get_project",
     label: "Get Project",
@@ -317,7 +318,6 @@ export default function (pi: ExtensionAPI) {
     },
   });
   
-  // Tool: Search content
   pi.registerTool({
     name: "search_cortex",
     label: "Search Cortex",
@@ -335,7 +335,6 @@ export default function (pi: ExtensionAPI) {
       const query = params.query.toLowerCase();
       const searchType = params.type || "all";
       
-      // Search projects
       if (searchType === "projects" || searchType === "all") {
         const projectsDir = join(contentPath, "projects");
         try {
@@ -345,18 +344,16 @@ export default function (pi: ExtensionAPI) {
             const content = await readFile(join(projectsDir, file), "utf-8");
             if (content.toLowerCase().includes(query)) {
               const projectName = file.replace(".md", "");
-              // Extract relevant snippet
               const lines = content.split("\n");
               const matches = lines.filter(l => l.toLowerCase().includes(query));
               results.push(`**${projectName}**: ${matches.slice(0, 2).join(" | ")}`);
             }
           }
         } catch (e) {
-          // Ignore errors
+          // Ignore
         }
       }
       
-      // Search journals
       if (searchType === "journals" || searchType === "all") {
         const journalDir = join(contentPath, "journal", "2026");
         try {
@@ -369,7 +366,7 @@ export default function (pi: ExtensionAPI) {
             }
           }
         } catch (e) {
-          // Ignore errors
+          // Ignore
         }
       }
       
@@ -387,7 +384,6 @@ export default function (pi: ExtensionAPI) {
     },
   });
   
-  // Tool: Get recent activity
   pi.registerTool({
     name: "get_recent_activity",
     label: "Recent Activity",
@@ -422,7 +418,6 @@ export default function (pi: ExtensionAPI) {
     },
   });
   
-  // Tool: Get goals (intent)
   pi.registerTool({
     name: "get_goals",
     label: "Get Goals",
@@ -431,7 +426,6 @@ export default function (pi: ExtensionAPI) {
     async execute(_toolCallId, _params, signal, _onUpdate, _ctx) {
       const goals: string[] = [];
       
-      // Try daily goals
       const dailyDir = join(contentPath, "intent", "daily");
       try {
         const files = await readdir(dailyDir);
@@ -449,7 +443,6 @@ export default function (pi: ExtensionAPI) {
         // Ignore
       }
       
-      // Try weekly goals
       const weeklyDir = join(contentPath, "intent", "weekly");
       try {
         const files = await readdir(weeklyDir);
@@ -481,7 +474,6 @@ export default function (pi: ExtensionAPI) {
     },
   });
   
-  // Tool: Get today's summary
   pi.registerTool({
     name: "get_today",
     label: "Today",
