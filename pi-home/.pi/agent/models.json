@@ -17,18 +17,6 @@
           "reasoning": true
         },
         {
-          "contextWindow": 131072,
-          "id": "gemma4:31b-128k",
-          "name": "Gemma 4 31B (128k)",
-          "reasoning": true
-        },
-        {
-          "contextWindow": 262144,
-          "id": "gemma4:31b-256k",
-          "name": "Gemma 4 31B (256k)",
-          "reasoning": true
-        },
-        {
           "contextWindow": 32768,
           "id": "gemma4:31b-mxfp8",
           "name": "Gemma 4 31B (MXFP8)",
@@ -47,62 +35,26 @@
           "reasoning": true
         },
         {
-          "contextWindow": 131072,
-          "id": "gemma4:26b-128k",
-          "name": "Gemma 4 26B (128k)",
-          "reasoning": true
-        },
-        {
-          "contextWindow": 262144,
-          "id": "gemma4:26b-256k",
-          "name": "Gemma 4 26B (256k)",
-          "reasoning": true
-        },
-        {
-          "contextWindow": 32768,
-          "id": "qwen3.6:27b",
-          "name": "Qwen 3.6 27B",
-          "reasoning": true
-        },
-        {
-          "contextWindow": 32768,
-          "id": "qwen3.6:latest",
-          "input": [
-            "text",
-            "image"
-          ],
-          "name": "Qwen 3.6",
-          "reasoning": true
-        },
-        {
           "_launch": true,
-          "contextWindow": 131072,
+          "contextWindow": 125000,
           "id": "qwen3.8:27b-mlx",
           "input": [
             "text",
             "image"
           ],
-          "name": "Qwen 3.8",
+          "name": "Qwen 3.8 27B (MLX)",
           "reasoning": true
         },
         {
-          "contextWindow": 131072,
-          "id": "qwen3.8:27b-nvfp4",
-          "input": [
-            "text",
-            "image"
-          ],
-          "name": "Qwen 3.8 NVFP4",
+          "contextWindow": 32768,
+          "id": "qwen3.5:4b",
+          "name": "Qwen 3.5 4B",
           "reasoning": true
         },
         {
-          "contextWindow": 131072,
-          "id": "gemma4:12b-mlx",
-          "input": [
-            "text",
-            "image"
-          ],
-          "name": "Gemma 4 12B",
+          "contextWindow": 32768,
+          "id": "qwen3.5:4b-mlx",
+          "name": "Qwen 3.5 4B (MLX)",
           "reasoning": true
         },
         {
