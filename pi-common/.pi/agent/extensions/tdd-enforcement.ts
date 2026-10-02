@@ -52,7 +52,7 @@ export function isTestPath(filePath: string): boolean {
   const stem = file.replace(/\.[^.]+$/, "");
 
   if (file.endsWith(".feature")) return true;
-  if (/\.(test|spec)\.[cm]?[jt]sx?$/.test(file)) return true;
+  if (/\.(test|spec|cy)\.[cm]?[jt]sx?$/.test(file)) return true;
   if (/^test_.+$/.test(stem) || /.+_test$/.test(stem)) return true;
 
   return parts

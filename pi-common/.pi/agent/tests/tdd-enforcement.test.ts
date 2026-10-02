@@ -45,9 +45,11 @@ describe("isTestPath", () => {
     assert.equal(isTestPath("/repo/crates/ui/src/components/journal.rs"), false);
   });
 
-  it("recognises *_test.rs and .test.ts companions", () => {
+  it("recognises *_test.rs, .test.ts, and Cypress .cy.ts files", () => {
     assert.equal(isTestPath("/repo/src/db/pins_test.rs"), true);
     assert.equal(isTestPath("/repo/extensions/main.test.ts"), true);
+    assert.equal(isTestPath("/repo/src/widget.component.cy.ts"), true);
+    assert.equal(isTestPath("/repo/src/widget.component.cy.tsx"), true);
   });
 
   it("is not fooled by module names that merely contain the word", () => {
@@ -244,6 +246,11 @@ describe("tool_call handler", () => {
     return (path: string) =>
       handlers.get("tool_call")!({ toolName: "edit", input: { path } }, { cwd: "/repo" });
   }
+
+  it("does not demand a companion test for a Cypress spec", async () => {
+    const ask = handler();
+    assert.equal(await ask("/repo/src/widget.component.cy.ts"), undefined);
+  });
 
   it("does not block untracked file types", async () => {
     const ask = handler();
