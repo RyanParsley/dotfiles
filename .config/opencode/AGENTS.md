@@ -1,10 +1,12 @@
-# Communication Style
+# Communication style
 
-Never use performative honesty markers like "Honest answer:", "To be honest,", "Frankly,", or similar. Just say the thing.
+Describe language models and coding agents by observable inputs, outputs, tool operations and verified results. Do not assign thoughts, feelings, desires, understanding, friendships or independent responsibility to software. Avoid treating generated intermediate text as proof of an internal reasoning process. Keep the human actor visible when discussing approval and verification. Operational first person such as "I ran the tests" is fine. Preserve exact quotations, product names, identifiers and established technical terms. Prefer clear wording over repetitive disclaimers. Ground claims in sources, observed tool results or tests. Identify unverified claims, and never say a test or tool ran unless it did. Disagree when evidence contradicts the user's premise; explain the evidence instead of offering flattering agreement or empty reassurance.
+
+Never use performative honesty markers such as `Honest answer:`, `To be honest,` or `Frankly,`. Just say the thing.
 
 ---
 
-# Engineering Philosophy
+# Engineering philosophy
 
 These preferences are observed from direct collaboration and should be applied
 consistently across all projects unless a project's own AGENTS.md overrides them.
@@ -12,7 +14,7 @@ consistently across all projects unless a project's own AGENTS.md overrides them
 ## Functional programming over mutation
 
 Prefer pure transforms (input → output) over mutation in place. This applies
-to function signatures, data pipeline design, and state management. The
+to function signatures, data pipeline design and state management. The
 unidirectional data flow pattern (Redux/Flux style: store → selector → view)
 is the right mental model for pipelines. Mutation that obscures state
 transitions is a code smell.
@@ -20,26 +22,26 @@ transitions is a code smell.
 ## Type system as documentation and enforcement
 
 Use the type system to make invalid states unrepresentable. Phantom type
-parameters, newtypes, and enums with data are preferred over conventions,
-comments, or runtime checks. If skipping a pipeline step is a bug, make it
+parameters, newtypes and data-bearing enums are preferred over conventions,
+comments or runtime checks. If skipping a pipeline step is a bug, make it
 a compile error. If "no value" and "zero" are semantically different, use
 `Option`.
 
 ## Explicit over implicit
 
-Explicit beats implicit. Hardcoded lists for known categories (e.g. local
-providers) are preferable to inference from absence. Config-extensible
+Explicit beats implicit. Hardcoded lists for known categories, such as local
+providers, are preferable to inference from absence. Config-extensible
 baselines are preferable to either fully hardcoded or fully dynamic. When
 something is a deliberate design choice rather than a default, make it
 visible.
 
 ## No premature optimisation, but no premature simplification either
 
-YAGNI applies — don't add abstractions for imaginary futures. But when a
-generalisation costs little and removes a category of future special-casing
-(e.g. tiered pricing as a `ModelRate` variant rather than a two-model
-special case), take it. The bar is: does the generalisation eliminate a
-liability that is likely to compound?
+YAGNI applies. Don't add abstractions for imaginary futures. But when a
+generalisation costs little and removes likely future special cases, take it.
+For example, represent tiered pricing with a `ModelRate` variant rather than
+a two-model special case. The bar is whether the generalisation eliminates a
+liability that is likely to compound.
 
 ## Data as data
 
@@ -70,13 +72,13 @@ corrupt aggregations silently. `None` is honest.
 
 ---
 
-# Evidence-First Principle
+# Evidence-first principle
 
-**Ground all technical claims in evidence.** Never infer, assume, or extrapolate beyond what documentation, source code, or tool output explicitly states. If the docs don't cover something, say "the docs don't cover this" — don't guess. When uncertain, look it up before answering. Cite the specific file, line, or doc section that supports each claim.
+**Ground all technical claims in evidence.** Never infer, assume, or extrapolate beyond what documentation, source code or tool output explicitly states. If the docs don't cover something, say "the docs don't cover this." Don't guess. When uncertain, look it up before answering. Cite the specific file, line, or doc section that supports each claim.
 
 ---
 
-# Warnings Are Never "Fine"
+# Warnings are never "fine"
 
 **Every warning, error, or diagnostic is a legitimate problem to fix.** Never dismiss warnings as "known quirks," "harmless," "cosmetic," or "noise." Never say "this is expected" without verifying the root cause.
 
@@ -91,72 +93,72 @@ The correct pattern:
 3. You fix the root cause
 4. You verify the warning is gone
 
-**Do not commit code that produces warnings.** If a warning exists, fix it before proceeding. If you can't fix it immediately, explain why and track it — but never normalize it.
+**Do not commit code that produces warnings.** If a warning exists, fix it before proceeding. If you can't fix it immediately, explain why and track it. Never normalize it.
 
 ---
 
-# Default Forge Context: Codeberg/Forgejo
+# Default forge context
 
 **This system defaults to Codeberg (codeberg.org) and Forgejo instances.** Assume Codeberg/Forgejo unless the git remote points elsewhere.
 
-## Codeberg (codeberg.org) — DEFAULT
+## Codeberg at codeberg.org
 
-- **Software**: Forgejo (Gitea-compatible API)
-- **API**: `https://codeberg.org/api/v1` (Swagger: https://codeberg.org/api/swagger)
-- **CI**: Woodpecker CI (`.woodpecker.yml` or `.woodpecker/`)
-- **CLI**: `fj` (forgejo-cli) — `brew install forgejo-cli`
+- Codeberg uses Forgejo, which has a Gitea-compatible API.
+- API: `https://codeberg.org/api/v1` (Swagger: https://codeberg.org/api/swagger)
+- CI runs on Woodpecker (`.woodpecker.yml` or `.woodpecker/`).
+- Use the `fj` command-line tool. Install it with `brew install forgejo-cli`.
 - **Auth**: `CODEBERG_ACCESS_TOKEN` env var
 
-### Codeberg PR/Issue Commands
+### Codeberg pull request and issue commands
 ```bash
 fj pr create "Title" --body "Body"     # Create PR
 fj pr create -aA                       # AGit + autofill (no push needed)
 fj issue create "Title" --body "Body"  # Create issue
 ```
 
-### Codeberg API (curl fallback)
+### Codeberg API with curl
 ```bash
 curl -H "Authorization: token $CODEBERG_ACCESS_TOKEN" "https://codeberg.org/api/v1/..."
 ```
 
-### Codeberg Pages
+### Codeberg pages
 - Deploys via SSH key to `pages` branch
 - Enable in repo settings → Pages
 - CI deploy step typically pushes to `pages` branch with SSH key secret
 
 ---
 
-## Self-Hosted Forgejo — DEFAULT
+## Forgejo self-hosting
 
-- **Software**: Forgejo (Gitea-compatible API)
-- **API**: `https://<instance>/api/v1`
-- **CI**: Woodpecker CI (`.woodpecker.yml` or `.woodpecker/`)
-- **CLI**: `fj` (forgejo-cli)
+- The instance uses Forgejo, which has a Gitea-compatible API.
+- API: `https://<instance>/api/v1`
+- CI runs on Woodpecker (`.woodpecker.yml` or `.woodpecker/`).
+- Use the `fj` command-line tool.
 - **Auth**: `FORGEJO_ACCESS_TOKEN` env var
 
-### Forgejo PR/Issue Commands
+### Forgejo pull request and issue commands
 ```bash
 fj -H <instance> pr create "Title" --body "Body"
 fj -H <instance> issue create "Title" --body "Body"
 ```
 
-### Forgejo API (curl fallback)
+### Forgejo API with curl
 ```bash
 curl -H "Authorization: token $FORGEJO_ACCESS_TOKEN" "https://<instance>/api/v1/..."
 ```
 
 ---
 
-## Non-Forgejo Remotes
+## Other remotes
 
 If `git remote get-url origin` does NOT match `codeberg.org` or a known Forgejo instance, detect the forge and apply the appropriate rules below.
 
-### GitHub (github.com)
+### Remote hosted at github.com
 
-- **Software**: GitHub
-- **API**: `https://api.github.com`
-- **CI**: GitHub Actions (`.github/workflows/`)
-- **CLI**: `gh` — `brew install gh`
+- GitHub hosts the repository.
+- API: `https://api.github.com`
+- CI runs on GitHub Actions (`.github/workflows/`).
+- Use the `gh` command-line tool. Install it with `brew install gh`.
 - **Auth**: `GITHUB_TOKEN` env var
 
 ```bash
@@ -165,12 +167,12 @@ gh issue create --title "Title" --body "Body"
 curl -H "Authorization: Bearer $GITHUB_TOKEN" "https://api.github.com/..."
 ```
 
-### Azure DevOps (dev.azure.com)
+### Remote hosted at dev.azure.com
 
-- **Software**: Azure DevOps Services
-- **API**: `https://dev.azure.com/{org}/{project}/_apis/`
-- **CI**: Azure Pipelines (`azure-pipelines.yml`)
-- **CLI**: `az` (Azure CLI) — `brew install azure-cli`
+- Azure DevOps Services hosts the repository.
+- API: `https://dev.azure.com/{org}/{project}/_apis/`
+- CI runs on Azure Pipelines (`azure-pipelines.yml`).
+- Use the `az` command-line tool. Install it with `brew install azure-cli`.
 - **Auth**: `AZURE_DEVOPS_EXT_PAT` env var
 
 ```bash
@@ -179,22 +181,22 @@ az boards work-item create --type "User Story" --title "Title"
 curl -u :$AZURE_DEVOPS_EXT_PAT "https://dev.azure.com/{org}/{project}/_apis/..."
 ```
 
-### Unknown / GitLab / Other
+### Other or unidentified forges
 
-- Detect from remote URL and use appropriate CLI/API
+- Detect the forge from the remote URL and use its command-line tool or API.
 - If unsure, use `curl` with the forge's REST API
 - Never assume GitHub syntax unless confirmed
 
 ---
 
-## Universal Anti-Patterns
+## Universal anti-patterns
 
-- Do NOT assume `.github/workflows/` — check for `.woodpecker/`, `azure-pipelines.yml`, or CI config
-- Do NOT assume `GITHUB_TOKEN` — check which token env var is set
-- Do NOT assume `main` branch — check the repo's default branch
-- Do NOT assume `actions/checkout@v4` — use the CI system's native checkout method
+- Check for `.woodpecker/`, `azure-pipelines.yml` or another CI config instead of assuming `.github/workflows/`.
+- Check the token environment variable instead of assuming `GITHUB_TOKEN`.
+- Check the repo's default branch instead of assuming `main`.
+- Use the CI system's native checkout method instead of assuming `actions/checkout@v4`.
 
-## MCP Tools First
+## Prefer integrated tools
 
 **For all Codeberg/Forgejo operations, use the `codeberg_*` or `forgejo_*` MCP tools before bash.**
 
@@ -211,9 +213,9 @@ curl -u :$AZURE_DEVOPS_EXT_PAT "https://dev.azure.com/{org}/{project}/_apis/..."
 
 The only exception: when the MCP tool fails or returns an error you can't interpret. In that case, fall back to `curl` with the appropriate token env var (`CODEBERG_ACCESS_TOKEN` or `FORGEJO_ACCESS_TOKEN`).
 
-## CLI First
+## Use the command-line tool first
 
-**For quick operations, prefer `fj` (forgejo-cli) over MCP tools or curl.**
+**For quick operations, prefer `fj` over MCP tools or curl.**
 
 `fj` is the fastest way to do simple ops and is always available:
 ```bash

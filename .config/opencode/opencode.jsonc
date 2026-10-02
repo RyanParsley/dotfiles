@@ -12,6 +12,7 @@
     "~/.config/opencode/plugins/main-branch-guard.js",
     "~/.config/opencode/plugins/test-enforcement.js",
     "~/.config/opencode/plugins/lint-enforcement.js",
+    "/Users/ryan/Notes/Tools/llm-language-guard/adapters/opencode-v2/index.ts",
     "~/.config/opencode/plugins/build-enforcement.js",
     "~/.config/opencode/plugins/tdd-enforcement.ts"
   ],
