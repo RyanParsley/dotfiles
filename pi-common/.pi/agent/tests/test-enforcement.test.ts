@@ -28,6 +28,41 @@ describe("isGitCommitCommand", () => {
   });
 });
 
+describe("parseGenericOutput", () => {
+  it("uses the Vitest test summary instead of logged failure text or file counts", () => {
+    const result = parseGenericOutput({
+      code: 0,
+      stdout: [
+        "stderr | should not cause page reload",
+        "{ message: 'Loading chunk 123 failed' }",
+        "Test Files  12 passed (12)",
+        "     Tests  30 passed (30)",
+      ].join("\n"),
+    });
+
+    assert.equal(result.failed, 0);
+    assert.equal(result.passed, 30);
+    assert.equal(result.allPassed, true);
+  });
+
+  it("still blocks a genuinely failing Vitest summary", () => {
+    const result = parseGenericOutput({
+      code: 1,
+      stdout: "Test Files  1 failed | 11 passed (12)\n     Tests  1 failed | 29 passed (30)",
+    });
+
+    assert.equal(result.failed, 1);
+    assert.equal(result.passed, 29);
+    assert.equal(result.allPassed, false);
+  });
+
+  it("does not turn a zero-exit run's logged error message into a failure", () => {
+    const result = parseGenericOutput({ code: 0, stdout: "Error: expected failure case\nPASS" });
+    assert.equal(result.failed, 0);
+    assert.equal(result.allPassed, true);
+  });
+});
+
 describe("parseCargoOutput", () => {
   it("treats a passing run as passing", () => {
     const result = parseCargoOutput({

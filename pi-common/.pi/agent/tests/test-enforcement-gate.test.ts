@@ -15,10 +15,12 @@ type Handler = (event: unknown, ctx: unknown) => Promise<unknown>;
  * the wrong repository before.
  */
 function harness(
-  options: Partial<ExecResult> & { stdout?: string; stderr?: string; manifest?: boolean } = {},
+  options: Partial<ExecResult> & { stdout?: string; stderr?: string; manifest?: boolean | "node" } = {},
 ) {
   const root = mkdtempSync(join(tmpdir(), "test-enforcement-"));
-  if (options.manifest !== false) {
+  if (options.manifest === "node") {
+    writeFileSync(join(root, "package.json"), '{"scripts":{"test":"vitest run"}}\n');
+  } else if (options.manifest !== false) {
     writeFileSync(join(root, "Cargo.toml"), "[workspace]\nmembers = []\n");
   }
 
@@ -63,6 +65,21 @@ function harness(
 }
 
 describe("commit gate", () => {
+  it("does not block a passing node suite because a test logs a failure message", async () => {
+    const h = harness({
+      manifest: "node",
+      stdout: [
+        "{ message: 'Loading chunk 123 failed' }",
+        "Test Files  12 passed (12)",
+        "     Tests  30 passed (30)",
+      ].join("\n"),
+    });
+    const result = await h.commit(`cd ${h.root} && git commit -m x`);
+
+    assert.equal(result, undefined);
+    assert.deepEqual(h.execCalls.find((call) => call.command === "npm")?.args, ["test"]);
+  });
+
   it("runs the suite in the repository the commit happens in", async () => {
     const h = harness();
     const result = await h.commit(`cd ${h.root} && git commit -m x`);

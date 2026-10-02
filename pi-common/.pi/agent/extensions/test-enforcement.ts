@@ -90,8 +90,14 @@ function parseGoOutput(result: ExecLike, root = ""): TestResult {
 
 export function parseGenericOutput(result: ExecLike, root = ""): TestResult {
   const output = outputOf(result);
-  const failed = intGroup(/(\d+)\s+failed/, output) || (/(^|\n)FAIL|Error:/.test(output) ? 1 : 0);
-  const passed = intGroup(/(\d+)\s+passed/, output) || (/success|PASS/.test(output) ? 1 : 0);
+  const plain = output.replace(/\x1b\[[0-9;]*m/g, "");
+  // Vitest and Jest print a Tests summary. Do not count numbers in test logs
+  // (e.g. "Loading chunk 123 failed") or Vitest's separate Test Files summary.
+  const summary = /^\s*Tests:?\s+([^\n]*)/m.exec(plain)?.[1];
+  const failed = summary
+    ? intGroup(/(\d+)\s+failed/, summary)
+    : result.code === 0 ? 0 : intGroup(/(\d+)\s+failed/, plain) || (/(^|\n)FAIL|Error:/.test(plain) ? 1 : 0);
+  const passed = intGroup(/(\d+)\s+passed/, summary ?? plain) || (/success|PASS/.test(plain) ? 1 : 0);
   return {
     total: passed + failed,
     passed,
