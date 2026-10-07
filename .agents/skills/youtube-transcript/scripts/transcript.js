@@ -3,11 +3,13 @@
 import { YoutubeTranscript } from 'youtube-transcript-plus';
 
 const videoId = process.argv[2];
+const lang = process.argv[3] || 'en';
 
 if (!videoId) {
-  console.error('Usage: transcript.js <video-id-or-url>');
+  console.error('Usage: transcript.js <video-id-or-url> [lang]');
   console.error('Example: transcript.js EBw7gsDPAYQ');
-  console.error('Example: transcript.js https://www.youtube.com/watch?v=EBw7gsDPAYQ');
+  console.error('Example: transcript.js https://www.youtube.com/watch?v=EBw7gsDPAYQ en');
+  console.error('Example: transcript.js EBw7gsDPAYQ fr');
   process.exit(1);
 }
 
@@ -21,7 +23,7 @@ if (videoId.includes('youtube.com') || videoId.includes('youtu.be')) {
 }
 
 try {
-  const transcript = await YoutubeTranscript.fetchTranscript(extractedId);
+  const transcript = await YoutubeTranscript.fetchTranscript(extractedId, { lang });
   
   for (const entry of transcript) {
     const timestamp = formatTimestamp(entry.offset);
