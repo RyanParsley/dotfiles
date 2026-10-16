@@ -36,14 +36,39 @@
         },
         {
           "_launch": true,
-          "contextWindow": 125000,
+          "contextWindow": 32768,
           "id": "qwen3.8:27b-mlx",
           "input": [
             "text",
             "image"
           ],
-          "name": "Qwen 3.8 27B (MLX)",
+          "name": "Qwen 3.8 27B (MLX, 32k)",
           "reasoning": true
+        },
+        {
+          "contextWindow": 125000,
+          "id": "qwen3.8:27b-gguf-128k",
+          "input": [
+            "text",
+            "image"
+          ],
+          "name": "Qwen 3.8 27B (GGUF 128k, q8 KV)",
+          "reasoning": true
+        },
+        {
+          "contextWindow": 16384,
+          "id": "clef:latest",
+          "input": [
+            "text",
+            "image"
+          ],
+          "name": "Clef 27B",
+          "reasoning": true
+        },
+        {
+          "contextWindow": 8192,
+          "id": "nimble:latest",
+          "name": "Nimble 9B"
         },
         {
           "contextWindow": 32768,

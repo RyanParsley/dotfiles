@@ -1,8 +1,11 @@
 {
-  "defaultModel": "qwen3.8:27b-mlx",
-  "defaultProvider": "ollama",
+  "defaultModel": "qwen3.8-flash",
+  "defaultProvider": "opencode-go",
   "defaultThinkingLevel": "high",
   "enabledModels": [
+    "opencode-go/qwen3.8-flash",
+    "opencode-go/kimi-k2.6",
+    "opencode-go/*",
     "opencode/*",
     "ollama/*"
   ],
