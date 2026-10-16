@@ -75,6 +75,7 @@
     pkgs.lefthook
     pkgs.cocogitto
     pkgs.gh-dash
+    pkgs.worktrunk
 
     pkgs.htop
     pkgs.jq
@@ -107,6 +108,7 @@
     pkgs.vale
     pkgs.poppler-utils
     pkgs.tesseract
+    pkgs.tuxedo
 
     pkgs.curl
     pkgs.wget
